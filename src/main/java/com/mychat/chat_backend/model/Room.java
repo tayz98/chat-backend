@@ -2,6 +2,7 @@ package com.mychat.chat_backend.model;
 
 import jakarta.persistence.*;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,8 @@ public class Room {
 
     @Column(nullable = false, name = "description")
     private String description;
+
+    private Instant created;
 
     @Column(nullable = false, name = "private_status")
     private Boolean isPrivate;
@@ -44,14 +47,6 @@ public class Room {
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
 
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
     protected Room() {
     }
 
@@ -72,8 +67,73 @@ public class Room {
         this.allowedEmails = new ArrayList<>();
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
+    }
+
+    public Instant getCreated() {
+        return created;
+    }
+
+    public void setCreated(Instant created) {
+        this.created = created;
+    }
+
+    public Boolean getPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(Boolean aPrivate) {
+        isPrivate = aPrivate;
+    }
+
+    public List<User> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<User> participants) {
+        this.participants = participants;
+    }
+
+    public void addParticipant(User participant) {
+        this.participants.add(participant);
+    }
+
+    public void clearParticipants() {
+        this.participants.clear();
+    }
+
+    public void removeParticipant(User participant) {
+        this.participants.remove(participant);
+    }
+
+
+    public List<String> getAllowedEmails() {
+        return allowedEmails;
+    }
+
+    public void setAllowedEmails(List<String> allowedEmails) {
+        this.allowedEmails = allowedEmails;
+    }
+
+    public void addAllowedEmail(String email) {
+        this.allowedEmails.add(email);
+    }
+
+    public void removeAllowedEmail(String email) {
+        this.allowedEmails.remove(email);
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 
     public long getOwnerId() {
@@ -84,16 +144,8 @@ public class Room {
         return description;
     }
 
-    public Boolean getIsPrivate() {
-        return isPrivate;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public List<User> getParticipantIds() {
-        return participants;
     }
 
     public void setDescription(String description) {
@@ -108,19 +160,13 @@ public class Room {
         this.password = password;
     }
 
-    public void setParticipantIds(List<User> participants) {
-        this.participants = participants;
+    public User getOwner() {
+        return owner;
     }
 
-    public void addParticipant(User participant) {
-        this.participants.add(participant);
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
-    public void removeParticipant(User participant) {
-        this.participants.remove(participant);
-    }
 
-    public void clearParticipants() {
-        this.participants.clear();
-    }
 }

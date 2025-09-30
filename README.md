@@ -27,10 +27,14 @@ Jakarta Persistence and Gradle, and targets JDK 25.
 - Message
     - Sender: Many-to-One to User.
     - Room: Many-to-One to Room (a message cannot exist without a room).
+- Notification
+    - Recipient: Many-to-One to User.
+- Settings
+    - Not implemented yet.
 
 ## Getting Started
 
 ### Configure the Database
 
-- Run the Docker Compose file
-- Set the connection details in `src/main/resources/application.properties` 
+- Set the connection details in `src/main/resources/application.properties`
+- Run the Docker Compose file `docker-compose up -d` to start the database.

@@ -2,6 +2,7 @@ package com.mychat.chat_backend.model;
 
 import jakarta.persistence.*;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,39 @@ public class User {
 
     @Column(name = "password", nullable = false, length = 50)
     private String password;
+
+    @Column(name = "last_login")
+    private Instant lastLogin;
+
+    @Column(name = "last_logout")
+    private Instant lastLogout;
+
+    public Instant getCreated() {
+        return created;
+    }
+
+    public void setCreated(Instant created) {
+        this.created = created;
+    }
+
+    public Instant getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Instant lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public Instant getLastLogout() {
+        return lastLogout;
+    }
+
+    public void setLastLogout(Instant lastLogout) {
+        this.lastLogout = lastLogout;
+    }
+
+    @Column(name = "created", nullable = false)
+    private Instant created;
 
     @Column(unique = true, name = "email", nullable = false, length = 50)
     private String email;
@@ -47,6 +81,7 @@ public class User {
         this.isAdmin = false;
         this.avatarUrl = "placeholder";
         this.currentRooms = new ArrayList<>();
+        this.created = Instant.now();
     }
 
 

@@ -2,6 +2,8 @@ package com.mychat.chat_backend.model;
 
 import jakarta.persistence.*;
 
+import java.time.Instant;
+
 @Entity
 @Table(name = "chat_message")
 public class Message {
@@ -22,6 +24,9 @@ public class Message {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private Room room;
+
+    @Column(nullable = false, updatable = false, name = "timestamp")
+    private Instant timestamp;
 
     protected Message() {
     }
@@ -56,8 +61,23 @@ public class Message {
         return this.user.getId();
     }
 
-
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public Instant getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Instant timestamp) {
+        this.timestamp = timestamp;
     }
 }
