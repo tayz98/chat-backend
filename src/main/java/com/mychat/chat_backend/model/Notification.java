@@ -4,6 +4,11 @@ import jakarta.persistence.*;
 
 import java.time.Instant;
 
+/**
+ * Notification entity
+ * A notification is sent to a user when specific events happen
+ * The types of events are defined in NotificationType enum
+ */
 @Entity
 @Table(name = "chat_notification")
 public class Notification {
@@ -41,6 +46,8 @@ public class Notification {
         this.isRead = false;
         this.timestamp = Instant.now();
     }
+
+    // GETTERS AND SETTERS
 
     public Long getId() {
         return id;

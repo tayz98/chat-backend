@@ -6,6 +6,11 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * User entity
+ * A user can exchange messages with other users in rooms
+ * A user can be in multiple rooms at the same time
+ */
 @Entity
 @Table(name = "chat_user")
 public class User {
@@ -27,30 +32,6 @@ public class User {
 
     @Column(name = "last_logout")
     private Instant lastLogout;
-
-    public Instant getCreated() {
-        return created;
-    }
-
-    public void setCreated(Instant created) {
-        this.created = created;
-    }
-
-    public Instant getLastLogin() {
-        return lastLogin;
-    }
-
-    public void setLastLogin(Instant lastLogin) {
-        this.lastLogin = lastLogin;
-    }
-
-    public Instant getLastLogout() {
-        return lastLogout;
-    }
-
-    public void setLastLogout(Instant lastLogout) {
-        this.lastLogout = lastLogout;
-    }
 
     @Column(name = "created", nullable = false)
     private Instant created;
@@ -84,6 +65,40 @@ public class User {
         this.created = Instant.now();
     }
 
+    // GETTERS AND SETTERS
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Instant getCreated() {
+        return created;
+    }
+
+    public void setCreated(Instant created) {
+        this.created = created;
+    }
+
+    public Instant getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Instant lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public Instant getLastLogout() {
+        return lastLogout;
+    }
+
+    public void setLastLogout(Instant lastLogout) {
+        this.lastLogout = lastLogout;
+    }
+
 
     public List<Room> getCurrentRooms() {
         return currentRooms;
@@ -99,14 +114,6 @@ public class User {
 
     public void removeRoom(Room room) {
         currentRooms.remove(room);
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getUsername() {

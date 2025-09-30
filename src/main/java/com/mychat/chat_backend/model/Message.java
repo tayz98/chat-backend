@@ -4,6 +4,11 @@ import jakarta.persistence.*;
 
 import java.time.Instant;
 
+/**
+ * Message entity
+ * A message is sent by a user to a room
+ * and can be seen by all users in the room
+ */
 @Entity
 @Table(name = "chat_message")
 public class Message {
@@ -36,6 +41,8 @@ public class Message {
         this.content = content;
         this.user = user;
     }
+
+    // GETTERS AND SETTERS
 
     public long getId() {
         return id;

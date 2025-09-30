@@ -6,6 +6,11 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Room entity
+ * A room contains messages exchanged between users
+ * For private chats (e.g., between friends) or groups, a room can be set to private
+ */
 @Entity
 @Table(name = "chat_room")
 public class Room {
@@ -19,6 +24,7 @@ public class Room {
     @Column(nullable = false, name = "description")
     private String description;
 
+    @Column(nullable = false, name = "created")
     private Instant created;
 
     @Column(nullable = false, name = "private_status")
@@ -41,8 +47,8 @@ public class Room {
             name = "room_allowed_emails",
             joinColumns = @JoinColumn(name = "room_id")
     )
-    @Column(name = "email")
-    private List<String> allowedEmails;
+    @Column(name = "user_nicknames")
+    private List<String> allowedUserNicknames;
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
@@ -63,9 +69,12 @@ public class Room {
         this.password = password;
         this.owner = owner;
         this.participants = new ArrayList<>();
+        this.created = Instant.now();
         participants.add(owner);
-        this.allowedEmails = new ArrayList<>();
+        this.allowedUserNicknames = new ArrayList<>();
     }
+
+    // GETTERS AND SETTERS
 
     public void setId(long id) {
         this.id = id;
@@ -111,21 +120,20 @@ public class Room {
         this.participants.remove(participant);
     }
 
-
-    public List<String> getAllowedEmails() {
-        return allowedEmails;
+    public List<String> getAllowedUserNicknames() {
+        return allowedUserNicknames;
     }
 
-    public void setAllowedEmails(List<String> allowedEmails) {
-        this.allowedEmails = allowedEmails;
+    public void setAllowedUserNicknames(List<String> allowedEmails) {
+        this.allowedUserNicknames = allowedEmails;
     }
 
     public void addAllowedEmail(String email) {
-        this.allowedEmails.add(email);
+        this.allowedUserNicknames.add(email);
     }
 
     public void removeAllowedEmail(String email) {
-        this.allowedEmails.remove(email);
+        this.allowedUserNicknames.remove(email);
     }
 
     public List<Message> getMessages() {
@@ -167,6 +175,4 @@ public class Room {
     public void setOwner(User owner) {
         this.owner = owner;
     }
-
-
 }

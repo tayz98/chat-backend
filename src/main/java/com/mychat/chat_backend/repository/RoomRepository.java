@@ -6,10 +6,33 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
+/**
+ * Room repository
+ * Contains methods to access rooms in the database
+ */
 public interface RoomRepository extends JpaRepository<Room, Long> {
+
+    /**
+     * Find all rooms owned by a user
+     *
+     * @param owner
+     * @return List of rooms owned by the given user/owner
+     */
     public List<Room> findAllByOwner(User owner);
 
+    /**
+     * Find all rooms in which a user is a participant
+     *
+     * @param participantId
+     * @return List of rooms in which the given user id is a participant
+     */
     public List<Room> findAllByParticipantsId(Long participantId);
 
+    /**
+     * Find the room in which a message is sent
+     *
+     * @param messageId
+     * @return Room in which the given message id is sent
+     */
     Room findByMessagesId(Long messageId);
 }
