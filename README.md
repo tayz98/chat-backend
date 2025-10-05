@@ -12,7 +12,7 @@ Jakarta Persistence and Gradle, and targets JDK 25.
 - Java (JDK 25)
 - Spring Boot, Spring Data JPA (Jakarta Persistence)
 - Gradle
-- Docker Compose: PostgresSQL
+- Docker (Compose) or a local PostgresSQL database
 
 ## Domain Model (high level)
 
