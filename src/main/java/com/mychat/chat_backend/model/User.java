@@ -21,7 +21,7 @@ public class User {
     @Column(name = "id")
     private long id;
 
-    @Column(unique = true, name = "user_name", nullable = false, length = 50)
+    @Column(unique = true, name = "user_name", nullable = false, length = 50, updatable = false)
     private String username;
 
     @Column(name = "password", nullable = false, length = 50)
@@ -33,7 +33,7 @@ public class User {
     @Column(name = "last_logout")
     private Instant lastLogout;
 
-    @Column(name = "created", nullable = false)
+    @Column(name = "created", nullable = false, updatable = false)
     private Instant created;
 
     @Column(unique = true, name = "email", nullable = false, length = 50)
@@ -54,12 +54,12 @@ public class User {
     protected User() {
     }
 
-    public User(String username, String password, String email) {
+    public User(String username, String password, String email, boolean isAdmin) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.isAdmin = isAdmin;
         this.isOnline = false;
-        this.isAdmin = false;
         this.avatarUrl = "placeholder";
         this.currentRooms = new ArrayList<>();
         this.created = Instant.now();

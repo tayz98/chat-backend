@@ -42,11 +42,11 @@ public class Room {
             uniqueConstraints = @UniqueConstraint(columnNames = {"room_id", "user_id"}))
     private List<User> participants;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(
-            name = "room_allowed_emails",
-            joinColumns = @JoinColumn(name = "room_id")
-    )
+    //    @ElementCollection(fetch = FetchType.LAZY)
+//    @CollectionTable(
+//            name = "room_allowed_emails",
+//            joinColumns = @JoinColumn(name = "room_id")
+//    )
     @Column(name = "user_nicknames")
     private List<String> allowedUserNicknames;
 
@@ -57,13 +57,11 @@ public class Room {
     }
 
     public Room(
-            long id,
             String description,
             Boolean isPrivate,
             String password,
             User owner
     ) {
-        this.id = id;
         this.description = description;
         this.isPrivate = isPrivate;
         this.password = password;
@@ -72,6 +70,7 @@ public class Room {
         this.created = Instant.now();
         participants.add(owner);
         this.allowedUserNicknames = new ArrayList<>();
+        allowedUserNicknames.add(owner.getUsername());
     }
 
     // GETTERS AND SETTERS
@@ -124,16 +123,16 @@ public class Room {
         return allowedUserNicknames;
     }
 
-    public void setAllowedUserNicknames(List<String> allowedEmails) {
-        this.allowedUserNicknames = allowedEmails;
+    public void setAllowedUserNicknames(List<String> allowedUserNicknames) {
+        this.allowedUserNicknames = allowedUserNicknames;
     }
 
-    public void addAllowedEmail(String email) {
-        this.allowedUserNicknames.add(email);
+    public void addAllowedUserNickname(String allowedUserNickname) {
+        this.allowedUserNicknames.add(allowedUserNickname);
     }
 
-    public void removeAllowedEmail(String email) {
-        this.allowedUserNicknames.remove(email);
+    public void removeAllowedUserNickname(String allowedUserNickname) {
+        this.allowedUserNicknames.remove(allowedUserNickname);
     }
 
     public List<Message> getMessages() {

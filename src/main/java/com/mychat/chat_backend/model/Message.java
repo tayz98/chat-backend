@@ -19,7 +19,7 @@ public class Message {
     @Column(name = "id")
     private long id;
 
-    @Column(nullable = false, updatable = false, name = "content")
+    @Column(nullable = false, updatable = true, name = "content")
     private String content;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -33,13 +33,22 @@ public class Message {
     @Column(nullable = false, updatable = false, name = "timestamp")
     private Instant timestamp;
 
-    protected Message() {
+    @Column(name = "edited_timestamp", nullable = true, updatable = true)
+    private Instant editedTimestamp;
+
+    // TODO: maybe use a isDelete flag to show the message has been deleted in the chat
+    // or think of a different way to show deleted messages
+    // maybe a message history table inside the room entity
+    // or don't delete the message at all, just mark it as deleted
+
+    public Message() {
     }
 
-    public Message(long id, String content, User user) {
-        this.id = id;
+    public Message(String content, User user, Room room) {
         this.content = content;
         this.user = user;
+        this.room = room;
+        this.timestamp = Instant.now();
     }
 
     // GETTERS AND SETTERS
@@ -87,4 +96,13 @@ public class Message {
     public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
     }
+
+    public Instant getEditedTimestamp() {
+        return editedTimestamp;
+    }
+
+    public void setEditedTimestamp(Instant editedTimestamp) {
+        this.editedTimestamp = editedTimestamp;
+    }
+
 }
