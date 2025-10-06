@@ -2,20 +2,28 @@ package com.mychat.chat_backend.dto.notification;
 
 import com.mychat.chat_backend.model.NotificationType;
 
-import java.time.Instant;
-
 public class NotificationUpdateDto {
     private String content;
-    private boolean isRead;
+    private Boolean isRead;
     private NotificationType type;
+    private Long notificationId;
 
     public NotificationUpdateDto() {
     }
 
-    public NotificationUpdateDto(String content, NotificationType type, boolean isRead) {
+    public NotificationUpdateDto(long notificationId, String content, NotificationType type, boolean isRead) {
         this.content = content;
         this.type = type;
         this.isRead = isRead;
+        this.notificationId = notificationId;
+    }
+
+    public Long getNotificationId() {
+        return notificationId;
+    }
+
+    public void setNotificationId(Long notificationId) {
+        this.notificationId = notificationId;
     }
 
     public String getContent() {
@@ -26,7 +34,7 @@ public class NotificationUpdateDto {
         this.content = content;
     }
 
-    public boolean isRead() {
+    public Boolean isRead() {
         return isRead;
     }
 

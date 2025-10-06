@@ -5,7 +5,6 @@ import com.mychat.chat_backend.dto.room.RoomDto;
 import com.mychat.chat_backend.dto.room.RoomUpdateDto;
 import com.mychat.chat_backend.model.Room;
 import com.mychat.chat_backend.model.User;
-import com.mychat.chat_backend.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -13,7 +12,7 @@ import java.util.List;
 
 @Component
 public class RoomMapper {
-    public static RoomDto toDto(Room room) {
+    public static RoomDto toRoomDto(Room room) {
         long id = room.getId();
         String description = room.getDescription();
         Instant created = room.getCreated();
@@ -26,11 +25,11 @@ public class RoomMapper {
         return new RoomDto(id, description, created, isPrivate, ownerId, ownerName, participantIds, participantNames, allowedUsernames);
     }
 
-    public static Room toRoom(RoomCreationDto roomDto, UserRepository userRepository) {
-        return new Room(roomDto.getDescription(), roomDto.getPrivate(), roomDto.getPassword(), userRepository.findById(roomDto.getOwnerId()).orElseThrow());
+    public static Room toRoom(RoomCreationDto roomDto, User owner) {
+        return new Room(roomDto.getDescription(), roomDto.getPrivate(), roomDto.getPassword(), owner);
     }
 
-    public static Room updatedRoom(RoomUpdateDto roomDto, Room room, UserRepository userRepository) {
+    public static Room updatedRoom(RoomUpdateDto roomDto, Room room, User owner, List<User> users) {
         if (roomDto.getDescription() != null) {
             room.setDescription(roomDto.getDescription());
         }
@@ -42,11 +41,11 @@ public class RoomMapper {
         }
 
         if (roomDto.getOwnerId() != null) {
-            room.setOwner(userRepository.findById(roomDto.getOwnerId()).orElseThrow());
+            room.setOwner(owner);
         }
 
         if (!roomDto.getParticipants().isEmpty()) {
-            room.setParticipants(userRepository.findAllById(roomDto.getParticipants()));
+            room.setParticipants(users);
         }
         if (!roomDto.getAllowedUsernames().isEmpty()) {
             room.setAllowedUserNicknames(roomDto.getAllowedUsernames());

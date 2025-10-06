@@ -6,7 +6,7 @@ public class UserCreationDto {
     private String username;
     private String email;
     private String password;
-    private boolean isAdmin;
+    private Boolean isAdmin;
 
     private Instant created;
 
@@ -53,7 +53,7 @@ public class UserCreationDto {
         this.created = created;
     }
 
-    public boolean isAdmin() {
+    public Boolean isAdmin() {
         return isAdmin;
     }
 

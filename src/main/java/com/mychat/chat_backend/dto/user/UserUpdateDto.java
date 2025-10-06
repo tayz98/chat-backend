@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.List;
 
 public class UserUpdateDto {
+    private long userId;
     private String email;
     private String password;
     private String avatarUrl;
@@ -18,7 +19,8 @@ public class UserUpdateDto {
     public UserUpdateDto() {
     }
 
-    public UserUpdateDto(String email, String password, String avatarUrl, Instant lastLogin, Instant lastLogout, Boolean isOnline, Boolean isAdmin, List<Long> currentRooms) {
+    public UserUpdateDto(long userId, String email, String password, String avatarUrl, Instant lastLogin, Instant lastLogout, Boolean isOnline, Boolean isAdmin, List<Long> currentRooms) {
+        this.userId = userId;
         this.email = email;
         this.password = password;
         this.avatarUrl = avatarUrl;
@@ -27,6 +29,14 @@ public class UserUpdateDto {
         this.isOnline = isOnline;
         this.isAdmin = isAdmin;
         this.currentRooms = currentRooms;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {

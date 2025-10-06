@@ -9,7 +9,7 @@ public interface MessageService {
 
     MessageDto createMessage(MessageCreationDto messageDto);
 
-    MessageDto updateMessage(MessageUpdateDto messageDto, long messageId);
+    MessageDto updateMessage(MessageUpdateDto messageDto);
 
     void deleteMessage(long messageId);
 }

@@ -2,9 +2,10 @@ package com.mychat.chat_backend.mapper;
 
 import com.mychat.chat_backend.dto.notification.NotificationCreationDto;
 import com.mychat.chat_backend.dto.notification.NotificationDto;
+import com.mychat.chat_backend.dto.notification.NotificationUpdateDto;
 import com.mychat.chat_backend.model.Notification;
 import com.mychat.chat_backend.model.NotificationType;
-import com.mychat.chat_backend.repository.UserRepository;
+import com.mychat.chat_backend.model.User;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -22,16 +23,16 @@ public class NotificationMapper {
         return new NotificationDto(id, content, timestamp, isRead, recipientId, type);
     }
 
-    public static Notification toNotification(NotificationCreationDto notificationDto, UserRepository userRepository) {
-        return new Notification(notificationDto.getContent(), userRepository.findById(notificationDto.getRecipientId()).orElseThrow(), notificationDto.getType());
+    public static Notification toNotification(NotificationCreationDto notificationDto, User user) {
+        return new Notification(notificationDto.getContent(), user, notificationDto.getType());
     }
 
-    public static Notification updatedNotification(NotificationDto notificationDto, Notification notification) {
+    public static Notification updatedNotification(NotificationUpdateDto notificationDto, Notification notification) {
         if (notificationDto.getContent() != null) {
             notification.setContent(notificationDto.getContent());
         }
-        if (notificationDto.getRead() != null) {
-            notification.setRead(notificationDto.getRead());
+        if (notificationDto.isRead() != null) {
+            notification.setRead(notificationDto.isRead());
         }
         if (notificationDto.getType() != null) {
             notification.setType(notificationDto.getType());

@@ -4,8 +4,8 @@ import com.mychat.chat_backend.dto.message.MessageCreationDto;
 import com.mychat.chat_backend.dto.message.MessageDto;
 import com.mychat.chat_backend.dto.message.MessageUpdateDto;
 import com.mychat.chat_backend.model.Message;
-import com.mychat.chat_backend.repository.RoomRepository;
-import com.mychat.chat_backend.repository.UserRepository;
+import com.mychat.chat_backend.model.Room;
+import com.mychat.chat_backend.model.User;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -23,8 +23,8 @@ public class MessageMapper {
         return new MessageDto(id, content, senderId, senderUsername, roomId, timestamp, editedTimestamp);
     }
 
-    public static Message toMessage(MessageCreationDto messageCreationDto, UserRepository userRepository, RoomRepository roomRepository) {
-        return new Message(messageCreationDto.getContent(), userRepository.findById(messageCreationDto.getSenderId()).orElseThrow(), roomRepository.findById(messageCreationDto.getRoomId()).orElseThrow());
+    public static Message toMessage(MessageCreationDto messageCreationDto, User user, Room room) {
+        return new Message(messageCreationDto.getContent(), user, room);
     }
 
     public static Message updatedMessage(MessageUpdateDto messageDto, Message message) {

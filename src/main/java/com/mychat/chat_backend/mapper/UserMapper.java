@@ -5,7 +5,6 @@ import com.mychat.chat_backend.dto.user.UserDto;
 import com.mychat.chat_backend.dto.user.UserUpdateDto;
 import com.mychat.chat_backend.model.Room;
 import com.mychat.chat_backend.model.User;
-import com.mychat.chat_backend.repository.RoomRepository;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -14,7 +13,7 @@ import java.util.List;
 @Component
 public class UserMapper {
 
-    public static UserDto toDto(User user) {
+    public static UserDto toUserDto(User user) {
         long id = user.getId();
         String username = user.getUsername();
         String email = user.getEmail();
@@ -32,7 +31,7 @@ public class UserMapper {
         return new User(userDto.getUsername(), userDto.getPassword(), userDto.getEmail(), userDto.isAdmin());
     }
 
-    public static User updatedUser(UserUpdateDto userUpdateDto, User user, RoomRepository roomRepository) {
+    public static User updatedUser(UserUpdateDto userUpdateDto, User user, List<Room> rooms) {
         if (userUpdateDto.getPassword() != null) {
             user.setPassword(userUpdateDto.getPassword());
         }
@@ -52,7 +51,7 @@ public class UserMapper {
             user.setOnline(userUpdateDto.getOnline());
         }
         if (userUpdateDto.getCurrentRooms() != null) {
-            user.setCurrentRooms(roomRepository.findAllById(userUpdateDto.getCurrentRooms()));
+            user.setCurrentRooms(rooms);
         }
 
         if (userUpdateDto.getEmail() != null) {
