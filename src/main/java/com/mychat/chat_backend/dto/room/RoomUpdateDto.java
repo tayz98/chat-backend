@@ -9,27 +9,17 @@ public class RoomUpdateDto {
     private String password;
     private List<Long> participants;
     private List<String> allowedUsernames;
-    private Long roomId;
 
     public RoomUpdateDto() {
     }
 
-    public RoomUpdateDto(long roomId, String description, Boolean isPrivate, long ownerId, String password, List<Long> participants, List<String> allowedUsernames) {
+    public RoomUpdateDto(String description, Boolean isPrivate, long ownerId, String password, List<Long> participants, List<String> allowedUsernames) {
         this.description = description;
         this.isPrivate = isPrivate;
         this.ownerId = ownerId;
         this.password = password;
         this.participants = participants;
         this.allowedUsernames = allowedUsernames;
-        this.roomId = roomId;
-    }
-
-    public Long getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(Long roomId) {
-        this.roomId = roomId;
     }
 
     public String getDescription() {

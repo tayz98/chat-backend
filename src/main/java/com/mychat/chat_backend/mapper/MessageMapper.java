@@ -23,15 +23,15 @@ public class MessageMapper {
         return new MessageDto(id, content, senderId, senderUsername, roomId, timestamp, editedTimestamp);
     }
 
-    public static Message toMessage(MessageCreationDto messageCreationDto, User user, Room room) {
-        return new Message(messageCreationDto.getContent(), user, room);
+    public static Message toMessage(MessageCreationDto messageCreationDto, User sender, Room room) {
+        return new Message(messageCreationDto.getContent(), sender, room);
     }
 
-    public static Message updatedMessage(MessageUpdateDto messageDto, Message message) {
+    public static Message updatedMessage(MessageUpdateDto messageDto, Message messageToBeUpdated) {
         if (messageDto.getContent() != null) {
-            message.setContent(messageDto.getContent());
+            messageToBeUpdated.setContent(messageDto.getContent());
         }
-        message.setEditedTimestamp(Instant.now());
-        return message;
+        messageToBeUpdated.setEditedTimestamp(Instant.now());
+        return messageToBeUpdated;
     }
 }

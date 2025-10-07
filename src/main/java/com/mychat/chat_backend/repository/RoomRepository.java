@@ -15,7 +15,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     /**
      * Find all rooms owned by a user
      *
-     * @param owner
+     * @param owner User/owner of the rooms
      * @return List of rooms owned by the given user/owner
      */
     public List<Room> findAllByOwner(User owner);
@@ -23,7 +23,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     /**
      * Find all rooms in which a user is a participant
      *
-     * @param participantId
+     * @param participantId User id of the participant
      * @return List of rooms in which the given user id is a participant
      */
     public List<Room> findAllByParticipantsId(Long participantId);
@@ -31,7 +31,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     /**
      * Find the room in which a message is sent
      *
-     * @param messageId
+     * @param messageId Message id of the message
      * @return Room in which the given message id is sent
      */
     Room findByMessagesId(Long messageId);

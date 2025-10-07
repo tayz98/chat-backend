@@ -29,28 +29,28 @@ public class RoomMapper {
         return new Room(roomDto.getDescription(), roomDto.getPrivate(), roomDto.getPassword(), owner);
     }
 
-    public static Room updatedRoom(RoomUpdateDto roomDto, Room room, User owner, List<User> users) {
+    public static Room updatedRoom(RoomUpdateDto roomDto, Room roomToBeUpdated, User owner, List<User> participants) {
         if (roomDto.getDescription() != null) {
-            room.setDescription(roomDto.getDescription());
+            roomToBeUpdated.setDescription(roomDto.getDescription());
         }
         if (roomDto.getPrivate() != null) {
-            room.setPrivate(roomDto.getPrivate());
+            roomToBeUpdated.setPrivate(roomDto.getPrivate());
         }
         if (roomDto.getPassword() != null) {
-            room.setPassword(roomDto.getPassword());
+            roomToBeUpdated.setPassword(roomDto.getPassword());
         }
 
         if (roomDto.getOwnerId() != null) {
-            room.setOwner(owner);
+            roomToBeUpdated.setOwner(owner);
         }
 
         if (!roomDto.getParticipants().isEmpty()) {
-            room.setParticipants(users);
+            roomToBeUpdated.setParticipants(participants);
         }
         if (!roomDto.getAllowedUsernames().isEmpty()) {
-            room.setAllowedUserNicknames(roomDto.getAllowedUsernames());
+            roomToBeUpdated.setAllowedUserNicknames(roomDto.getAllowedUsernames());
         }
-        return room;
+        return roomToBeUpdated;
     }
 
 

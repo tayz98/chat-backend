@@ -3,6 +3,8 @@ package com.mychat.chat_backend.service.impl;
 import com.mychat.chat_backend.dto.notification.NotificationCreationDto;
 import com.mychat.chat_backend.dto.notification.NotificationDto;
 import com.mychat.chat_backend.dto.notification.NotificationUpdateDto;
+import com.mychat.chat_backend.exception.NotificationNotFoundException;
+import com.mychat.chat_backend.exception.UserNotFoundException;
 import com.mychat.chat_backend.mapper.NotificationMapper;
 import com.mychat.chat_backend.model.Notification;
 import com.mychat.chat_backend.model.User;
@@ -12,7 +14,6 @@ import com.mychat.chat_backend.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,34 +33,33 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public NotificationDto getNotificationById(long notificationId) {
-        return NotificationMapper.toNotificationDto(notificationRepository.findById(notificationId).orElseThrow());
+        return NotificationMapper.toNotificationDto(notificationRepository.findById(notificationId).orElseThrow(NotificationNotFoundException::new));
     }
 
     @Override
     public List<NotificationDto> getNotificationsByRecipientId(long recipientId) {
-        List<NotificationDto> notificationDtos = new ArrayList<>();
-        notificationRepository.findAllByRecipientId(recipientId).forEach(notification -> notificationDtos.add(NotificationMapper.toNotificationDto(notification)));
-        return notificationDtos;
+        User user = userRepository.findById(recipientId).orElseThrow(UserNotFoundException::new);
+        List<Notification> notifications = notificationRepository.findAllByRecipientId(user.getId());
+        return notifications.stream().map(NotificationMapper::toNotificationDto).toList();
     }
 
     @Override
     public NotificationDto createNotification(NotificationCreationDto notificationDto) {
-        User recipient = userRepository.findById(notificationDto.getRecipientId()).orElseThrow();
+        User recipient = userRepository.findById(notificationDto.getRecipientId()).orElseThrow(UserNotFoundException::new);
         Notification newNotification = NotificationMapper.toNotification(notificationDto, recipient);
         return NotificationMapper.toNotificationDto(notificationRepository.save(newNotification));
     }
 
     @Override
-    public NotificationDto updateNotification(NotificationUpdateDto notificationDto) {
-        long notificationId = notificationDto.getNotificationId();
-        Notification notification = notificationRepository.findById(notificationId).orElseThrow(() -> new IllegalArgumentException("Notification not found with id: " + notificationId));
+    public NotificationDto updateNotification(NotificationUpdateDto notificationDto, long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId).orElseThrow(NotificationNotFoundException::new);
         Notification updatedNotification = NotificationMapper.updatedNotification(notificationDto, notification);
         return NotificationMapper.toNotificationDto(notificationRepository.save(updatedNotification));
     }
 
     @Override
     public void deleteNotification(long notificationId) {
-        Notification notification = notificationRepository.findById(notificationId).orElseThrow(() -> new IllegalArgumentException("Notification not found with id: " + notificationId));
+        Notification notification = notificationRepository.findById(notificationId).orElseThrow((NotificationNotFoundException::new));
         notificationRepository.delete(notification);
     }
 }

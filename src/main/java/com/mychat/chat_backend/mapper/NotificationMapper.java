@@ -23,8 +23,8 @@ public class NotificationMapper {
         return new NotificationDto(id, content, timestamp, isRead, recipientId, type);
     }
 
-    public static Notification toNotification(NotificationCreationDto notificationDto, User user) {
-        return new Notification(notificationDto.getContent(), user, notificationDto.getType());
+    public static Notification toNotification(NotificationCreationDto notificationDto, User recipient) {
+        return new Notification(notificationDto.getContent(), recipient, notificationDto.getType());
     }
 
     public static Notification updatedNotification(NotificationUpdateDto notificationDto, Notification notification) {

@@ -14,7 +14,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     /**
      * Find all notifications sent to a user
      *
-     * @param userId
+     * @param userId User id
      * @return List of notifications sent to the given user id
      */
     public List<Notification> findAllByRecipientId(Long userId);

@@ -13,7 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * Find a user by username
      *
-     * @param username
      * @return User with the given username
      */
     User findByUsername(String username);
@@ -21,7 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * Find a user by email
      *
-     * @param email
+     * @param email Email of the user to be searched for
      * @return User with the given email
      */
     User findByEmail(String email);
@@ -29,17 +28,17 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * Find all users with a specific online status
      *
-     * @param isOnline
+     * @param isOnline Online status of the user to be searched for
      * @return List of users with the given online status
      */
-    public List<User> findAllByIsOnline(Boolean isOnline);
+    List<User> findAllByIsOnline(Boolean isOnline);
 
     /**
      * Find all users in a specific room
      *
-     * @param currentRoomsId
+     * @param currentRoomsId Room id of the room to be searched for
      * @return List of users in the given room
      */
-    public List<User> findAllByCurrentRoomsId(Long currentRoomsId);
+    List<User> findAllByCurrentRoomsId(Long currentRoomsId);
 
 }

@@ -14,7 +14,7 @@ public interface NotificationService {
 
     NotificationDto createNotification(NotificationCreationDto notificationDto);
 
-    NotificationDto updateNotification(NotificationUpdateDto notificationDto);
+    NotificationDto updateNotification(NotificationUpdateDto notificationDto, long notificationId);
 
     void deleteNotification(long notificationId);
 }

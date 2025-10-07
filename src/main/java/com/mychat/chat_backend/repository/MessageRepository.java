@@ -14,25 +14,28 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     /**
      * Find all messages in a room
      *
-     * @param roomId
+     * @param roomId Message room id
      * @return List of messages in the given room id
      */
-    public List<Message> findAllByRoomId(Long roomId);
+    List<Message> findAllByRoomId(Long roomId);
 
     /**
      * Find all messages sent by a user
      *
-     * @param userId
+     * @param userId User id
      * @return List of messages sent by the given user id
      */
-    public List<Message> findAllByUserId(Long userId);
+    List<Message> findAllByUserId(Long userId);
 
     /**
      * Find all messages in a room sent by a user
      *
-     * @param roomId
-     * @param userId
+     * @param roomId Message room id
+     * @param userId User id
      * @return List of messages in the given room id sent by the given user id
      */
-    public List<Message> findAllByRoomIdAndUserId(Long roomId, Long userId);
+    List<Message> findAllByRoomIdAndUserId(Long roomId, Long userId);
+
+
+    // TODO: Add more methods for implementing a search service in the frontend
 }

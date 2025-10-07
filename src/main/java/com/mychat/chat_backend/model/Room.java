@@ -47,7 +47,7 @@ public class Room {
 //            name = "room_allowed_emails",
 //            joinColumns = @JoinColumn(name = "room_id")
 //    )
-    @Column(name = "user_nicknames")
+    @Column(name = "allowed_users")
     private List<String> allowedUserNicknames;
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

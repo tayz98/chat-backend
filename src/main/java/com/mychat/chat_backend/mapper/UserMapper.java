@@ -31,32 +31,32 @@ public class UserMapper {
         return new User(userDto.getUsername(), userDto.getPassword(), userDto.getEmail(), userDto.isAdmin());
     }
 
-    public static User updatedUser(UserUpdateDto userUpdateDto, User user, List<Room> rooms) {
+    public static User updatedUser(UserUpdateDto userUpdateDto, User userToBeUpdated, List<Room> rooms) {
         if (userUpdateDto.getPassword() != null) {
-            user.setPassword(userUpdateDto.getPassword());
+            userToBeUpdated.setPassword(userUpdateDto.getPassword());
         }
         if (userUpdateDto.getAvatarUrl() != null) {
-            user.setAvatarUrl(userUpdateDto.getAvatarUrl());
+            userToBeUpdated.setAvatarUrl(userUpdateDto.getAvatarUrl());
         }
         if (userUpdateDto.getLastLogin() != null) {
-            user.setLastLogin(userUpdateDto.getLastLogin());
+            userToBeUpdated.setLastLogin(userUpdateDto.getLastLogin());
         }
         if (userUpdateDto.getLastLogout() != null) {
-            user.setLastLogout(userUpdateDto.getLastLogout());
+            userToBeUpdated.setLastLogout(userUpdateDto.getLastLogout());
         }
         if (userUpdateDto.getAdmin() != null) {
-            user.setAdmin(userUpdateDto.getAdmin());
+            userToBeUpdated.setAdmin(userUpdateDto.getAdmin());
         }
         if (userUpdateDto.getOnline() != null) {
-            user.setOnline(userUpdateDto.getOnline());
+            userToBeUpdated.setOnline(userUpdateDto.getOnline());
         }
         if (userUpdateDto.getCurrentRooms() != null) {
-            user.setCurrentRooms(rooms);
+            userToBeUpdated.setCurrentRooms(rooms);
         }
 
         if (userUpdateDto.getEmail() != null) {
-            user.setEmail(userUpdateDto.getEmail());
+            userToBeUpdated.setEmail(userUpdateDto.getEmail());
         }
-        return user;
+        return userToBeUpdated;
     }
 }
