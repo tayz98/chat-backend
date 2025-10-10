@@ -1,6 +1,8 @@
 package com.mychat.chat_backend.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -24,8 +26,11 @@ public class Room {
     @Column(nullable = false, name = "description")
     private String description;
 
-    @Column(nullable = false, name = "created")
-    private Instant created;
+    @CreationTimestamp
+    private Instant createdOn;
+
+    @UpdateTimestamp
+    private Instant updatedOn;
 
     @Column(nullable = false, name = "private_status")
     private Boolean isPrivate;
@@ -56,18 +61,15 @@ public class Room {
     protected Room() {
     }
 
-    public Room(
-            String description,
-            Boolean isPrivate,
-            String password,
-            User owner
+    Room(
+            Builder builder
     ) {
-        this.description = description;
-        this.isPrivate = isPrivate;
-        this.password = password;
-        this.owner = owner;
+        this.description = builder.description;
+        this.isPrivate = builder.isPrivate;
+        this.password = builder.password;
+        this.owner = builder.owner;
         this.participants = new ArrayList<>();
-        this.created = Instant.now();
+        createdOn = Instant.now();
         participants.add(owner);
         this.allowedUserNicknames = new ArrayList<>();
         allowedUserNicknames.add(owner.getUsername());
@@ -83,12 +85,20 @@ public class Room {
         return id;
     }
 
-    public Instant getCreated() {
-        return created;
+    public Instant getCreatedOn() {
+        return createdOn;
     }
 
-    public void setCreated(Instant created) {
-        this.created = created;
+    public void setCreatedOn(Instant createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public Instant getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn() {
+        this.updatedOn = Instant.now();
     }
 
     public Boolean getPrivate() {
@@ -173,5 +183,39 @@ public class Room {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public static class Builder {
+        private String description;
+        private Boolean isPrivate;
+        private String password;
+        private User owner;
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder isPrivate(Boolean isPrivate) {
+            this.isPrivate = isPrivate;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder owner(User owner) {
+            this.owner = owner;
+            return this;
+        }
+
+        public Room build() {
+            if (description == null || owner == null) {
+                throw new IllegalArgumentException("Description and owner must not be null");
+            }
+            return new Room(this);
+        }
     }
 }

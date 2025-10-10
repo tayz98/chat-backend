@@ -1,13 +1,26 @@
 package com.mychat.chat_backend.dto.room;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.util.List;
 
 public class RoomUpdateDto {
+    @NotBlank
     private String description;
+    @NotNull
     private Boolean isPrivate;
+    @NotNull
     private Long ownerId;
+    @NotBlank
+    @Size(min = 5, max = 30)
     private String password;
+    @NotNull
+    @Size(min = 1, max = 20)
     private List<Long> participants;
+    @NotNull
+    @Size(min = 1, max = 20)
     private List<String> allowedUsernames;
 
     public RoomUpdateDto() {

@@ -21,5 +21,5 @@ public interface MessageService {
 
     void deleteMessage(long messageId);
 
-    // TODO: implement more search methods for the frontend
+    // TODO: implement more filtering for a search function in the frontend
 }

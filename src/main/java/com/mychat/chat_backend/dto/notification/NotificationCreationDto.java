@@ -1,10 +1,15 @@
 package com.mychat.chat_backend.dto.notification;
 
 import com.mychat.chat_backend.model.NotificationType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class NotificationCreationDto {
+    @NotBlank
     private String content;
+    @NotNull
     private NotificationType type;
+    @NotNull
     private Long recipientId;
 
     public NotificationCreationDto() {

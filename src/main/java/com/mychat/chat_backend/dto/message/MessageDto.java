@@ -1,17 +1,29 @@
 package com.mychat.chat_backend.dto.message;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+
 import java.time.Instant;
 
 /**
  * Data Transfer Object for Message entity
  */
 public class MessageDto {
+    @NotNull
     private Long id;
+    @NotBlank
     private String content;
+    @NotNull
     private Long senderId;
+    @NotBlank
     private String senderUsername;
+    @NotNull
     private Long roomId;
+    @NotNull
+    @PastOrPresent
     private Instant timestamp;
+    @PastOrPresent
     private Instant editedTimestamp;
 
     public MessageDto() {

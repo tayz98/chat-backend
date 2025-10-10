@@ -1,10 +1,15 @@
 package com.mychat.chat_backend.dto.notification;
 
 import com.mychat.chat_backend.model.NotificationType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class NotificationUpdateDto {
+    @NotBlank
     private String content;
+    @NotNull
     private Boolean isRead;
+    @NotNull
     private NotificationType type;
 
     public NotificationUpdateDto() {
@@ -15,7 +20,7 @@ public class NotificationUpdateDto {
         this.type = type;
         this.isRead = isRead;
     }
-    
+
     public String getContent() {
         return content;
     }

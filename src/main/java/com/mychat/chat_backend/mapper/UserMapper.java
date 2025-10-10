@@ -13,6 +13,9 @@ import java.util.List;
 @Component
 public class UserMapper {
 
+    private UserMapper() {
+    }
+
     public static UserDto toUserDto(User user) {
         long id = user.getId();
         String username = user.getUsername();
@@ -22,13 +25,18 @@ public class UserMapper {
         Boolean isAdmin = user.getAdmin();
         Instant lastLogin = user.getLastLogin();
         Instant lastLogout = user.getLastLogout();
-        Instant created = user.getCreated();
+        Instant created = user.getCreatedOn();
         List<Long> currentRooms = user.getCurrentRooms().stream().map(Room::getId).toList();
         return new UserDto(id, username, email, created, lastLogin, lastLogout, avatarUrl, isOnline, isAdmin, currentRooms);
     }
 
     public static User toUser(UserCreationDto userDto) {
-        return new User(userDto.getUsername(), userDto.getPassword(), userDto.getEmail(), userDto.isAdmin());
+        return new User.Builder()
+                .username(userDto.getUsername())
+                .password(userDto.getPassword())
+                .email(userDto.getEmail())
+                .isAdmin(userDto.isAdmin())
+                .build();
     }
 
     public static User updatedUser(UserUpdateDto userUpdateDto, User userToBeUpdated, List<Room> rooms) {
@@ -57,6 +65,7 @@ public class UserMapper {
         if (userUpdateDto.getEmail() != null) {
             userToBeUpdated.setEmail(userUpdateDto.getEmail());
         }
+        userToBeUpdated.setUpdatedOn();
         return userToBeUpdated;
     }
 }

@@ -75,6 +75,7 @@ public class MessageServiceImpl implements MessageService {
     public MessageDto updateMessage(MessageUpdateDto messageDto, long messageId) {
         Message message = messageRepository.findById(messageId).orElseThrow(MessageNotFoundException::new);
         Message updatedMessage = MessageMapper.updatedMessage(messageDto, message);
+        updatedMessage.setUpdatedOn();
         return MessageMapper.toMessageDto(messageRepository.save(updatedMessage));
     }
 

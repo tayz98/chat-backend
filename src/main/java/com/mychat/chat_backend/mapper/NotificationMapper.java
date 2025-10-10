@@ -13,10 +13,13 @@ import java.time.Instant;
 @Component
 public class NotificationMapper {
 
+    private NotificationMapper() {
+    }
+
     public static NotificationDto toNotificationDto(Notification notification) {
         long id = notification.getId();
         String content = notification.getContent();
-        Instant timestamp = notification.getTimestamp();
+        Instant timestamp = notification.getCreatedOn();
         Boolean isRead = notification.getRead();
         long recipientId = notification.getRecipient().getId();
         NotificationType type = notification.getType();
@@ -24,7 +27,11 @@ public class NotificationMapper {
     }
 
     public static Notification toNotification(NotificationCreationDto notificationDto, User recipient) {
-        return new Notification(notificationDto.getContent(), recipient, notificationDto.getType());
+        return new Notification.Builder()
+                .content(notificationDto.getContent())
+                .recipient(recipient)
+                .type(notificationDto.getType())
+                .build();
     }
 
     public static Notification updatedNotification(NotificationUpdateDto notificationDto, Notification notification) {
@@ -37,6 +44,7 @@ public class NotificationMapper {
         if (notificationDto.getType() != null) {
             notification.setType(notificationDto.getType());
         }
+        notification.setUpdatedOn();
         return notification;
     }
 }

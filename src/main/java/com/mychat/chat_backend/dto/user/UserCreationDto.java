@@ -1,13 +1,21 @@
 package com.mychat.chat_backend.dto.user;
 
+import jakarta.validation.constraints.*;
+
 import java.time.Instant;
 
 public class UserCreationDto {
+    @NotBlank
     private String username;
+    @Email
     private String email;
+    @NotBlank
+    @Size(min = 5, max = 30)
     private String password;
+    @NotNull
     private Boolean isAdmin;
-
+    @NotNull
+    @PastOrPresent
     private Instant created;
 
     public UserCreationDto() {

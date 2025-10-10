@@ -73,6 +73,7 @@ public class RoomServiceImpl implements RoomService {
         List<Long> participantIds = roomDto.getParticipants();
         List<User> participants = participantIds.stream().map(userRepository::findById).filter(Optional::isPresent).map(Optional::get).toList();
         Room updatedRoom = RoomMapper.updatedRoom(roomDto, room, owner, participants);
+        updatedRoom.setUpdatedOn();
         return RoomMapper.toRoomDto(roomRepository.save(updatedRoom));
     }
 

@@ -1,16 +1,27 @@
 package com.mychat.chat_backend.dto.notification;
 
 import com.mychat.chat_backend.model.NotificationType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.Instant;
 
 public class NotificationDto {
+    @NotNull
     private Long id;
+    @NotBlank
     private String content;
+    @NotNull
+    @PastOrPresent
     private Instant timestamp;
+    @PastOrPresent
     private Instant editedTimestamp;
+    @NotNull
     private Boolean isRead;
+    @NotNull
     private Long recipientId;
+    @NotNull
     private NotificationType type;
 
 

@@ -1,6 +1,9 @@
 package com.mychat.chat_backend.dto.message;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class MessageUpdateDto {
+    @NotBlank
     private String content;
 
     public MessageUpdateDto() {

@@ -54,6 +54,7 @@ public class NotificationServiceImpl implements NotificationService {
     public NotificationDto updateNotification(NotificationUpdateDto notificationDto, long notificationId) {
         Notification notification = notificationRepository.findById(notificationId).orElseThrow(NotificationNotFoundException::new);
         Notification updatedNotification = NotificationMapper.updatedNotification(notificationDto, notification);
+        updatedNotification.setUpdatedOn();
         return NotificationMapper.toNotificationDto(notificationRepository.save(updatedNotification));
     }
 

@@ -1,9 +1,18 @@
 package com.mychat.chat_backend.dto.room;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class RoomCreationDto {
+    @NotBlank
     private String description;
+    @NotBlank
     private Boolean isPrivate;
+    @NotBlank
     private Long ownerId;
+    @NotBlank
+    @Size(min = 5, max = 30)
     private String password;
 
 

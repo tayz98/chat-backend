@@ -85,6 +85,7 @@ public class UserServiceImpl implements UserService {
         List<Long> roomIds = userDto.getCurrentRooms();
         List<Room> newRooms = roomIds.stream().map(roomRepository::findById).filter(Optional::isPresent).map(Optional::get).toList();
         User updatedUser = UserMapper.updatedUser(userDto, user, newRooms);
+        updatedUser.setUpdatedOn();
         return UserMapper.toUserDto(userRepository.save(updatedUser));
     }
 

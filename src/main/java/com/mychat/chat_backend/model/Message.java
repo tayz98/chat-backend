@@ -1,6 +1,8 @@
 package com.mychat.chat_backend.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 
@@ -30,25 +32,25 @@ public class Message {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @Column(nullable = false, updatable = false, name = "timestamp")
-    private Instant timestamp;
+    @CreationTimestamp
+    private Instant createdOn;
 
-    @Column(name = "edited_timestamp", nullable = true, updatable = true)
-    private Instant editedTimestamp;
+    @UpdateTimestamp
+    private Instant updatedOn;
 
     // TODO: maybe use a isDelete flag to show the message has been deleted in the chat
     // or think of a different way to show deleted messages
     // maybe a message history table inside the room entity
     // or don't delete the message at all, just mark it as deleted
 
-    public Message() {
+    protected Message() {
     }
 
-    public Message(String content, User user, Room room) {
-        this.content = content;
-        this.user = user;
-        this.room = room;
-        this.timestamp = Instant.now();
+    Message(Builder builder) {
+        this.content = builder.content;
+        this.user = builder.user;
+        this.room = builder.room;
+        this.createdOn = Instant.now();
     }
 
     // GETTERS AND SETTERS
@@ -89,20 +91,48 @@ public class Message {
         this.room = room;
     }
 
-    public Instant getTimestamp() {
-        return timestamp;
+    public Instant getCreatedOn() {
+        return createdOn;
     }
 
-    public void setTimestamp(Instant timestamp) {
-        this.timestamp = timestamp;
+    public void setCreatedOn(Instant createdOn) {
+        this.createdOn = createdOn;
     }
 
-    public Instant getEditedTimestamp() {
-        return editedTimestamp;
+    public Instant getUpdatedOn() {
+        return updatedOn;
     }
 
-    public void setEditedTimestamp(Instant editedTimestamp) {
-        this.editedTimestamp = editedTimestamp;
+    public void setUpdatedOn() {
+        this.updatedOn = Instant.now();
     }
 
+    public static class Builder {
+        private String content;
+        private User user;
+        private Room room;
+
+        public Builder content(String content) {
+            this.content = content;
+            return this;
+        }
+
+        public Builder user(User user) {
+            this.user = user;
+            return this;
+        }
+
+        public Builder room(Room room) {
+            this.room = room;
+            return this;
+        }
+
+        public Message build() {
+            if (content == null || user == null || room == null) {
+                throw new IllegalArgumentException("Content, user and room must not be null");
+            }
+            // further validation can be added here
+            return new Message(this);
+        }
+    }
 }

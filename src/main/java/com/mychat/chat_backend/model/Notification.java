@@ -1,6 +1,8 @@
 package com.mychat.chat_backend.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 
@@ -22,8 +24,11 @@ public class Notification {
     @Column(name = "message", nullable = false, length = 255)
     private String content;
 
-    @Column(name = "timestamp", nullable = false, updatable = false)
-    private Instant timestamp;
+    @CreationTimestamp
+    private Instant createdOn;
+
+    @UpdateTimestamp
+    private Instant updatedOn;
 
     @Column(name = "read_status")
     private Boolean isRead;
@@ -39,12 +44,12 @@ public class Notification {
     protected Notification() {
     }
 
-    public Notification(String content, User recipient, NotificationType type) {
-        this.content = content;
-        this.recipient = recipient;
-        this.type = type;
+    Notification(Builder builder) {
+        this.content = builder.content;
+        this.recipient = builder.recipient;
+        this.type = builder.type;
         this.isRead = false;
-        this.timestamp = Instant.now();
+        this.createdOn = Instant.now();
     }
 
     // GETTERS AND SETTERS
@@ -89,11 +94,47 @@ public class Notification {
         this.type = type;
     }
 
-    public Instant getTimestamp() {
-        return timestamp;
+    public Instant getCreatedOn() {
+        return createdOn;
     }
 
-    public void setTimestamp(Instant timestamp) {
-        this.timestamp = timestamp;
+    public void setCreatedOn(Instant createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public Instant getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn() {
+        this.updatedOn = Instant.now();
+    }
+
+    public static class Builder {
+        private String content;
+        private User recipient;
+        private NotificationType type;
+
+        public Builder content(String content) {
+            this.content = content;
+            return this;
+        }
+
+        public Builder recipient(User recipient) {
+            this.recipient = recipient;
+            return this;
+        }
+
+        public Builder type(NotificationType type) {
+            this.type = type;
+            return this;
+        }
+
+        public Notification build() {
+            if (content == null || recipient == null || type == null) {
+                throw new IllegalArgumentException("Content, recipient and type must not be null");
+            }
+            return new Notification(this);
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.mychat.chat_backend.model;
 
 import jakarta.persistence.*;
+import jdk.jfr.Timestamp;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -27,14 +29,19 @@ public class User {
     @Column(name = "password", nullable = false, length = 50)
     private String password;
 
+    @Timestamp
     @Column(name = "last_login")
     private Instant lastLogin;
 
+    @Timestamp
     @Column(name = "last_logout")
     private Instant lastLogout;
 
-    @Column(name = "created", nullable = false, updatable = false)
-    private Instant created;
+    @CreationTimestamp
+    private Instant createdOn;
+
+    @CreationTimestamp
+    private Instant updatedOn;
 
     @Column(unique = true, name = "email", nullable = false, length = 50)
     private String email;
@@ -54,15 +61,15 @@ public class User {
     protected User() {
     }
 
-    public User(String username, String password, String email, boolean isAdmin) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.isAdmin = isAdmin;
+    public User(Builder builder) {
+        this.username = builder.username;
+        this.password = builder.password;
+        this.email = builder.email;
+        this.isAdmin = builder.isAdmin;
         this.isOnline = false;
         this.avatarUrl = "placeholder";
         this.currentRooms = new ArrayList<>();
-        this.created = Instant.now();
+        this.createdOn = Instant.now();
     }
 
     // GETTERS AND SETTERS
@@ -75,12 +82,20 @@ public class User {
         this.id = id;
     }
 
-    public Instant getCreated() {
-        return created;
+    public Instant getCreatedOn() {
+        return createdOn;
     }
 
-    public void setCreated(Instant created) {
-        this.created = created;
+    public void setCreatedOn(Instant created) {
+        this.createdOn = created;
+    }
+
+    public Instant getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn() {
+        this.updatedOn = Instant.now();
     }
 
     public Instant getLastLogin() {
@@ -162,5 +177,40 @@ public class User {
 
     public void setAdmin(Boolean admin) {
         isAdmin = admin;
+    }
+
+    public static class Builder {
+        private String username;
+        private String password;
+        private String email;
+        private Boolean isAdmin;
+
+        public Builder username(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder isAdmin(Boolean isAdmin) {
+            this.isAdmin = isAdmin;
+            return this;
+        }
+
+        public User build() {
+            if (username == null || password == null || email == null) {
+                throw new IllegalArgumentException("Username, password and email must not be null");
+            }
+            // further validation can be added here
+            return new User(this);
+        }
     }
 }

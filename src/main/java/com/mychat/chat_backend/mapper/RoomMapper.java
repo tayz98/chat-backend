@@ -12,10 +12,14 @@ import java.util.List;
 
 @Component
 public class RoomMapper {
+
+    private RoomMapper() {
+    }
+
     public static RoomDto toRoomDto(Room room) {
         long id = room.getId();
         String description = room.getDescription();
-        Instant created = room.getCreated();
+        Instant created = room.getCreatedOn();
         boolean isPrivate = room.getPrivate();
         long ownerId = room.getOwner().getId();
         String ownerName = room.getOwner().getUsername();
@@ -26,7 +30,12 @@ public class RoomMapper {
     }
 
     public static Room toRoom(RoomCreationDto roomDto, User owner) {
-        return new Room(roomDto.getDescription(), roomDto.getPrivate(), roomDto.getPassword(), owner);
+        return new Room.Builder()
+                .description(roomDto.getDescription())
+                .isPrivate(roomDto.getPrivate())
+                .password(roomDto.getPassword())
+                .owner(owner)
+                .build();
     }
 
     public static Room updatedRoom(RoomUpdateDto roomDto, Room roomToBeUpdated, User owner, List<User> participants) {
@@ -50,6 +59,7 @@ public class RoomMapper {
         if (!roomDto.getAllowedUsernames().isEmpty()) {
             roomToBeUpdated.setAllowedUserNicknames(roomDto.getAllowedUsernames());
         }
+        roomToBeUpdated.setUpdatedOn();
         return roomToBeUpdated;
     }
 
