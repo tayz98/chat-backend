@@ -1,6 +1,5 @@
 package com.mychat.chat_backend.dto.room;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -16,10 +15,10 @@ public class RoomCreationDto {
     private String password;
 
 
-    public RoomCreationDto() {
+    private RoomCreationDto() {
     }
 
-    public RoomCreationDto(String description, Boolean isPrivate, long ownerId, String password) {
+    public RoomCreationDto(String description, Boolean isPrivate, Long ownerId, String password) {
         this.description = description;
         this.isPrivate = isPrivate;
         this.ownerId = ownerId;
@@ -38,15 +37,15 @@ public class RoomCreationDto {
         return isPrivate;
     }
 
-    public void setPrivate(Boolean aPrivate) {
-        isPrivate = aPrivate;
+    public void setPrivate(Boolean isPrivate) {
+        this.isPrivate = isPrivate;
     }
 
     public Long getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(long ownerId) {
+    public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
     }
 

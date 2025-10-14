@@ -8,17 +8,17 @@ import java.util.List;
 
 public interface RoomService {
 
-    RoomDto getRoomById(long roomId);
+    RoomDto getRoomById(Long roomId);
 
     List<RoomDto> getAllRooms();
 
-    List<RoomDto> getRoomsOfUser(long userId);
-    
-    List<RoomDto> getRoomsOfOwner(long ownerId);
+    List<RoomDto> getRoomsOfUser(Long userId);
+
+    List<RoomDto> getRoomsOfOwner(Long ownerId);
 
     RoomDto createRoom(RoomCreationDto roomDto);
 
-    RoomDto updateRoom(RoomUpdateDto roomDto, long roomId);
+    RoomDto updateRoom(RoomUpdateDto roomDto, Long roomId);
 
-    void deleteRoom(long roomId);
+    void deleteRoom(Long roomId);
 }

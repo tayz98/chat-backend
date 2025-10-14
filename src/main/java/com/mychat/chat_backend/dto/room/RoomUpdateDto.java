@@ -23,10 +23,10 @@ public class RoomUpdateDto {
     @Size(min = 1, max = 20)
     private List<String> allowedUsernames;
 
-    public RoomUpdateDto() {
+    private RoomUpdateDto() {
     }
 
-    public RoomUpdateDto(String description, Boolean isPrivate, long ownerId, String password, List<Long> participants, List<String> allowedUsernames) {
+    public RoomUpdateDto(String description, Boolean isPrivate, Long ownerId, String password, List<Long> participants, List<String> allowedUsernames) {
         this.description = description;
         this.isPrivate = isPrivate;
         this.ownerId = ownerId;
@@ -55,7 +55,7 @@ public class RoomUpdateDto {
         return ownerId;
     }
 
-    public void setOwnerId(long ownerId) {
+    public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
     }
 

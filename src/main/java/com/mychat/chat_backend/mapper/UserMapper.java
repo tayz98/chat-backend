@@ -17,7 +17,7 @@ public class UserMapper {
     }
 
     public static UserDto toUserDto(User user) {
-        long id = user.getId();
+        Long id = user.getId();
         String username = user.getUsername();
         String email = user.getEmail();
         String avatarUrl = user.getAvatarUrl();

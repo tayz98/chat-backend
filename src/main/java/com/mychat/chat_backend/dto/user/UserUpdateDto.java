@@ -13,7 +13,7 @@ public class UserUpdateDto {
     private Boolean isAdmin;
     private List<Long> currentRooms;
 
-    public UserUpdateDto() {
+    private UserUpdateDto() {
     }
 
     public UserUpdateDto(String email, String password, String avatarUrl, Instant lastLogin, Instant lastLogout, Boolean isOnline, Boolean isAdmin, List<Long> currentRooms) {

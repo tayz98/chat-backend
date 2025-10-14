@@ -21,7 +21,7 @@ public class User {
     @SequenceGenerator(name = "user_seq_gen", sequenceName = "user_seq", allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(unique = true, name = "user_name", nullable = false, length = 50, updatable = false)
     private String username;
@@ -74,11 +74,11 @@ public class User {
 
     // GETTERS AND SETTERS
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

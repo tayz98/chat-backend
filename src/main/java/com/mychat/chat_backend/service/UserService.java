@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserService {
 
-    UserDto getUserById(long userId);
+    UserDto getUserById(Long userId);
 
     UserDto getUserByUsername(String username);
 
@@ -16,13 +16,13 @@ public interface UserService {
 
     List<UserDto> getAllUsers();
 
-    List<UserDto> getUsersOfRoom(long roomId);
+    List<UserDto> getUsersOfRoom(Long roomId);
 
     List<UserDto> getUsersByOnlineStatus(Boolean isOnline);
 
     UserDto createUser(UserCreationDto userDto);
 
-    UserDto updateUser(UserUpdateDto userDto, long userId);
+    UserDto updateUser(UserUpdateDto userDto, Long userId);
 
-    void deleteUser(long userId);
+    void deleteUser(Long userId);
 }

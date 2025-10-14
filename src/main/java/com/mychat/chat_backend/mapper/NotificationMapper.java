@@ -17,11 +17,11 @@ public class NotificationMapper {
     }
 
     public static NotificationDto toNotificationDto(Notification notification) {
-        long id = notification.getId();
+        Long id = notification.getId();
         String content = notification.getContent();
         Instant timestamp = notification.getCreatedOn();
         Boolean isRead = notification.getRead();
-        long recipientId = notification.getRecipient().getId();
+        Long recipientId = notification.getRecipient().getId();
         NotificationType type = notification.getType();
         return new NotificationDto(id, content, timestamp, isRead, recipientId, type);
     }

@@ -17,14 +17,15 @@ public class MessageMapper {
     }
 
     public static MessageDto toMessageDto(Message message) {
-        long id = message.getId();
+        Long id = message.getId();
         String content = message.getContent();
-        long senderId = message.getUser().getId();
+        Long senderId = message.getUser().getId();
         String senderUsername = message.getUser().getUsername();
-        long roomId = message.getRoom().getId();
+        Long roomId = message.getRoom().getId();
         Instant timestamp = message.getCreatedOn();
         Instant editedTimestamp = message.getUpdatedOn();
-        return new MessageDto(id, content, senderId, senderUsername, roomId, timestamp, editedTimestamp);
+        Boolean isDeleted = message.getDeleted();
+        return new MessageDto(id, content, senderId, senderUsername, roomId, timestamp, editedTimestamp, isDeleted);
     }
 
     public static Message toMessage(MessageCreationDto messageCreationDto, User sender, Room room) {
@@ -38,6 +39,9 @@ public class MessageMapper {
     public static Message updatedMessage(MessageUpdateDto messageDto, Message messageToBeUpdated) {
         if (messageDto.getContent() != null) {
             messageToBeUpdated.setContent(messageDto.getContent());
+        }
+        if (messageDto.getIsDeleted() != null) {
+            messageToBeUpdated.setDeleted(messageDto.getIsDeleted());
         }
         messageToBeUpdated.setUpdatedOn();
         return messageToBeUpdated;

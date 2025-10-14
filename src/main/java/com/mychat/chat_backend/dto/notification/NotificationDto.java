@@ -25,10 +25,10 @@ public class NotificationDto {
     private NotificationType type;
 
 
-    public NotificationDto() {
+    private NotificationDto() {
     }
 
-    public NotificationDto(long id, String content, Instant timestamp, Boolean isRead, long recipientId, NotificationType type) {
+    public NotificationDto(Long id, String content, Instant timestamp, Boolean isRead, Long recipientId, NotificationType type) {
         this.id = id;
         this.content = content;
         this.timestamp = timestamp;
@@ -41,7 +41,7 @@ public class NotificationDto {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -81,7 +81,7 @@ public class NotificationDto {
         return recipientId;
     }
 
-    public void setRecipientId(long recipientId) {
+    public void setRecipientId(Long recipientId) {
         this.recipientId = recipientId;
     }
 

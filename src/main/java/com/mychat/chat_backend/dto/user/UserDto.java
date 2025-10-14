@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.List;
 
 public class UserDto {
-    private long id;
+    private Long id;
     private String username;
     private String email;
     private Instant created;
@@ -16,10 +16,10 @@ public class UserDto {
 
     private List<Long> currentRooms;
 
-    public UserDto() {
+    private UserDto() {
     }
 
-    public UserDto(long id, String username, String email, Instant created, Instant lastLogin, Instant lastLogout, String avatarUrl, Boolean isOnline, Boolean isAdmin, List<Long> currentRooms) {
+    public UserDto(Long id, String username, String email, Instant created, Instant lastLogin, Instant lastLogout, String avatarUrl, Boolean isOnline, Boolean isAdmin, List<Long> currentRooms) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -32,11 +32,11 @@ public class UserDto {
         this.currentRooms = currentRooms;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

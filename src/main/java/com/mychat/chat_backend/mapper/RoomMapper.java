@@ -17,11 +17,11 @@ public class RoomMapper {
     }
 
     public static RoomDto toRoomDto(Room room) {
-        long id = room.getId();
+        Long id = room.getId();
         String description = room.getDescription();
         Instant created = room.getCreatedOn();
-        boolean isPrivate = room.getPrivate();
-        long ownerId = room.getOwner().getId();
+        Boolean isPrivate = room.getPrivate();
+        Long ownerId = room.getOwner().getId();
         String ownerName = room.getOwner().getUsername();
         List<Long> participantIds = room.getParticipants().stream().map(User::getId).toList();
         List<String> participantNames = room.getParticipants().stream().map(User::getUsername).toList();

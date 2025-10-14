@@ -18,8 +18,7 @@ public class UserCreationDto {
     @PastOrPresent
     private Instant created;
 
-    public UserCreationDto() {
-        created = Instant.now();
+    private UserCreationDto() {
     }
 
     public UserCreationDto(String username, String email, String password) {
@@ -65,7 +64,7 @@ public class UserCreationDto {
         return isAdmin;
     }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 }

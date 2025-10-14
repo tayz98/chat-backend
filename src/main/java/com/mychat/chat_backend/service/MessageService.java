@@ -7,19 +7,19 @@ import com.mychat.chat_backend.dto.message.MessageUpdateDto;
 import java.util.List;
 
 public interface MessageService {
-    MessageDto getMessageById(long messageId);
+    MessageDto getMessageById(Long messageId);
 
-    List<MessageDto> getMessagesByRoomId(long roomId);
+    List<MessageDto> getMessagesByRoomId(Long roomId);
 
-    List<MessageDto> getMessagesByUserId(long userId);
+    List<MessageDto> getMessagesByUserId(Long userId);
 
-    List<MessageDto> getMessagesByRoomIdAndUserId(long roomId, long userId);
+    List<MessageDto> getMessagesByRoomIdAndUserId(Long roomId, Long userId);
 
     MessageDto createMessage(MessageCreationDto messageDto);
 
-    MessageDto updateMessage(MessageUpdateDto messageDto, long messageId);
+    MessageDto updateMessage(MessageUpdateDto messageDto, Long messageId);
 
-    void deleteMessage(long messageId);
+    void deleteMessage(Long messageId);
 
     // TODO: implement more filtering for a search function in the frontend
 }

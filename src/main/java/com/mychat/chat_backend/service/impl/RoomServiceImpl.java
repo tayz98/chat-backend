@@ -11,13 +11,16 @@ import com.mychat.chat_backend.model.User;
 import com.mychat.chat_backend.repository.RoomRepository;
 import com.mychat.chat_backend.repository.UserRepository;
 import com.mychat.chat_backend.service.RoomService;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Validated
 public class RoomServiceImpl implements RoomService {
 
 
@@ -34,7 +37,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomDto getRoomById(long roomId) {
+    public RoomDto getRoomById(@NotNull Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow((RoomNotFoundException::new));
         return RoomMapper.toRoomDto(room);
     }
@@ -46,28 +49,28 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomDto> getRoomsOfUser(long userId) {
+    public List<RoomDto> getRoomsOfUser(@NotNull Long userId) {
         User user = userRepository.findById(userId).orElseThrow((UserNotFoundException::new));
         List<Room> rooms = roomRepository.findAllByParticipantsId(user.getId());
         return rooms.stream().map(RoomMapper::toRoomDto).toList();
     }
 
     @Override
-    public List<RoomDto> getRoomsOfOwner(long ownerId) {
+    public List<RoomDto> getRoomsOfOwner(@NotNull Long ownerId) {
         User owner = userRepository.findById(ownerId).orElseThrow((UserNotFoundException::new));
         List<Room> rooms = roomRepository.findAllByOwner(owner);
         return rooms.stream().map(RoomMapper::toRoomDto).toList();
     }
 
     @Override
-    public RoomDto createRoom(RoomCreationDto roomDto) {
+    public RoomDto createRoom(@NotNull RoomCreationDto roomDto) {
         User owner = userRepository.findById(roomDto.getOwnerId()).orElseThrow(UserNotFoundException::new);
         Room newRoom = RoomMapper.toRoom(roomDto, owner);
         return RoomMapper.toRoomDto(roomRepository.save(newRoom));
     }
 
     @Override
-    public RoomDto updateRoom(RoomUpdateDto roomDto, long roomId) {
+    public RoomDto updateRoom(@NotNull RoomUpdateDto roomDto, @NotNull Long roomId) {
         User owner = userRepository.findById(roomDto.getOwnerId()).orElseThrow((UserNotFoundException::new));
         Room room = roomRepository.findById(roomId).orElseThrow((RoomNotFoundException::new));
         List<Long> participantIds = roomDto.getParticipants();
@@ -78,7 +81,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void deleteRoom(long roomId) {
+    public void deleteRoom(@NotNull Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow((RoomNotFoundException::new));
         roomRepository.delete(room);
     }

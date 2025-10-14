@@ -12,10 +12,10 @@ public class NotificationCreationDto {
     @NotNull
     private Long recipientId;
 
-    public NotificationCreationDto() {
+    private NotificationCreationDto() {
     }
 
-    public NotificationCreationDto(String content, NotificationType type, long recipientId) {
+    public NotificationCreationDto(String content, NotificationType type, Long recipientId) {
         this.content = content;
         this.type = type;
         this.recipientId = recipientId;
@@ -37,11 +37,11 @@ public class NotificationCreationDto {
         this.type = type;
     }
 
-    public long getRecipientId() {
+    public Long getRecipientId() {
         return recipientId;
     }
 
-    public void setRecipientId(long recipientId) {
+    public void setRecipientId(Long recipientId) {
         this.recipientId = recipientId;
     }
 }

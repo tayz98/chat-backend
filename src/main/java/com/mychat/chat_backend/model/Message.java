@@ -19,7 +19,7 @@ public class Message {
     @SequenceGenerator(name = "message_seq_gen", sequenceName = "message_seq", allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "message_seq_gen")
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(nullable = false, updatable = true, name = "content")
     private String content;
@@ -38,10 +38,8 @@ public class Message {
     @UpdateTimestamp
     private Instant updatedOn;
 
-    // TODO: maybe use a isDelete flag to show the message has been deleted in the chat
-    // or think of a different way to show deleted messages
-    // maybe a message history table inside the room entity
-    // or don't delete the message at all, just mark it as deleted
+    @Column(name = "deleted_status", nullable = false)
+    private Boolean isDeleted; // to mark a message as deleted in a chat room
 
     protected Message() {
     }
@@ -51,15 +49,16 @@ public class Message {
         this.user = builder.user;
         this.room = builder.room;
         this.createdOn = Instant.now();
+        this.isDeleted = false;
     }
 
     // GETTERS AND SETTERS
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -105,6 +104,14 @@ public class Message {
 
     public void setUpdatedOn() {
         this.updatedOn = Instant.now();
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.isDeleted = deleted;
     }
 
     public static class Builder {

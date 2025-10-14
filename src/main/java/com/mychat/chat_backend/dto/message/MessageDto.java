@@ -12,24 +12,34 @@ import java.time.Instant;
 public class MessageDto {
     @NotNull
     private Long id;
+
     @NotBlank
     private String content;
+
+    @NotNull
+    private Boolean isDeleted;
+
     @NotNull
     private Long senderId;
+
     @NotBlank
     private String senderUsername;
+
     @NotNull
     private Long roomId;
+
     @NotNull
     @PastOrPresent
     private Instant timestamp;
+
     @PastOrPresent
     private Instant editedTimestamp;
 
-    public MessageDto() {
+
+    private MessageDto() {
     }
 
-    public MessageDto(long id, String content, long senderId, String senderUsername, long roomId, Instant timestamp, Instant editedTimestamp) {
+    public MessageDto(long id, String content, long senderId, String senderUsername, long roomId, Instant timestamp, Instant editedTimestamp, Boolean isDeleted) {
         this.id = id;
         this.content = content;
         this.senderId = senderId;
@@ -37,13 +47,14 @@ public class MessageDto {
         this.roomId = roomId;
         this.timestamp = timestamp;
         this.editedTimestamp = editedTimestamp;
+        this.isDeleted = isDeleted;
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -59,7 +70,7 @@ public class MessageDto {
         return senderId;
     }
 
-    public void setSenderId(long senderId) {
+    public void setSenderId(Long senderId) {
         this.senderId = senderId;
     }
 
@@ -75,7 +86,7 @@ public class MessageDto {
         return roomId;
     }
 
-    public void setRoomId(long roomId) {
+    public void setRoomId(Long roomId) {
         this.roomId = roomId;
     }
 
@@ -93,5 +104,13 @@ public class MessageDto {
 
     public void setEditedTimestamp(Instant editedTimestamp) {
         this.editedTimestamp = editedTimestamp;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

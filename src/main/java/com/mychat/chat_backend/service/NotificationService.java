@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface NotificationService {
 
-    NotificationDto getNotificationById(long notificationId);
+    NotificationDto getNotificationById(Long notificationId);
 
-    List<NotificationDto> getNotificationsByRecipientId(long recipientId);
+    List<NotificationDto> getNotificationsByRecipientId(Long recipientId);
 
     NotificationDto createNotification(NotificationCreationDto notificationDto);
 
-    NotificationDto updateNotification(NotificationUpdateDto notificationDto, long notificationId);
+    NotificationDto updateNotification(NotificationUpdateDto notificationDto, Long notificationId);
 
-    void deleteNotification(long notificationId);
+    void deleteNotification(Long notificationId);
 }

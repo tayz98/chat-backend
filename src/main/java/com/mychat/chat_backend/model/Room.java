@@ -21,7 +21,7 @@ public class Room {
     @SequenceGenerator(name = "room_seq_gen", sequenceName = "room_seq", allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "room_seq_gen")
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(nullable = false, name = "description")
     private String description;
@@ -77,11 +77,11 @@ public class Room {
 
     // GETTERS AND SETTERS
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

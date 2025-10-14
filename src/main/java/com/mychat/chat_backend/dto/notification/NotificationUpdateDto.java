@@ -12,10 +12,10 @@ public class NotificationUpdateDto {
     @NotNull
     private NotificationType type;
 
-    public NotificationUpdateDto() {
+    private NotificationUpdateDto() {
     }
 
-    public NotificationUpdateDto(String content, NotificationType type, boolean isRead) {
+    public NotificationUpdateDto(String content, NotificationType type, Boolean isRead) {
         this.content = content;
         this.type = type;
         this.isRead = isRead;
@@ -33,7 +33,7 @@ public class NotificationUpdateDto {
         return isRead;
     }
 
-    public void setRead(boolean read) {
+    public void setRead(Boolean read) {
         isRead = read;
     }
 

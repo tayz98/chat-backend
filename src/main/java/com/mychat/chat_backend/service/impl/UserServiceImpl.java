@@ -11,13 +11,18 @@ import com.mychat.chat_backend.model.User;
 import com.mychat.chat_backend.repository.RoomRepository;
 import com.mychat.chat_backend.repository.UserRepository;
 import com.mychat.chat_backend.service.UserService;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Validated
 public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;
@@ -33,13 +38,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserById(long userId) {
+    public UserDto getUserById(@NotNull Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         return UserMapper.toUserDto(user);
     }
 
     @Override
-    public UserDto getUserByUsername(String username) {
+    public UserDto getUserByUsername(@NotBlank String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UserNotFoundException();
@@ -48,7 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserByEmail(String email) {
+    public UserDto getUserByEmail(@Email String email) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             throw new UserNotFoundException();
@@ -62,25 +67,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getUsersOfRoom(long roomId) {
+    public List<UserDto> getUsersOfRoom(@NotNull Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
         return room.getParticipants().stream().map(UserMapper::toUserDto).toList();
     }
 
     @Override
-    public List<UserDto> getUsersByOnlineStatus(Boolean isOnline) {
+    public List<UserDto> getUsersByOnlineStatus(@NotNull Boolean isOnline) {
         List<User> users = userRepository.findAllByIsOnline(isOnline);
         return users.stream().map(UserMapper::toUserDto).toList();
     }
 
     @Override
-    public UserDto createUser(UserCreationDto userDto) {
+    public UserDto createUser(@NotNull UserCreationDto userDto) {
         User newUser = UserMapper.toUser(userDto);
         return UserMapper.toUserDto(userRepository.save(newUser));
     }
 
     @Override
-    public UserDto updateUser(UserUpdateDto userDto, long userId) {
+    public UserDto updateUser(@NotNull UserUpdateDto userDto, @NotNull Long userId) {
         User user = userRepository.findById(userId).orElseThrow((UserNotFoundException::new));
         List<Long> roomIds = userDto.getCurrentRooms();
         List<Room> newRooms = roomIds.stream().map(roomRepository::findById).filter(Optional::isPresent).map(Optional::get).toList();
@@ -90,7 +95,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(long userId) {
+    public void deleteUser(@NotNull Long userId) {
         User user = userRepository.findById(userId).orElseThrow((UserNotFoundException::new));
         userRepository.delete(user);
     }

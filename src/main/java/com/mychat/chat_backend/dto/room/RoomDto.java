@@ -11,7 +11,7 @@ import java.util.List;
 public class RoomDto {
 
     @NotNull
-    private long id;
+    private Long id;
     @NotBlank
     private String description;
     @NotNull
@@ -34,10 +34,10 @@ public class RoomDto {
     @Size(min = 1, max = 20)
     private List<String> allowedUsernames;
 
-    public RoomDto() {
+    private RoomDto() {
     }
 
-    public RoomDto(long id, String description, Instant created, Boolean isPrivate, long ownerId, String ownerName, List<Long> participantIds, List<String> participantNames, List<String> allowedUsernames) {
+    public RoomDto(Long id, String description, Instant created, Boolean isPrivate, Long ownerId, String ownerName, List<Long> participantIds, List<String> participantNames, List<String> allowedUsernames) {
         this.id = id;
         this.description = description;
         this.created = created;
@@ -49,11 +49,11 @@ public class RoomDto {
         this.allowedUsernames = allowedUsernames;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -85,7 +85,7 @@ public class RoomDto {
         return ownerId;
     }
 
-    public void setOwnerId(long ownerId) {
+    public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
     }
 

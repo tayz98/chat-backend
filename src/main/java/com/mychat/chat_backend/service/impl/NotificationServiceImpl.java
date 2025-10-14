@@ -11,12 +11,15 @@ import com.mychat.chat_backend.model.User;
 import com.mychat.chat_backend.repository.NotificationRepository;
 import com.mychat.chat_backend.repository.UserRepository;
 import com.mychat.chat_backend.service.NotificationService;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 @Service
+@Validated
 public class NotificationServiceImpl implements NotificationService {
 
     private NotificationRepository notificationRepository;
@@ -32,26 +35,26 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public NotificationDto getNotificationById(long notificationId) {
+    public NotificationDto getNotificationById(@NotNull Long notificationId) {
         return NotificationMapper.toNotificationDto(notificationRepository.findById(notificationId).orElseThrow(NotificationNotFoundException::new));
     }
 
     @Override
-    public List<NotificationDto> getNotificationsByRecipientId(long recipientId) {
+    public List<NotificationDto> getNotificationsByRecipientId(@NotNull Long recipientId) {
         User user = userRepository.findById(recipientId).orElseThrow(UserNotFoundException::new);
         List<Notification> notifications = notificationRepository.findAllByRecipientId(user.getId());
         return notifications.stream().map(NotificationMapper::toNotificationDto).toList();
     }
 
     @Override
-    public NotificationDto createNotification(NotificationCreationDto notificationDto) {
+    public NotificationDto createNotification(@NotNull NotificationCreationDto notificationDto) {
         User recipient = userRepository.findById(notificationDto.getRecipientId()).orElseThrow(UserNotFoundException::new);
         Notification newNotification = NotificationMapper.toNotification(notificationDto, recipient);
         return NotificationMapper.toNotificationDto(notificationRepository.save(newNotification));
     }
 
     @Override
-    public NotificationDto updateNotification(NotificationUpdateDto notificationDto, long notificationId) {
+    public NotificationDto updateNotification(@NotNull NotificationUpdateDto notificationDto, @NotNull Long notificationId) {
         Notification notification = notificationRepository.findById(notificationId).orElseThrow(NotificationNotFoundException::new);
         Notification updatedNotification = NotificationMapper.updatedNotification(notificationDto, notification);
         updatedNotification.setUpdatedOn();
@@ -59,7 +62,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void deleteNotification(long notificationId) {
+    public void deleteNotification(@NotNull Long notificationId) {
         Notification notification = notificationRepository.findById(notificationId).orElseThrow((NotificationNotFoundException::new));
         notificationRepository.delete(notification);
     }

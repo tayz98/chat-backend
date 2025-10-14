@@ -1,7 +1,6 @@
 package com.mychat.chat_backend.dto.message;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -15,28 +14,28 @@ public class MessageCreationDto {
     @Size(max = 255)
     private String content;
 
-    public MessageCreationDto() {
+    private MessageCreationDto() {
     }
 
-    public MessageCreationDto(long senderId, long roomId, String content) {
+    public MessageCreationDto(Long senderId, Long roomId, String content) {
         this.senderId = senderId;
         this.roomId = roomId;
         this.content = content;
     }
 
-    public long getSenderId() {
+    public Long getSenderId() {
         return senderId;
     }
 
-    public void setSenderId(long senderId) {
+    public void setSenderId(Long senderId) {
         this.senderId = senderId;
     }
 
-    public long getRoomId() {
+    public Long getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(long roomId) {
+    public void setRoomId(Long roomId) {
         this.roomId = roomId;
     }
 
