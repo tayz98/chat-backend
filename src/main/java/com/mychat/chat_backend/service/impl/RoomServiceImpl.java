@@ -18,6 +18,8 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Validated
@@ -73,8 +75,8 @@ public class RoomServiceImpl implements RoomService {
     public RoomDto updateRoom(@NotNull RoomUpdateDto roomDto, @NotNull Long roomId) {
         User owner = userRepository.findById(roomDto.getOwnerId()).orElseThrow((UserNotFoundException::new));
         Room room = roomRepository.findById(roomId).orElseThrow((RoomNotFoundException::new));
-        List<Long> participantIds = roomDto.getParticipants();
-        List<User> participants = participantIds.stream().map(userRepository::findById).filter(Optional::isPresent).map(Optional::get).toList();
+        Set<Long> participantIds = roomDto.getParticipants();
+        Set<User> participants = participantIds.stream().map(userRepository::findById).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toSet());
         Room updatedRoom = RoomMapper.updatedRoom(roomDto, room, owner, participants);
         updatedRoom.setUpdatedOn();
         return RoomMapper.toRoomDto(roomRepository.save(updatedRoom));

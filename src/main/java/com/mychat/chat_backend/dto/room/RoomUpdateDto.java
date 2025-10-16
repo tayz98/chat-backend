@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.util.List;
+import java.util.Set;
 
 public class RoomUpdateDto {
     @NotBlank
@@ -18,15 +18,15 @@ public class RoomUpdateDto {
     private String password;
     @NotNull
     @Size(min = 1, max = 20)
-    private List<Long> participants;
+    private Set<Long> participants;
     @NotNull
     @Size(min = 1, max = 20)
-    private List<String> allowedUsernames;
+    private Set<String> allowedUsernames;
 
     private RoomUpdateDto() {
     }
 
-    public RoomUpdateDto(String description, Boolean isPrivate, Long ownerId, String password, List<Long> participants, List<String> allowedUsernames) {
+    public RoomUpdateDto(String description, Boolean isPrivate, Long ownerId, String password, Set<Long> participants, Set<String> allowedUsernames) {
         this.description = description;
         this.isPrivate = isPrivate;
         this.ownerId = ownerId;
@@ -67,19 +67,19 @@ public class RoomUpdateDto {
         this.password = password;
     }
 
-    public List<Long> getParticipants() {
+    public Set<Long> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(List<Long> participants) {
+    public void setParticipants(Set<Long> participants) {
         this.participants = participants;
     }
 
-    public List<String> getAllowedUsernames() {
+    public Set<String> getAllowedUsernames() {
         return allowedUsernames;
     }
 
-    public void setAllowedUsernames(List<String> allowedUsernames) {
+    public void setAllowedUsernames(Set<String> allowedUsernames) {
         this.allowedUsernames = allowedUsernames;
     }
 }

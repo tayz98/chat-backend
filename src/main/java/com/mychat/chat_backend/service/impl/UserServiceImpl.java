@@ -20,6 +20,8 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Validated
@@ -87,8 +89,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(@NotNull UserUpdateDto userDto, @NotNull Long userId) {
         User user = userRepository.findById(userId).orElseThrow((UserNotFoundException::new));
-        List<Long> roomIds = userDto.getCurrentRooms();
-        List<Room> newRooms = roomIds.stream().map(roomRepository::findById).filter(Optional::isPresent).map(Optional::get).toList();
+        Set<Long> roomIds = userDto.getCurrentRooms();
+        Set<Room> newRooms = roomIds.stream().map(roomRepository::findById).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toSet());
         User updatedUser = UserMapper.updatedUser(userDto, user, newRooms);
         updatedUser.setUpdatedOn();
         return UserMapper.toUserDto(userRepository.save(updatedUser));

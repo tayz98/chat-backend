@@ -5,8 +5,7 @@ import jdk.jfr.Timestamp;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * User entity
@@ -56,7 +55,7 @@ public class User {
     private Boolean isAdmin;
 
     @ManyToMany(mappedBy = "participants")
-    List<Room> currentRooms;
+    Set<Room> currentRooms;
 
     protected User() {
     }
@@ -65,10 +64,10 @@ public class User {
         this.username = builder.username;
         this.password = builder.password;
         this.email = builder.email;
-        this.isAdmin = builder.isAdmin;
+        this.isAdmin = Objects.requireNonNullElse(builder.isAdmin, false);
         this.isOnline = false;
         this.avatarUrl = "placeholder";
-        this.currentRooms = new ArrayList<>();
+        this.currentRooms = new HashSet<>();
         this.createdOn = Instant.now();
     }
 
@@ -115,11 +114,11 @@ public class User {
     }
 
 
-    public List<Room> getCurrentRooms() {
+    public Set<Room> getCurrentRooms() {
         return currentRooms;
     }
 
-    public void setCurrentRooms(List<Room> currentRooms) {
+    public void setCurrentRooms(Set<Room> currentRooms) {
         this.currentRooms = currentRooms;
     }
 

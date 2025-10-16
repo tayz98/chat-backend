@@ -43,7 +43,6 @@ public class MessageMapper {
         if (messageDto.getIsDeleted() != null) {
             messageToBeUpdated.setDeleted(messageDto.getIsDeleted());
         }
-        messageToBeUpdated.setUpdatedOn();
         return messageToBeUpdated;
     }
 }

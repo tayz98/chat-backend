@@ -8,7 +8,8 @@ import com.mychat.chat_backend.model.User;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {
@@ -26,7 +27,7 @@ public class UserMapper {
         Instant lastLogin = user.getLastLogin();
         Instant lastLogout = user.getLastLogout();
         Instant created = user.getCreatedOn();
-        List<Long> currentRooms = user.getCurrentRooms().stream().map(Room::getId).toList();
+        Set<Long> currentRooms = user.getCurrentRooms().stream().map(Room::getId).collect(Collectors.toSet());
         return new UserDto(id, username, email, created, lastLogin, lastLogout, avatarUrl, isOnline, isAdmin, currentRooms);
     }
 
@@ -39,7 +40,7 @@ public class UserMapper {
                 .build();
     }
 
-    public static User updatedUser(UserUpdateDto userUpdateDto, User userToBeUpdated, List<Room> rooms) {
+    public static User updatedUser(UserUpdateDto userUpdateDto, User userToBeUpdated, Set<Room> rooms) {
         if (userUpdateDto.getPassword() != null) {
             userToBeUpdated.setPassword(userUpdateDto.getPassword());
         }
@@ -65,7 +66,6 @@ public class UserMapper {
         if (userUpdateDto.getEmail() != null) {
             userToBeUpdated.setEmail(userUpdateDto.getEmail());
         }
-        userToBeUpdated.setUpdatedOn();
         return userToBeUpdated;
     }
 }

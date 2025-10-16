@@ -6,7 +6,7 @@ import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 
 public class RoomDto {
 
@@ -26,18 +26,18 @@ public class RoomDto {
     private String ownerName;
     @NotNull
     @Size(min = 1, max = 20)
-    private List<Long> participantIds;
+    private Set<Long> participantIds;
     @NotNull
     @Size(min = 1, max = 20)
-    private List<String> participantNames;
+    private Set<String> participantNames;
     @NotNull
     @Size(min = 1, max = 20)
-    private List<String> allowedUsernames;
+    private Set<String> allowedUsernames;
 
     private RoomDto() {
     }
 
-    public RoomDto(Long id, String description, Instant created, Boolean isPrivate, Long ownerId, String ownerName, List<Long> participantIds, List<String> participantNames, List<String> allowedUsernames) {
+    public RoomDto(Long id, String description, Instant created, Boolean isPrivate, Long ownerId, String ownerName, Set<Long> participantIds, Set<String> participantNames, Set<String> allowedUsernames) {
         this.id = id;
         this.description = description;
         this.created = created;
@@ -97,27 +97,27 @@ public class RoomDto {
         this.ownerName = ownerName;
     }
 
-    public List<Long> getParticipantIds() {
+    public Set<Long> getParticipantIds() {
         return participantIds;
     }
 
-    public void setParticipantIds(List<Long> participantIds) {
+    public void setParticipantIds(Set<Long> participantIds) {
         this.participantIds = participantIds;
     }
 
-    public List<String> getParticipantNames() {
+    public Set<String> getParticipantNames() {
         return participantNames;
     }
 
-    public void setParticipantNames(List<String> participantNames) {
+    public void setParticipantNames(Set<String> participantNames) {
         this.participantNames = participantNames;
     }
 
-    public List<String> getAllowedUsernames() {
+    public Set<String> getAllowedUsernames() {
         return allowedUsernames;
     }
 
-    public void setAllowedUsernames(List<String> allowedUsernames) {
+    public void setAllowedUsernames(Set<String> allowedUsernames) {
         this.allowedUsernames = allowedUsernames;
     }
 }

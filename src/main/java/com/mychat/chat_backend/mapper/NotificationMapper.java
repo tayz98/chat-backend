@@ -44,7 +44,6 @@ public class NotificationMapper {
         if (notificationDto.getType() != null) {
             notification.setType(notificationDto.getType());
         }
-        notification.setUpdatedOn();
         return notification;
     }
 }

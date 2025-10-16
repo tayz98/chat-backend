@@ -8,7 +8,8 @@ import com.mychat.chat_backend.model.User;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class RoomMapper {
@@ -23,9 +24,9 @@ public class RoomMapper {
         Boolean isPrivate = room.getPrivate();
         Long ownerId = room.getOwner().getId();
         String ownerName = room.getOwner().getUsername();
-        List<Long> participantIds = room.getParticipants().stream().map(User::getId).toList();
-        List<String> participantNames = room.getParticipants().stream().map(User::getUsername).toList();
-        List<String> allowedUsernames = room.getAllowedUserNicknames();
+        Set<Long> participantIds = room.getParticipants().stream().map(User::getId).collect(Collectors.toSet());
+        Set<String> participantNames = room.getParticipants().stream().map(User::getUsername).collect(Collectors.toSet());
+        Set<String> allowedUsernames = room.getAllowedUserNicknames();
         return new RoomDto(id, description, created, isPrivate, ownerId, ownerName, participantIds, participantNames, allowedUsernames);
     }
 
@@ -38,7 +39,7 @@ public class RoomMapper {
                 .build();
     }
 
-    public static Room updatedRoom(RoomUpdateDto roomDto, Room roomToBeUpdated, User owner, List<User> participants) {
+    public static Room updatedRoom(RoomUpdateDto roomDto, Room roomToBeUpdated, User owner, Set<User> participants) {
         if (roomDto.getDescription() != null) {
             roomToBeUpdated.setDescription(roomDto.getDescription());
         }
@@ -59,7 +60,6 @@ public class RoomMapper {
         if (!roomDto.getAllowedUsernames().isEmpty()) {
             roomToBeUpdated.setAllowedUserNicknames(roomDto.getAllowedUsernames());
         }
-        roomToBeUpdated.setUpdatedOn();
         return roomToBeUpdated;
     }
 

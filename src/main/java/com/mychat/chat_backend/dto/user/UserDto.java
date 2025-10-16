@@ -1,7 +1,7 @@
 package com.mychat.chat_backend.dto.user;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 
 public class UserDto {
     private Long id;
@@ -14,12 +14,12 @@ public class UserDto {
     private Boolean isOnline;
     private Boolean isAdmin;
 
-    private List<Long> currentRooms;
+    private Set<Long> currentRooms;
 
     private UserDto() {
     }
 
-    public UserDto(Long id, String username, String email, Instant created, Instant lastLogin, Instant lastLogout, String avatarUrl, Boolean isOnline, Boolean isAdmin, List<Long> currentRooms) {
+    public UserDto(Long id, String username, String email, Instant created, Instant lastLogin, Instant lastLogout, String avatarUrl, Boolean isOnline, Boolean isAdmin, Set<Long> currentRooms) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -104,11 +104,11 @@ public class UserDto {
         isAdmin = admin;
     }
 
-    public List<Long> getCurrentRooms() {
+    public Set<Long> getCurrentRooms() {
         return currentRooms;
     }
 
-    public void setCurrentRooms(List<Long> currentRooms) {
+    public void setCurrentRooms(Set<Long> currentRooms) {
         this.currentRooms = currentRooms;
     }
 }

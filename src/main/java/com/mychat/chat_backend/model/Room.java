@@ -5,8 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Room entity
@@ -34,7 +33,7 @@ public class Room {
 
     @Column(nullable = false, name = "private_status")
     private Boolean isPrivate;
-    @Column(nullable = false, name = "password")
+    @Column(nullable = true, name = "password")
     private String password;
 
     @JoinColumn(name = "owner")
@@ -45,7 +44,7 @@ public class Room {
     @JoinTable(name = "participants_room", joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"room_id", "user_id"}))
-    private List<User> participants;
+    private Set<User> participants;
 
     //    @ElementCollection(fetch = FetchType.LAZY)
 //    @CollectionTable(
@@ -53,7 +52,7 @@ public class Room {
 //            joinColumns = @JoinColumn(name = "room_id")
 //    )
     @Column(name = "allowed_users")
-    private List<String> allowedUserNicknames;
+    private Set<String> allowedUserNicknames;
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
@@ -66,12 +65,14 @@ public class Room {
     ) {
         this.description = builder.description;
         this.isPrivate = builder.isPrivate;
-        this.password = builder.password;
         this.owner = builder.owner;
-        this.participants = new ArrayList<>();
+        if (builder.password != null) {
+            this.password = builder.password;
+        }
+        this.participants = new HashSet<>();
         createdOn = Instant.now();
         participants.add(owner);
-        this.allowedUserNicknames = new ArrayList<>();
+        this.allowedUserNicknames = new HashSet<>();
         allowedUserNicknames.add(owner.getUsername());
     }
 
@@ -109,11 +110,11 @@ public class Room {
         isPrivate = aPrivate;
     }
 
-    public List<User> getParticipants() {
+    public Set<User> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(List<User> participants) {
+    public void setParticipants(Set<User> participants) {
         this.participants = participants;
     }
 
@@ -126,14 +127,14 @@ public class Room {
     }
 
     public void removeParticipant(User participant) {
-        this.participants.remove(participant);
+        this.participants.removeIf(user -> user.getId().equals(participant.getId()));
     }
 
-    public List<String> getAllowedUserNicknames() {
+    public Set<String> getAllowedUserNicknames() {
         return allowedUserNicknames;
     }
 
-    public void setAllowedUserNicknames(List<String> allowedUserNicknames) {
+    public void setAllowedUserNicknames(Set<String> allowedUserNicknames) {
         this.allowedUserNicknames = allowedUserNicknames;
     }
 
@@ -212,8 +213,8 @@ public class Room {
         }
 
         public Room build() {
-            if (description == null || owner == null) {
-                throw new IllegalArgumentException("Description and owner must not be null");
+            if (description == null || owner == null || isPrivate == null) {
+                throw new IllegalArgumentException("Description, owner and private status must not be null");
             }
             return new Room(this);
         }
