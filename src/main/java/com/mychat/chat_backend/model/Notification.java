@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.mychat.chat_backend.model.enums.NotificationType;
+
 import java.time.Instant;
 
 /**
@@ -16,13 +18,9 @@ import java.time.Instant;
 public class Notification {
 
     @Id
-    @SequenceGenerator(name = "notification_seq_gen", sequenceName = "notification_seq", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notification_seq_gen")
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false)
     private Long id;
-
-    @Column(name = "message", nullable = false, length = 255)
-    private String content;
 
     @CreationTimestamp
     private Instant createdOn;
@@ -30,7 +28,7 @@ public class Notification {
     @UpdateTimestamp
     private Instant updatedOn;
 
-    @Column(name = "read_status")
+    @Column(name = "read_status", nullable = false)
     private Boolean isRead;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,36 +36,23 @@ public class Notification {
     private User recipient;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private NotificationType type;
 
     protected Notification() {
     }
 
     Notification(Builder builder) {
-        this.content = builder.content;
         this.recipient = builder.recipient;
         this.type = builder.type;
         this.isRead = false;
         this.createdOn = Instant.now();
     }
 
-    // GETTERS AND SETTERS
+    // Getters and Setters
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public Boolean getRead() {
@@ -82,16 +67,8 @@ public class Notification {
         return recipient;
     }
 
-    public void setRecipient(User recipient) {
-        this.recipient = recipient;
-    }
-
     public NotificationType getType() {
         return type;
-    }
-
-    public void setType(NotificationType type) {
-        this.type = type;
     }
 
     public Instant getCreatedOn() {
@@ -111,14 +88,8 @@ public class Notification {
     }
 
     public static class Builder {
-        private String content;
         private User recipient;
         private NotificationType type;
-
-        public Builder content(String content) {
-            this.content = content;
-            return this;
-        }
 
         public Builder recipient(User recipient) {
             this.recipient = recipient;
@@ -131,8 +102,8 @@ public class Notification {
         }
 
         public Notification build() {
-            if (content == null || recipient == null || type == null) {
-                throw new IllegalArgumentException("Content, recipient and type must not be null");
+            if (recipient == null || type == null) {
+                throw new IllegalArgumentException("Recipient and type must not be null");
             }
             return new Notification(this);
         }

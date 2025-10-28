@@ -20,8 +20,6 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Validated
@@ -30,7 +28,8 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     RoomRepository roomRepository;
 
-    public UserServiceImpl() {
+    @SuppressWarnings("unused")
+    private UserServiceImpl() {
     }
 
     @Autowired
@@ -46,21 +45,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserByUsername(@NotBlank String username) {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UserNotFoundException();
-        }
-        return UserMapper.toUserDto(user);
+    public Optional<UserDto> getUserByUsername(@NotBlank String username) {
+        return userRepository.findByUsername(username)
+                .map(UserMapper::toUserDto);
     }
 
     @Override
-    public UserDto getUserByEmail(@Email String email) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new UserNotFoundException();
-        }
-        return UserMapper.toUserDto(user);
+    public Optional<UserDto> getUserByEmail(@Email String email) {
+        return userRepository.findByEmail(email)
+                .map(UserMapper::toUserDto);
     }
 
     @Override
@@ -71,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getUsersOfRoom(@NotNull Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
-        return room.getParticipants().stream().map(UserMapper::toUserDto).toList();
+        return room.getParticipantUsers().stream().map(UserMapper::toUserDto).toList();
     }
 
     @Override
@@ -89,9 +82,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(@NotNull UserUpdateDto userDto, @NotNull Long userId) {
         User user = userRepository.findById(userId).orElseThrow((UserNotFoundException::new));
-        Set<Long> roomIds = userDto.getCurrentRooms();
-        Set<Room> newRooms = roomIds.stream().map(roomRepository::findById).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toSet());
-        User updatedUser = UserMapper.updatedUser(userDto, user, newRooms);
+        User updatedUser = UserMapper.updatedUser(userDto, user);
         updatedUser.setUpdatedOn();
         return UserMapper.toUserDto(userRepository.save(updatedUser));
     }

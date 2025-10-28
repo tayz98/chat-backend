@@ -1,9 +1,11 @@
 package com.mychat.chat_backend.dto.message;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
+/**
+ * Data Transfer Object for creating a new Message
+ * CREATE request payload
+ */
 public class MessageCreationDto {
 
     @NotNull
@@ -14,7 +16,7 @@ public class MessageCreationDto {
     @Size(max = 255)
     private String content;
 
-    private MessageCreationDto() {
+    public MessageCreationDto() {
     }
 
     public MessageCreationDto(Long senderId, Long roomId, String content) {
@@ -22,6 +24,8 @@ public class MessageCreationDto {
         this.roomId = roomId;
         this.content = content;
     }
+
+    // Getters and Setters
 
     public Long getSenderId() {
         return senderId;

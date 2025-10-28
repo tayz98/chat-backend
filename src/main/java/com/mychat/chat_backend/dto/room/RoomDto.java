@@ -1,13 +1,12 @@
 package com.mychat.chat_backend.dto.room;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Size;
-
+import jakarta.validation.constraints.*;
 import java.time.Instant;
 import java.util.Set;
 
+/**
+ * Data Transfer Object for Room entity.
+ */
 public class RoomDto {
 
     @NotNull
@@ -20,11 +19,6 @@ public class RoomDto {
     @NotNull
     private Boolean isPrivate;
     @NotNull
-    private Long ownerId;
-    @NotBlank
-    @Size(max = 30)
-    private String ownerName;
-    @NotNull
     @Size(min = 1, max = 20)
     private Set<Long> participantIds;
     @NotNull
@@ -34,20 +28,21 @@ public class RoomDto {
     @Size(min = 1, max = 20)
     private Set<String> allowedUsernames;
 
-    private RoomDto() {
+    public RoomDto() {
     }
 
-    public RoomDto(Long id, String description, Instant created, Boolean isPrivate, Long ownerId, String ownerName, Set<Long> participantIds, Set<String> participantNames, Set<String> allowedUsernames) {
+    public RoomDto(Long id, String description, Instant created, Boolean isPrivate,
+            Set<Long> participantIds, Set<String> participantNames, Set<String> allowedUsernames) {
         this.id = id;
         this.description = description;
         this.created = created;
         this.isPrivate = isPrivate;
-        this.ownerId = ownerId;
-        this.ownerName = ownerName;
         this.participantIds = participantIds;
         this.participantNames = participantNames;
         this.allowedUsernames = allowedUsernames;
     }
+
+    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -79,22 +74,6 @@ public class RoomDto {
 
     public void setPrivate(Boolean isPrivate) {
         this.isPrivate = isPrivate;
-    }
-
-    public Long getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    public String getOwnerName() {
-        return ownerName;
-    }
-
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
     }
 
     public Set<Long> getParticipantIds() {

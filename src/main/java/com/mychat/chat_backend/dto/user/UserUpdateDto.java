@@ -1,31 +1,46 @@
 package com.mychat.chat_backend.dto.user;
 
 import java.time.Instant;
-import java.util.Set;
+import jakarta.validation.constraints.*;
 
+/**
+ * Data Transfer Object for updating user information.
+ * UPDATE request payload
+ */
 public class UserUpdateDto {
+    @NotNull
+    @Email
     private String email;
+    @NotNull
+    @Size(min = 8, max = 100)
     private String password;
+    @NotNull
     private String avatarUrl;
+    @NotNull
+    @PastOrPresent
     private Instant lastLogin;
+    @NotNull
+    @PastOrPresent
     private Instant lastLogout;
+    @NotNull
     private Boolean isOnline;
+    @NotNull
     private Boolean isAdmin;
-    private Set<Long> currentRooms;
 
-    private UserUpdateDto() {
+    public UserUpdateDto() {
     }
 
-    public UserUpdateDto(String email, String password, String avatarUrl, Instant lastLogin, Instant lastLogout, Boolean isOnline, Boolean isAdmin, Set<Long> currentRooms) {
+    public UserUpdateDto(String email, String password, String avatarUrl, Instant lastLogin, Boolean isOnline,
+            Boolean isAdmin) {
         this.email = email;
         this.password = password;
         this.avatarUrl = avatarUrl;
         this.lastLogin = lastLogin;
-        this.lastLogout = lastLogout;
         this.isOnline = isOnline;
         this.isAdmin = isAdmin;
-        this.currentRooms = currentRooms;
     }
+
+    // Getters and Setters
 
     public String getEmail() {
         return email;
@@ -81,13 +96,5 @@ public class UserUpdateDto {
 
     public void setAdmin(Boolean admin) {
         isAdmin = admin;
-    }
-
-    public Set<Long> getCurrentRooms() {
-        return currentRooms;
-    }
-
-    public void setCurrentRooms(Set<Long> currentRooms) {
-        this.currentRooms = currentRooms;
     }
 }

@@ -1,20 +1,20 @@
 package com.mychat.chat_backend.dto.notification;
 
-import com.mychat.chat_backend.model.NotificationType;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
-
+import jakarta.validation.constraints.*;
 import java.time.Instant;
+import com.mychat.chat_backend.model.enums.NotificationType;
 
+/**
+ * Data Transfer Object for Notification entity
+ * * READ response payload
+ */
 public class NotificationDto {
     @NotNull
     private Long id;
-    @NotBlank
-    private String content;
     @NotNull
     @PastOrPresent
     private Instant timestamp;
+    @NotNull
     @PastOrPresent
     private Instant editedTimestamp;
     @NotNull
@@ -24,18 +24,19 @@ public class NotificationDto {
     @NotNull
     private NotificationType type;
 
-
-    private NotificationDto() {
+    public NotificationDto() {
     }
 
-    public NotificationDto(Long id, String content, Instant timestamp, Boolean isRead, Long recipientId, NotificationType type) {
+    public NotificationDto(Long id, Instant timestamp, Boolean isRead, Long recipientId,
+            NotificationType type) {
         this.id = id;
-        this.content = content;
         this.timestamp = timestamp;
         this.isRead = isRead;
         this.recipientId = recipientId;
         this.type = type;
     }
+
+    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -43,14 +44,6 @@ public class NotificationDto {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public Instant getTimestamp() {

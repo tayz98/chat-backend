@@ -16,8 +16,7 @@ import java.time.Instant;
 public class Message {
 
     @Id
-    @SequenceGenerator(name = "message_seq_gen", sequenceName = "message_seq", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "message_seq_gen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

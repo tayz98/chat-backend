@@ -1,9 +1,6 @@
 package com.mychat.chat_backend.repository;
 
-import java.util.Set;
-
 import java.util.List;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +12,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import com.mychat.chat_backend.model.Message;
 import com.mychat.chat_backend.model.Room;
+import com.mychat.chat_backend.model.RoomParticipant;
 import com.mychat.chat_backend.model.User;
+import com.mychat.chat_backend.model.enums.ParticipantRole;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -51,20 +50,29 @@ class MessageRepositoryTest {
                 // Create and persist rooms
                 room1 = new Room.Builder()
                                 .description("Room1")
-                                .owner(user1)
                                 .isPrivate(false)
                                 .build();
                 room2 = new Room.Builder()
                                 .description("Room2")
-                                .owner(user2)
                                 .isPrivate(true)
                                 .build();
-                // Add participants to rooms
-                room1.setParticipants(Set.of(user1, user2));
-                room2.setParticipants(Set.of(user2));
-                // Persist rooms
+
+                // Set participants
+                RoomParticipant participation1 = new RoomParticipant.Builder()
+                                .room(room1)
+                                .user(user1)
+                                .role(ParticipantRole.MEMBER)
+                                .build();
+                RoomParticipant participation2 = new RoomParticipant.Builder()
+                                .room(room1)
+                                .user(user2)
+                                .role(ParticipantRole.MEMBER)
+                                .build();
+
                 room1 = entityManager.persistAndFlush(room1);
                 room2 = entityManager.persistAndFlush(room2);
+                entityManager.persistAndFlush(participation1);
+                entityManager.persistAndFlush(participation2);
         }
 
         @Test

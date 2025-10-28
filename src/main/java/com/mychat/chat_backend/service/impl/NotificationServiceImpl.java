@@ -25,7 +25,8 @@ public class NotificationServiceImpl implements NotificationService {
     private NotificationRepository notificationRepository;
     private UserRepository userRepository;
 
-    public NotificationServiceImpl() {
+    @SuppressWarnings("unused")
+    private NotificationServiceImpl() {
     }
 
     @Autowired
@@ -36,7 +37,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public NotificationDto getNotificationById(@NotNull Long notificationId) {
-        return NotificationMapper.toNotificationDto(notificationRepository.findById(notificationId).orElseThrow(NotificationNotFoundException::new));
+        return NotificationMapper.toNotificationDto(
+                notificationRepository.findById(notificationId).orElseThrow(NotificationNotFoundException::new));
     }
 
     @Override
@@ -48,14 +50,17 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public NotificationDto createNotification(@NotNull NotificationCreationDto notificationDto) {
-        User recipient = userRepository.findById(notificationDto.getRecipientId()).orElseThrow(UserNotFoundException::new);
+        User recipient = userRepository.findById(notificationDto.getRecipientId())
+                .orElseThrow(UserNotFoundException::new);
         Notification newNotification = NotificationMapper.toNotification(notificationDto, recipient);
         return NotificationMapper.toNotificationDto(notificationRepository.save(newNotification));
     }
 
     @Override
-    public NotificationDto updateNotification(@NotNull NotificationUpdateDto notificationDto, @NotNull Long notificationId) {
-        Notification notification = notificationRepository.findById(notificationId).orElseThrow(NotificationNotFoundException::new);
+    public NotificationDto updateNotification(@NotNull NotificationUpdateDto notificationDto,
+            @NotNull Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(NotificationNotFoundException::new);
         Notification updatedNotification = NotificationMapper.updatedNotification(notificationDto, notification);
         updatedNotification.setUpdatedOn();
         return NotificationMapper.toNotificationDto(notificationRepository.save(updatedNotification));
@@ -63,7 +68,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void deleteNotification(@NotNull Long notificationId) {
-        Notification notification = notificationRepository.findById(notificationId).orElseThrow((NotificationNotFoundException::new));
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow((NotificationNotFoundException::new));
         notificationRepository.delete(notification);
     }
 }

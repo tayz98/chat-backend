@@ -2,6 +2,9 @@ package com.mychat.chat_backend.exception;
 
 import java.time.Instant;
 
+/**
+ * ErrorObject represents the structure of an error response.
+ */
 public class ErrorObject {
     private Integer statusCode;
     private String message;
@@ -12,6 +15,8 @@ public class ErrorObject {
         this.message = message;
         this.timestamp = timestamp;
     }
+
+    // Getters and Setters
 
     public Integer getStatusCode() {
         return statusCode;

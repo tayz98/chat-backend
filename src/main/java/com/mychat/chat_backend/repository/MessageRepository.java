@@ -36,6 +36,5 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
      */
     List<Message> findAllByRoomIdAndUserId(Long roomId, Long userId);
 
-
     // TODO: Add more methods for implementing a search service in the frontend
 }

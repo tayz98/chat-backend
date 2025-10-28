@@ -1,21 +1,20 @@
 package com.mychat.chat_backend.dto.room;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.Set;
 
+/**
+ * Data Transfer Object for updating a chat room.
+ */
 public class RoomUpdateDto {
     @NotBlank
     private String description;
     @NotNull
     private Boolean isPrivate;
-    @NotNull
-    private Long ownerId;
     @NotBlank
     @Size(min = 5, max = 30)
-    private String password;
+    private String newPassword;
     @NotNull
     @Size(min = 1, max = 20)
     private Set<Long> participants;
@@ -23,17 +22,19 @@ public class RoomUpdateDto {
     @Size(min = 1, max = 20)
     private Set<String> allowedUsernames;
 
-    private RoomUpdateDto() {
+    public RoomUpdateDto() {
     }
 
-    public RoomUpdateDto(String description, Boolean isPrivate, Long ownerId, String password, Set<Long> participants, Set<String> allowedUsernames) {
+    public RoomUpdateDto(String description, Boolean isPrivate, String password, Set<Long> participants,
+            Set<String> allowedUsernames) {
         this.description = description;
         this.isPrivate = isPrivate;
-        this.ownerId = ownerId;
-        this.password = password;
+        this.newPassword = password;
         this.participants = participants;
         this.allowedUsernames = allowedUsernames;
     }
+
+    // Getters and Setters
 
     public String getDescription() {
         return description;
@@ -51,20 +52,12 @@ public class RoomUpdateDto {
         this.isPrivate = isPrivate;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public String getNewPassword() {
+        return newPassword;
     }
 
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setNewPassword(String password) {
+        this.newPassword = password;
     }
 
     public Set<Long> getParticipants() {

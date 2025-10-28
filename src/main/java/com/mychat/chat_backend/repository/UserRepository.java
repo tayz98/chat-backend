@@ -4,6 +4,7 @@ import com.mychat.chat_backend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * User repository
@@ -15,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      *
      * @return User with the given username
      */
-    User findByUsername(String username);
+    Optional<User> findByUsername(String username);
 
     /**
      * Find a user by email
@@ -23,7 +24,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param email Email of the user to be searched for
      * @return User with the given email
      */
-    User findByEmail(String email);
+    Optional<User> findByEmail(String email);
 
     /**
      * Find all users with a specific online status
@@ -32,13 +33,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return List of users with the given online status
      */
     List<User> findAllByIsOnline(Boolean isOnline);
-
-    /**
-     * Find all users in a specific room
-     *
-     * @param currentRoomsId Room id of the room to be searched for
-     * @return List of users in the given room
-     */
-    List<User> findAllByCurrentRoomsId(Long currentRoomsId);
-
 }

@@ -1,9 +1,12 @@
 package com.mychat.chat_backend.dto.user;
 
 import jakarta.validation.constraints.*;
-
 import java.time.Instant;
 
+/**
+ * Data Transfer Object for creating a new User
+ * CREATE request payload
+ */
 public class UserCreationDto {
     @NotBlank
     private String username;
@@ -18,7 +21,7 @@ public class UserCreationDto {
     @PastOrPresent
     private Instant created;
 
-    private UserCreationDto() {
+    public UserCreationDto() {
     }
 
     public UserCreationDto(String username, String email, String password) {
@@ -27,6 +30,8 @@ public class UserCreationDto {
         this.password = password;
         created = Instant.now();
     }
+
+    // Getters and Setters
 
     public String getUsername() {
         return username;

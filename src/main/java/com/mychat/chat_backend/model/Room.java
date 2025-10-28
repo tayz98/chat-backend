@@ -6,19 +6,20 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Room entity
  * A room contains messages exchanged between users
- * For private chats (e.g., between friends) or groups, a room can be set to private
+ * For private chats (e.g., between friends) or groups, a room can be set to
+ * private
  */
 @Entity
 @Table(name = "chat_room")
 public class Room {
 
     @Id
-    @SequenceGenerator(name = "room_seq_gen", sequenceName = "room_seq", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "room_seq_gen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -36,21 +37,9 @@ public class Room {
     @Column(nullable = true, name = "password")
     private String password;
 
-    @JoinColumn(name = "owner")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private User owner;
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<RoomParticipant> participants;
 
-    @ManyToMany
-    @JoinTable(name = "participants_room", joinColumns = @JoinColumn(name = "room_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"room_id", "user_id"}))
-    private Set<User> participants;
-
-    //    @ElementCollection(fetch = FetchType.LAZY)
-//    @CollectionTable(
-//            name = "room_allowed_emails",
-//            joinColumns = @JoinColumn(name = "room_id")
-//    )
     @Column(name = "allowed_users")
     private Set<String> allowedUserNicknames;
 
@@ -61,22 +50,16 @@ public class Room {
     }
 
     Room(
-            Builder builder
-    ) {
+            Builder builder) {
         this.description = builder.description;
         this.isPrivate = builder.isPrivate;
-        this.owner = builder.owner;
-        if (builder.password != null) {
-            this.password = builder.password;
-        }
+        this.password = builder.password;
         this.participants = new HashSet<>();
         createdOn = Instant.now();
-        participants.add(owner);
         this.allowedUserNicknames = new HashSet<>();
-        allowedUserNicknames.add(owner.getUsername());
     }
 
-    // GETTERS AND SETTERS
+    // Getters and Setters
 
     public void setId(Long id) {
         this.id = id;
@@ -106,28 +89,23 @@ public class Room {
         return isPrivate;
     }
 
-    public void setPrivate(Boolean aPrivate) {
-        isPrivate = aPrivate;
-    }
-
-    public Set<User> getParticipants() {
+    public Set<RoomParticipant> getParticipants() {
         return participants;
     }
 
-    public void setParticipants(Set<User> participants) {
+    public Set<User> getParticipantUsers() {
+        return participants.stream()
+                .map(RoomParticipant::getUser)
+                .collect(Collectors.toSet());
+    }
+
+    public void setParticipants(Set<RoomParticipant> participants) {
         this.participants = participants;
     }
 
-    public void addParticipant(User participant) {
-        this.participants.add(participant);
-    }
-
-    public void clearParticipants() {
-        this.participants.clear();
-    }
-
-    public void removeParticipant(User participant) {
-        this.participants.removeIf(user -> user.getId().equals(participant.getId()));
+    public boolean hasParticipant(User user) {
+        return participants.stream()
+                .anyMatch(p -> p.getUser().getId().equals(user.getId()));
     }
 
     public Set<String> getAllowedUserNicknames() {
@@ -154,10 +132,6 @@ public class Room {
         this.messages = messages;
     }
 
-    public long getOwnerId() {
-        return this.owner.getId();
-    }
-
     public String getDescription() {
         return description;
     }
@@ -178,19 +152,10 @@ public class Room {
         this.password = password;
     }
 
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
     public static class Builder {
         private String description;
         private Boolean isPrivate;
         private String password;
-        private User owner;
 
         public Builder description(String description) {
             this.description = description;
@@ -207,14 +172,9 @@ public class Room {
             return this;
         }
 
-        public Builder owner(User owner) {
-            this.owner = owner;
-            return this;
-        }
-
         public Room build() {
-            if (description == null || owner == null || isPrivate == null) {
-                throw new IllegalArgumentException("Description, owner and private status must not be null");
+            if (description == null || isPrivate == null) {
+                throw new IllegalArgumentException("Description and private status must not be null");
             }
             return new Room(this);
         }

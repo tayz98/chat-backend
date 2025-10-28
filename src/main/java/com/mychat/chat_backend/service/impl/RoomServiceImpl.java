@@ -4,38 +4,29 @@ import com.mychat.chat_backend.dto.room.RoomCreationDto;
 import com.mychat.chat_backend.dto.room.RoomDto;
 import com.mychat.chat_backend.dto.room.RoomUpdateDto;
 import com.mychat.chat_backend.exception.RoomNotFoundException;
-import com.mychat.chat_backend.exception.UserNotFoundException;
 import com.mychat.chat_backend.mapper.RoomMapper;
 import com.mychat.chat_backend.model.Room;
-import com.mychat.chat_backend.model.User;
 import com.mychat.chat_backend.repository.RoomRepository;
-import com.mychat.chat_backend.repository.UserRepository;
 import com.mychat.chat_backend.service.RoomService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Validated
 public class RoomServiceImpl implements RoomService {
 
-
     private RoomRepository roomRepository;
-    private UserRepository userRepository;
 
-    public RoomServiceImpl() {
+    @SuppressWarnings("unused")
+    private RoomServiceImpl() {
     }
 
     @Autowired
-    public RoomServiceImpl(RoomRepository roomRepository, UserRepository userRepository) {
+    public RoomServiceImpl(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -51,33 +42,15 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomDto> getRoomsOfUser(@NotNull Long userId) {
-        User user = userRepository.findById(userId).orElseThrow((UserNotFoundException::new));
-        List<Room> rooms = roomRepository.findAllByParticipantsId(user.getId());
-        return rooms.stream().map(RoomMapper::toRoomDto).toList();
-    }
-
-    @Override
-    public List<RoomDto> getRoomsOfOwner(@NotNull Long ownerId) {
-        User owner = userRepository.findById(ownerId).orElseThrow((UserNotFoundException::new));
-        List<Room> rooms = roomRepository.findAllByOwner(owner);
-        return rooms.stream().map(RoomMapper::toRoomDto).toList();
-    }
-
-    @Override
-    public RoomDto createRoom(@NotNull RoomCreationDto roomDto) {
-        User owner = userRepository.findById(roomDto.getOwnerId()).orElseThrow(UserNotFoundException::new);
-        Room newRoom = RoomMapper.toRoom(roomDto, owner);
+    public RoomDto createRoom(@NotNull RoomCreationDto createDto) {
+        Room newRoom = RoomMapper.toRoom(createDto);
         return RoomMapper.toRoomDto(roomRepository.save(newRoom));
     }
 
     @Override
-    public RoomDto updateRoom(@NotNull RoomUpdateDto roomDto, @NotNull Long roomId) {
-        User owner = userRepository.findById(roomDto.getOwnerId()).orElseThrow((UserNotFoundException::new));
+    public RoomDto updateRoom(@NotNull RoomUpdateDto updateDto, @NotNull Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow((RoomNotFoundException::new));
-        Set<Long> participantIds = roomDto.getParticipants();
-        Set<User> participants = participantIds.stream().map(userRepository::findById).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toSet());
-        Room updatedRoom = RoomMapper.updatedRoom(roomDto, room, owner, participants);
+        Room updatedRoom = RoomMapper.updatedRoom(updateDto, room);
         updatedRoom.setUpdatedOn();
         return RoomMapper.toRoomDto(roomRepository.save(updatedRoom));
     }

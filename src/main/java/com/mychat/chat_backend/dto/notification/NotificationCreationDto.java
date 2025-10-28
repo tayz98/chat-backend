@@ -1,33 +1,27 @@
 package com.mychat.chat_backend.dto.notification;
 
-import com.mychat.chat_backend.model.NotificationType;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import com.mychat.chat_backend.model.enums.NotificationType;
+import jakarta.validation.constraints.*;
 
+/**
+ * Data Transfer Object for creating a new Notification
+ * CREATE request payload
+ */
 public class NotificationCreationDto {
-    @NotBlank
-    private String content;
     @NotNull
     private NotificationType type;
     @NotNull
     private Long recipientId;
 
-    private NotificationCreationDto() {
+    public NotificationCreationDto() {
     }
 
-    public NotificationCreationDto(String content, NotificationType type, Long recipientId) {
-        this.content = content;
+    public NotificationCreationDto(NotificationType type, Long recipientId) {
         this.type = type;
         this.recipientId = recipientId;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
+    // Getters and Setters
 
     public NotificationType getType() {
         return type;

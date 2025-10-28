@@ -1,33 +1,24 @@
 package com.mychat.chat_backend.dto.notification;
 
-import com.mychat.chat_backend.model.NotificationType;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
+/**
+ * Data Transfer Object for updating a Notification
+ * UPDATE request payload
+ */
 public class NotificationUpdateDto {
-    @NotBlank
-    private String content;
+
     @NotNull
     private Boolean isRead;
-    @NotNull
-    private NotificationType type;
 
-    private NotificationUpdateDto() {
+    public NotificationUpdateDto() {
     }
 
-    public NotificationUpdateDto(String content, NotificationType type, Boolean isRead) {
-        this.content = content;
-        this.type = type;
+    public NotificationUpdateDto(Boolean isRead) {
         this.isRead = isRead;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
+    // Getters and Setters
 
     public Boolean isRead() {
         return isRead;
@@ -35,13 +26,5 @@ public class NotificationUpdateDto {
 
     public void setRead(Boolean read) {
         isRead = read;
-    }
-
-    public NotificationType getType() {
-        return type;
-    }
-
-    public void setType(NotificationType type) {
-        this.type = type;
     }
 }

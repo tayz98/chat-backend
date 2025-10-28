@@ -1,29 +1,29 @@
 package com.mychat.chat_backend.dto.room;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
+/**
+ * Data Transfer Object for creating a new Room
+ */
 public class RoomCreationDto {
     @NotBlank
     private String description;
     @NotBlank
     private Boolean isPrivate;
     @NotBlank
-    private Long ownerId;
-    @NotBlank
     @Size(min = 5, max = 30)
     private String password;
 
-
-    private RoomCreationDto() {
+    public RoomCreationDto() {
     }
 
-    public RoomCreationDto(String description, Boolean isPrivate, Long ownerId, String password) {
+    public RoomCreationDto(String description, Boolean isPrivate, String password) {
         this.description = description;
         this.isPrivate = isPrivate;
-        this.ownerId = ownerId;
         this.password = password;
     }
+
+    // Getters and Setters
 
     public String getDescription() {
         return description;
@@ -39,14 +39,6 @@ public class RoomCreationDto {
 
     public void setPrivate(Boolean isPrivate) {
         this.isPrivate = isPrivate;
-    }
-
-    public Long getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
     }
 
     public String getPassword() {

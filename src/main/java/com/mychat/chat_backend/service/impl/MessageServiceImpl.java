@@ -1,8 +1,6 @@
 package com.mychat.chat_backend.service.impl;
 
-import com.mychat.chat_backend.dto.message.MessageCreationDto;
-import com.mychat.chat_backend.dto.message.MessageDto;
-import com.mychat.chat_backend.dto.message.MessageUpdateDto;
+import com.mychat.chat_backend.dto.message.*;
 import com.mychat.chat_backend.exception.MessageNotFoundException;
 import com.mychat.chat_backend.exception.RoomNotFoundException;
 import com.mychat.chat_backend.exception.UserNotFoundException;
@@ -29,11 +27,13 @@ public class MessageServiceImpl implements MessageService {
     private UserRepository userRepository;
     private RoomRepository roomRepository;
 
-    public MessageServiceImpl() {
+    @SuppressWarnings("unused")
+    private MessageServiceImpl() {
     }
 
     @Autowired
-    public MessageServiceImpl(MessageRepository messageRepository, UserRepository userRepository, RoomRepository roomRepository) {
+    public MessageServiceImpl(MessageRepository messageRepository, UserRepository userRepository,
+            RoomRepository roomRepository) {
         this.messageRepository = messageRepository;
         this.userRepository = userRepository;
         this.roomRepository = roomRepository;
@@ -41,7 +41,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public MessageDto getMessageById(@NotNull Long messageId) {
-        return MessageMapper.toMessageDto(messageRepository.findById(messageId).orElseThrow(MessageNotFoundException::new));
+        return MessageMapper
+                .toMessageDto(messageRepository.findById(messageId).orElseThrow(MessageNotFoundException::new));
     }
 
     @Override
@@ -70,6 +71,9 @@ public class MessageServiceImpl implements MessageService {
     public MessageDto createMessage(@NotNull MessageCreationDto messageDto) {
         Room room = roomRepository.findById(messageDto.getRoomId()).orElseThrow(RoomNotFoundException::new);
         User user = userRepository.findById(messageDto.getSenderId()).orElseThrow(UserNotFoundException::new);
+        if (!room.getParticipantUsers().contains(user)) {
+            throw new IllegalArgumentException("User is not a participant of the room.");
+        }
         Message newMessage = MessageMapper.toMessage(messageDto, user, room);
         return MessageMapper.toMessageDto(messageRepository.save(newMessage));
     }

@@ -3,9 +3,13 @@ package com.mychat.chat_backend.model;
 import jakarta.persistence.*;
 import jdk.jfr.Timestamp;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import com.mychat.chat_backend.model.enums.ParticipantRole;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * User entity
@@ -17,29 +21,28 @@ import java.util.*;
 public class User {
 
     @Id
-    @SequenceGenerator(name = "user_seq_gen", sequenceName = "user_seq", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(unique = true, name = "user_name", nullable = false, length = 50, updatable = false)
+    @Column(unique = true, name = "user_name", nullable = false, length = 50)
     private String username;
 
     @Column(name = "password", nullable = false, length = 50)
     private String password;
 
     @Timestamp
-    @Column(name = "last_login")
+    @Column(name = "last_login", nullable = true)
     private Instant lastLogin;
 
     @Timestamp
-    @Column(name = "last_logout")
+    @Column(name = "last_logout", nullable = true)
     private Instant lastLogout;
 
     @CreationTimestamp
     private Instant createdOn;
 
-    @CreationTimestamp
+    @UpdateTimestamp
     private Instant updatedOn;
 
     @Column(unique = true, name = "email", nullable = false, length = 50)
@@ -48,14 +51,18 @@ public class User {
     @Column(name = "avatarUrl", length = 100)
     private String avatarUrl;
 
-    @Column(name = "online_status", nullable = false, length = 1)
+    @Column(name = "online_status", nullable = false)
     private Boolean isOnline;
 
-    @Column(name = "admin_status", nullable = false, length = 1)
+    @Column(name = "admin_status", nullable = false)
     private Boolean isAdmin;
 
-    @ManyToMany(mappedBy = "participants")
-    Set<Room> currentRooms;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<RoomParticipant> roomParticipations;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("createdOn DESC")
+    private List<Notification> notifications;
 
     protected User() {
     }
@@ -67,26 +74,19 @@ public class User {
         this.isAdmin = Objects.requireNonNullElse(builder.isAdmin, false);
         this.isOnline = false;
         this.avatarUrl = "placeholder";
-        this.currentRooms = new HashSet<>();
+        this.roomParticipations = new HashSet<>();
         this.createdOn = Instant.now();
+        notifications = new ArrayList<>();
     }
 
-    // GETTERS AND SETTERS
+    // Getters and Setters
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Instant getCreatedOn() {
         return createdOn;
-    }
-
-    public void setCreatedOn(Instant created) {
-        this.createdOn = created;
     }
 
     public Instant getUpdatedOn() {
@@ -95,6 +95,30 @@ public class User {
 
     public void setUpdatedOn() {
         this.updatedOn = Instant.now();
+    }
+
+    public Boolean getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(Boolean isOnline) {
+        this.isOnline = isOnline;
+    }
+
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
     }
 
     public Instant getLastLogin() {
@@ -113,21 +137,37 @@ public class User {
         this.lastLogout = lastLogout;
     }
 
+    public void setUpdatedOn(Instant updatedOn) {
+        this.updatedOn = updatedOn;
+    }
+
+    public Set<RoomParticipant> getRoomParticipations() {
+        return roomParticipations;
+    }
 
     public Set<Room> getCurrentRooms() {
-        return currentRooms;
+        return roomParticipations.stream()
+                .map(RoomParticipant::getRoom)
+                .collect(Collectors.toSet());
     }
 
-    public void setCurrentRooms(Set<Room> currentRooms) {
-        this.currentRooms = currentRooms;
+    public RoomParticipant joinRoom(Room room, ParticipantRole role) {
+        RoomParticipant participation = new RoomParticipant(room, this, role);
+        roomParticipations.add(participation);
+        return participation;
     }
 
-    public void addRoom(Room room) {
-        currentRooms.add(room);
+    public void leaveRoom(Room room) {
+        roomParticipations.removeIf(p -> p.getRoom().getId().equals(room.getId()));
     }
 
-    public void removeRoom(Room room) {
-        currentRooms.remove(room);
+    public boolean isInRoom(Room room) {
+        return roomParticipations.stream()
+                .anyMatch(p -> p.getRoom().getId().equals(room.getId()));
+    }
+
+    public void setRoomParticipations(Set<RoomParticipant> roomParticipations) {
+        this.roomParticipations = roomParticipations;
     }
 
     public String getUsername() {
@@ -162,16 +202,8 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
-    public Boolean getOnline() {
-        return isOnline;
-    }
-
     public void setOnline(Boolean online) {
         isOnline = online;
-    }
-
-    public Boolean getAdmin() {
-        return isAdmin;
     }
 
     public void setAdmin(Boolean admin) {

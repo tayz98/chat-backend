@@ -1,51 +1,46 @@
 package com.mychat.chat_backend.dto.user;
 
 import java.time.Instant;
-import java.util.Set;
+import jakarta.validation.constraints.*;
 
+/**
+ * Data Transfer Object for user information.
+ * READ response payload
+ */
 public class UserDto {
-    private Long id;
-    private String username;
+    @NotNull
+    UserSummaryDto summary;
+    @Email
     private String email;
+    @NotNull
     private Instant created;
+    @NotNull
     private Instant lastLogin;
-    private Instant lastLogout;
-    private String avatarUrl;
+    @NotNull
     private Boolean isOnline;
+    @NotNull
     private Boolean isAdmin;
 
-    private Set<Long> currentRooms;
-
-    private UserDto() {
+    public UserDto() {
     }
 
-    public UserDto(Long id, String username, String email, Instant created, Instant lastLogin, Instant lastLogout, String avatarUrl, Boolean isOnline, Boolean isAdmin, Set<Long> currentRooms) {
-        this.id = id;
-        this.username = username;
+    public UserDto(UserSummaryDto summary, String email, Instant created, Instant lastLogin,
+            Boolean isOnline, Boolean isAdmin) {
+        this.summary = summary;
         this.email = email;
         this.created = created;
         this.lastLogin = lastLogin;
-        this.lastLogout = lastLogout;
-        this.avatarUrl = avatarUrl;
         this.isOnline = isOnline;
         this.isAdmin = isAdmin;
-        this.currentRooms = currentRooms;
     }
 
-    public Long getId() {
-        return id;
+    // Getters and Setters
+    public UserSummaryDto getSummary() {
+        return summary;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setSummary(UserSummaryDto summary) {
+        this.summary = summary;
     }
 
     public String getEmail() {
@@ -72,22 +67,6 @@ public class UserDto {
         this.lastLogin = lastLogin;
     }
 
-    public Instant getLastLogout() {
-        return lastLogout;
-    }
-
-    public void setLastLogout(Instant lastLogout) {
-        this.lastLogout = lastLogout;
-    }
-
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
-
     public Boolean getOnline() {
         return isOnline;
     }
@@ -102,13 +81,5 @@ public class UserDto {
 
     public void setAdmin(Boolean admin) {
         isAdmin = admin;
-    }
-
-    public Set<Long> getCurrentRooms() {
-        return currentRooms;
-    }
-
-    public void setCurrentRooms(Set<Long> currentRooms) {
-        this.currentRooms = currentRooms;
     }
 }
