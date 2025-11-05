@@ -1,40 +1,49 @@
 # Chat Backend
 
-A Spring Boot backend for a chat application that manages users, rooms, and messages. It uses Spring Data JPA with
-Jakarta Persistence and Gradle, and targets JDK 25.
+Spring Boot backend for a chat application managing users, rooms, messages, notifications and friendships.
+Implemented with Spring Data JPA (Jakarta Persistence), Hibernate, Gradle and targeting JDK 25.
 
-## Key Features
+## Quick facts
+- Language: Java (JDK 25)
+- Build: Gradle
+- Frameworks: Spring Boot, Spring Data JPA, Hibernate
+- Test DB (unit tests): H2 (in-memory)
+- Runtime DB (recommended): PostgreSQL (Docker Compose provided / configure in application.properties)
 
-- ... (TODO)
+## Project structure (high level)
+- src/main/java/com/mychat/chat_backend
+  - model — JPA entities (User, Room, RoomParticipant, Message, Notification, friendship.*)
+  - repository — Spring Data repositories
+  - service — business logic
+  - mapper — DTO mappers (map entities + loaded related data → DTOs)
+  - dto — request/response payload classes
+  - exception — domain exceptions
+- src/test — unit/integration tests (DataJpaTest for repository tests)
 
-## Tech Stack
+## Building & testing
+From project root:
 
-- Java (JDK 25)
-- Spring Boot, Spring Data JPA (Jakarta Persistence)
-- Gradle
-- Docker (Compose) or a local PostgresSQL database
+- Build
+  ```bash
+  ./gradlew build
+  ```
 
-## Domain Model (high level)
+- Run tests (show stacktraces for failures)
+  ```bash
+  ./gradlew test --no-daemon --stacktrace --info
+  ```
 
-- User
-    - Core fields (username, email, password, avatar, etc.).
-    - Many-to-Many participation in Rooms.
-- Room
-    - Owner: Many-to-One to User.
-    - Participants: Many-to-Many to User via a join table (e.g., `participants_room`).
-    - Allowed emails: element collection (own table).
-    - Messages: One-to-Many to Message; cascade/removal handled from Room.
-- Message
-    - Sender: Many-to-One to User.
-    - Room: Many-to-One to Room (a message cannot exist without a room).
-- Notification
-    - Recipient: Many-to-One to User.
-- Settings
-    - Not implemented yet.
+- Run a single test
+  ```bash
+  ./gradlew test --tests "com.mychat.chat_backend.repository.NotificationRepositoryTest.findAllByRecipientId_ShouldReturnNotificationsForGivenUserId" --stacktrace
+  ```
 
-## Getting Started
+- Open test report
+  ```bash
+  xdg-open build/reports/tests/test/index.html
+  ```
 
-### Configure the Database
-
-- Set the connection details in `src/main/resources/application.properties`
-- Run the Docker Compose file `docker-compose up -d` to start the database.
+## Database
+- Configure connection in `src/main/resources/application.properties`.
+- For local development use Docker Compose (see [file](/compose.yaml)) or local Postgres.
+- Unit-Tests use H2 (configured via `@AutoConfigureTestDatabase` in tests).
