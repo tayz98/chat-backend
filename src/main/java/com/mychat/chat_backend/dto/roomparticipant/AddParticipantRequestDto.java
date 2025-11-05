@@ -1,4 +1,4 @@
-package com.mychat.chat_backend.dto.room;
+package com.mychat.chat_backend.dto.roomparticipant;
 
 import com.mychat.chat_backend.model.enums.ParticipantRole;
 

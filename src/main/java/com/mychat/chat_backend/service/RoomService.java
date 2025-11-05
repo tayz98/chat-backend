@@ -44,6 +44,14 @@ public interface RoomService {
     RoomDto updateRoom(RoomUpdateDto roomDto, Long roomId);
 
     /**
+     * Get rooms by participant id
+     *
+     * @param participantId Participant user id
+     * @return List of Room DTOs
+     */
+    List<RoomDto> getRoomsByParticipantId(Long participantId);
+
+    /**
      * Delete a room
      *
      * @param roomId Room id

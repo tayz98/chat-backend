@@ -2,9 +2,7 @@ package com.mychat.chat_backend.mapper;
 
 import com.mychat.chat_backend.dto.room.*;
 import com.mychat.chat_backend.model.Room;
-import com.mychat.chat_backend.model.RoomParticipant;
 import com.mychat.chat_backend.model.User;
-import com.mychat.chat_backend.model.enums.ParticipantRole;
 
 import org.springframework.stereotype.Component;
 import java.time.Instant;
@@ -80,36 +78,4 @@ public class RoomMapper {
         }
         return roomToBeUpdated;
     }
-
-    /**
-     * Converts a RoomParticipantDto to a RoomParticipant entity.
-     * 
-     * @param participationDto the RoomParticipantDto
-     * @param user             the User participating in the room
-     * @param room             the Room in which the user is participating
-     * @return the corresponding RoomParticipant entity
-     */
-    public static RoomParticipant toRoomParticipant(RoomParticipantDto participationDto, User user, Room room) {
-        return new RoomParticipant.Builder()
-                .user(user)
-                .room(room)
-                .role(participationDto.getRole())
-                .build();
-    }
-
-    /**
-     * Converts a RoomParticipant entity to a RoomParticipantDto.
-     * 
-     * @param participation the RoomParticipant entity
-     * @return the corresponding RoomParticipantDto
-     */
-    public static RoomParticipantDto toRoomParticipantDto(RoomParticipant participation) {
-        Long id = participation.getId();
-        Long roomId = participation.getRoom().getId();
-        Long userId = participation.getUser().getId();
-        ParticipantRole role = participation.getRole();
-        Instant createdOn = participation.getCreatedOn();
-        return new RoomParticipantDto(id, roomId, userId, role, createdOn);
-    }
-
 }

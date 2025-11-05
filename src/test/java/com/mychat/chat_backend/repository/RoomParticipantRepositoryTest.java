@@ -19,7 +19,9 @@ import com.mychat.chat_backend.model.enums.ParticipantRole;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-
+/**
+ * Tests for RoomParticipantRepository.
+ */
 class RoomParticipantRepositoryTest {
 
         @Autowired
@@ -144,5 +146,79 @@ class RoomParticipantRepositoryTest {
                 // Then
                 Assertions.assertThat(fetchedParticipant).isNotNull();
                 Assertions.assertThat(fetchedParticipant.getId()).isEqualTo(roomParticipant1.getId());
+        }
+
+        @Test
+        void testFindByUserAndRoom_ShouldReturnEmptyWhenNotFound() {
+                // When
+                var result = roomParticipantRepository.findByUserAndRoom(participant1, room1);
+
+                // Then
+                Assertions.assertThat(result).isEmpty();
+        }
+
+        @Test
+        void testFindAllByRole_ShouldReturnAllRoomParticipantsWithGivenRole() {
+                // Given
+                RoomParticipant roomParticipant1 = new RoomParticipant.Builder()
+                                .room(room1)
+                                .user(participant1)
+                                .role(ParticipantRole.OWNER)
+                                .build();
+                RoomParticipant roomParticipant2 = new RoomParticipant.Builder()
+                                .room(room1)
+                                .user(participant2)
+                                .role(ParticipantRole.MEMBER)
+                                .build();
+                RoomParticipant roomParticipant3 = new RoomParticipant.Builder()
+                                .room(room2)
+                                .user(participant2)
+                                .role(ParticipantRole.MEMBER)
+                                .build();
+
+                roomParticipant1 = entityManager.persistAndFlush(roomParticipant1);
+                roomParticipant2 = entityManager.persistAndFlush(roomParticipant2);
+                roomParticipant3 = entityManager.persistAndFlush(roomParticipant3);
+
+                // When
+                List<RoomParticipant> members = roomParticipantRepository.findAllByRole(ParticipantRole.MEMBER);
+
+                // Then
+                Assertions.assertThat(members).hasSize(2)
+                                .containsAll(List.of(roomParticipant2, roomParticipant3));
+        }
+
+        @Test
+        void testFindAllByRoleAndRoom_ShouldReturnAllRoomParticipantsWithGivenRoleInRoom() {
+                // Given
+                RoomParticipant roomParticipant1 = new RoomParticipant.Builder()
+                                .room(room1)
+                                .user(participant1)
+                                .role(ParticipantRole.OWNER)
+                                .build();
+                RoomParticipant roomParticipant2 = new RoomParticipant.Builder()
+                                .room(room1)
+                                .user(participant2)
+                                .role(ParticipantRole.MEMBER)
+                                .build();
+                RoomParticipant roomParticipant3 = new RoomParticipant.Builder()
+                                .room(room2)
+                                .user(participant2)
+                                .role(ParticipantRole.MEMBER)
+                                .build();
+                roomParticipant1 = entityManager.persistAndFlush(roomParticipant1);
+                roomParticipant2 = entityManager.persistAndFlush(roomParticipant2);
+                roomParticipant3 = entityManager.persistAndFlush(roomParticipant3);
+                // When
+                List<RoomParticipant> membersInRoom1 = roomParticipantRepository
+                                .findAllByRoleAndRoom(ParticipantRole.MEMBER, room1);
+                List<RoomParticipant> membersInRoom2 = roomParticipantRepository
+                                .findAllByRoleAndRoom(ParticipantRole.MEMBER, room2);
+
+                // Then
+                Assertions.assertThat(membersInRoom1).hasSize(1)
+                                .contains(roomParticipant2);
+                Assertions.assertThat(membersInRoom2).hasSize(1)
+                                .contains(roomParticipant3);
         }
 }

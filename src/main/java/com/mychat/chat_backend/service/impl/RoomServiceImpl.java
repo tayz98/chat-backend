@@ -60,4 +60,10 @@ public class RoomServiceImpl implements RoomService {
         Room room = roomRepository.findById(roomId).orElseThrow((RoomNotFoundException::new));
         roomRepository.delete(room);
     }
+
+    @Override
+    public List<RoomDto> getRoomsByParticipantId(Long participantId) {
+        List<Room> rooms = roomRepository.findAllByParticipantsUserId(participantId);
+        return rooms.stream().map(RoomMapper::toRoomDto).toList();
+    }
 }

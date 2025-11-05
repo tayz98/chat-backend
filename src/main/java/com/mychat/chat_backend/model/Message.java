@@ -24,7 +24,7 @@ public class Message {
     private String content;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, updatable = false, name = "sender")
+    @JoinColumn(nullable = false, updatable = false, name = "sender_id")
     private User user;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -51,7 +51,7 @@ public class Message {
         this.isDeleted = false;
     }
 
-    // GETTERS AND SETTERS
+    // Getters and Setters
 
     public Long getId() {
         return id;

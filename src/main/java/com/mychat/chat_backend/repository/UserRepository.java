@@ -33,4 +33,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return List of users with the given online status
      */
     List<User> findAllByIsOnline(Boolean isOnline);
+
+    /**
+     * Find all users participating in a specific room
+     *
+     * @param roomId ID of the room
+     * @return List of users participating in the given room
+     */
+    List<User> findAllByRoomParticipationsRoomId(Long roomId);
+
 }

@@ -11,8 +11,9 @@ import com.mychat.chat_backend.mapper.FriendshipMapper;
 import com.mychat.chat_backend.model.User;
 import com.mychat.chat_backend.model.enums.FriendshipStatus;
 import com.mychat.chat_backend.model.friendship.*;
+import com.mychat.chat_backend.repository.FriendshipRepository;
+import com.mychat.chat_backend.repository.FriendshipRequestRepository;
 import com.mychat.chat_backend.repository.UserRepository;
-import com.mychat.chat_backend.repository.friendship.*;
 import com.mychat.chat_backend.service.FriendshipService;
 
 import jakarta.transaction.Transactional;
@@ -46,8 +47,7 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     @Override
     public List<User> getFriends(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        List<Long> friendIds = friendshipRepository.findAllFriendIdsByUser(user);
+        List<Long> friendIds = friendshipRepository.findAllFriendIdsByUser(userId);
         return friendIds.stream().map(id -> userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new)).toList();
     }
@@ -60,8 +60,7 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     @Override
     public List<FriendshipDto> getAllFriendshipsByUserId(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        List<Friendship> friendships = friendshipRepository.findAllByUser(user);
+        List<Friendship> friendships = friendshipRepository.findAllByUserId(userId);
         if (friendships.isEmpty()) {
             throw new FriendshipNotFoundException();
         }
@@ -95,9 +94,8 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     @Override
     public List<FriendshipRequestDto> getPendingRequestsForUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         List<FriendshipRequest> pendingRequests = friendshipRequestRepository
-                .findAllByUser(user).stream()
+                .findAllByUserId(userId).stream()
                 .filter(request -> request.getStatusOfRequest() == FriendshipStatus.PENDING)
                 .toList();
         return pendingRequests.stream()

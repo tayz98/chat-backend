@@ -76,9 +76,27 @@ public interface UserService {
     UserDto updateUser(UserUpdateDto userDto, Long userId);
 
     /**
+     * Get all users by room id
+     *
+     * @param roomId Room id
+     * @return List of User DTOs
+     */
+    List<UserDto> getUsersByRoomId(Long roomId);
+
+    /**
      * Delete a user
      *
      * @param userId User id
      */
     void deleteUser(Long userId);
+
+    /**
+     * Set the online status of a user
+     * and update last login/logout timestamps accordingly
+     *
+     * @param userId   User id
+     * @param isOnline Online status
+     */
+    void setOnlineStatus(Long userId, Boolean isOnline);
+
 }

@@ -1,7 +1,9 @@
-package com.mychat.chat_backend.dto.room;
+package com.mychat.chat_backend.dto.roomparticipant;
 
 import java.time.Instant;
 
+import com.mychat.chat_backend.dto.room.RoomSummaryDto;
+import com.mychat.chat_backend.dto.user.UserSummaryDto;
 import com.mychat.chat_backend.model.enums.ParticipantRole;
 
 /**
@@ -9,20 +11,20 @@ import com.mychat.chat_backend.model.enums.ParticipantRole;
  */
 public class RoomParticipantDto {
     private Long id;
-    private Long roomId;
-    private Long userId;
+    private UserSummaryDto user;
+    private RoomSummaryDto room;
     private ParticipantRole role;
     private Instant createdOn;
-    private Instant joinedAt;
 
     public RoomParticipantDto() {
     }
 
-    public RoomParticipantDto(Long id, Long roomId, Long userId, ParticipantRole role, Instant createdOn) {
+    public RoomParticipantDto(Long id, RoomSummaryDto room, ParticipantRole role, UserSummaryDto user,
+            Instant createdOn) {
         this.id = id;
-        this.roomId = roomId;
-        this.userId = userId;
+        this.room = room;
         this.role = role;
+        this.user = user;
         this.createdOn = createdOn;
     }
 
@@ -35,20 +37,20 @@ public class RoomParticipantDto {
         this.id = id;
     }
 
-    public Long getRoomId() {
-        return roomId;
+    public RoomSummaryDto getRoom() {
+        return room;
     }
 
-    public void setRoomId(Long roomId) {
-        this.roomId = roomId;
+    public void setRoom(RoomSummaryDto room) {
+        this.room = room;
     }
 
-    public Long getUserId() {
-        return userId;
+    public UserSummaryDto getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(UserSummaryDto user) {
+        this.user = user;
     }
 
     public ParticipantRole getRole() {
@@ -57,14 +59,6 @@ public class RoomParticipantDto {
 
     public void setRole(ParticipantRole role) {
         this.role = role;
-    }
-
-    public Instant getJoinedAt() {
-        return joinedAt;
-    }
-
-    public void setJoinedAt(Instant joinedAt) {
-        this.joinedAt = joinedAt;
     }
 
     public Instant getCreatedOn() {

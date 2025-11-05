@@ -11,6 +11,9 @@ import com.mychat.chat_backend.model.enums.ParticipantRole;
 
 @Entity
 @Table(name = "room_participant")
+/**
+ * Entity representing a participant in a chat room.
+ */
 public class RoomParticipant {
 
     @Id

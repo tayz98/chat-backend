@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,5 +92,23 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(@NotNull Long userId) {
         User user = userRepository.findById(userId).orElseThrow((UserNotFoundException::new));
         userRepository.delete(user);
+    }
+
+    @Override
+    public List<UserDto> getUsersByRoomId(@NotNull Long roomId) {
+        List<User> users = userRepository.findAllByRoomParticipationsRoomId(roomId);
+        return users.stream().map(UserMapper::toUserDto).toList();
+    }
+
+    @Override
+    public void setOnlineStatus(@NotNull Long userId, @NotNull Boolean isOnline) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        user.setIsOnline(isOnline);
+        if (isOnline) {
+            user.setLastLogin(Instant.now());
+        } else {
+            user.setLastLogout(Instant.now());
+        }
+        userRepository.save(user);
     }
 }
