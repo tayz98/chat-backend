@@ -43,12 +43,20 @@ public interface UserService {
     List<UserDto> getAllUsers();
 
     /**
-     * Get all users of a specific room
+     * Get all users of a specific room with RoomRepository
      *
      * @param roomId Room id
      * @return List of User DTOs
      */
-    List<UserDto> getUsersOfRoom(Long roomId);
+    List<UserDto> getUsersOfRoomWithRoomRepository(Long roomId);
+
+    /**
+     * Get all users of a specific room with UserRepository
+     *
+     * @param roomId Room id
+     * @return List of User DTOs
+     */
+    List<UserDto> getUsersByRoomWithUserRepository(Long roomId);
 
     /**
      * Get all users by their online status
@@ -74,14 +82,6 @@ public interface UserService {
      * @return Updated User DTO
      */
     UserDto updateUser(UserUpdateDto userDto, Long userId);
-
-    /**
-     * Get all users by room id
-     *
-     * @param roomId Room id
-     * @return List of User DTOs
-     */
-    List<UserDto> getUsersByRoomId(Long roomId);
 
     /**
      * Delete a user

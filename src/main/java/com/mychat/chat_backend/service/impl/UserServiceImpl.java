@@ -63,9 +63,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getUsersOfRoom(@NotNull Long roomId) {
+    public List<UserDto> getUsersOfRoomWithRoomRepository(@NotNull Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
         return room.getParticipantUsers().stream().map(UserMapper::toUserDto).toList();
+    }
+
+    @Override
+    public List<UserDto> getUsersByRoomWithUserRepository(@NotNull Long roomId) {
+        List<User> users = userRepository.findAllByRoomParticipationsRoomId(roomId);
+        return users.stream().map(UserMapper::toUserDto).toList();
     }
 
     @Override
@@ -92,12 +98,6 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(@NotNull Long userId) {
         User user = userRepository.findById(userId).orElseThrow((UserNotFoundException::new));
         userRepository.delete(user);
-    }
-
-    @Override
-    public List<UserDto> getUsersByRoomId(@NotNull Long roomId) {
-        List<User> users = userRepository.findAllByRoomParticipationsRoomId(roomId);
-        return users.stream().map(UserMapper::toUserDto).toList();
     }
 
     @Override
