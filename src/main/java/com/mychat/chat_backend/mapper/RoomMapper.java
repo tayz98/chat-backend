@@ -73,7 +73,7 @@ public class RoomMapper {
         if (roomDto.getNewPassword() != null) {
             roomToBeUpdated.setPassword(roomDto.getNewPassword());
         }
-        if (!roomDto.getAllowedUsernames().isEmpty()) {
+        if (roomDto.getAllowedUsernames() != null && !roomDto.getAllowedUsernames().isEmpty()) {
             roomToBeUpdated.setAllowedUserNicknames(roomDto.getAllowedUsernames());
         }
         return roomToBeUpdated;
