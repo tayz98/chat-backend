@@ -99,4 +99,26 @@ public class RoomDto {
     public void setAllowedUsernames(Set<String> allowedUsernames) {
         this.allowedUsernames = allowedUsernames;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        RoomDto roomDto = (RoomDto) o;
+        return id.equals(roomDto.id) &&
+                description.equals(roomDto.description) &&
+                created.equals(roomDto.created) &&
+                isPrivate.equals(roomDto.isPrivate) &&
+                participantIds.equals(roomDto.participantIds) &&
+                participantNames.equals(roomDto.participantNames) &&
+                allowedUsernames.equals(roomDto.allowedUsernames);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(id, description, created, isPrivate,
+                participantIds, participantNames, allowedUsernames);
+    }
 }

@@ -1,5 +1,7 @@
 package com.mychat.chat_backend.dto.user;
 
+import java.util.Objects;
+
 import jakarta.validation.constraints.*;
 
 /**
@@ -47,6 +49,23 @@ public class UserSummaryDto {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        UserSummaryDto that = (UserSummaryDto) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(username, that.username) &&
+                Objects.equals(avatarUrl, that.avatarUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, avatarUrl);
     }
 
 }

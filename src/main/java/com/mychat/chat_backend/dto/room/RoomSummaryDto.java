@@ -45,4 +45,21 @@ public class RoomSummaryDto {
 
     // Getters and Setters
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        RoomSummaryDto that = (RoomSummaryDto) o;
+        return java.util.Objects.equals(id, that.id) &&
+                java.util.Objects.equals(description, that.description) &&
+                java.util.Objects.equals(isPrivate, that.isPrivate);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(id, description, isPrivate);
+    }
+
 }

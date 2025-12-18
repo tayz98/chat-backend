@@ -1,6 +1,9 @@
 package com.mychat.chat_backend.service;
 
+import com.mychat.chat_backend.dto.roomparticipant.RoomParticipantCreationDto;
 import com.mychat.chat_backend.dto.roomparticipant.RoomParticipantDto;
+import com.mychat.chat_backend.model.enums.ParticipantRole;
+
 import java.util.List;
 
 /**
@@ -24,14 +27,14 @@ public interface RoomParticipantService {
      * @param role   Participant role
      * @return Created RoomParticipant DTO
      */
-    RoomParticipantDto addRoomParticipant(Long roomId, Long userId, String role);
+    RoomParticipantDto createRoomParticipant(RoomParticipantCreationDto creationDto);
 
     /**
      * Remove a room participant by its id
      *
      * @param roomParticipantId RoomParticipant id
      */
-    void removeRoomParticipant(Long roomParticipantId);
+    void deleteRoomParticipant(Long roomParticipantId);
 
     /**
      * Update the role of a room participant
@@ -40,7 +43,7 @@ public interface RoomParticipantService {
      * @param newRole           New participant role
      * @return Updated RoomParticipant DTO
      */
-    RoomParticipantDto updateRoomParticipantRole(Long roomParticipantId, String newRole);
+    RoomParticipantDto updateRoomParticipantRole(Long roomParticipantId, ParticipantRole newRole);
 
     /**
      * Get all room participants
@@ -64,5 +67,4 @@ public interface RoomParticipantService {
      * @return List of RoomParticipant DTOs
      */
     List<RoomParticipantDto> getRoomParticipantsByUserId(Long userId);
-
 }

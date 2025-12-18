@@ -111,6 +111,8 @@ class RoomServiceTest {
                 .isPrivate(true)
                 .password("secret")
                 .build();
+        // NOTE: assume participant with ID 10L is in both testRoom and room2
+        // the full functionality is tested in RoomRepositoryTest
         when(roomRepository.findAllByParticipantsUserId(participantId)).thenReturn(List.of(testRoom, room2));
         List<RoomDto> result = roomService.getRoomsByParticipantId(participantId);
         Assertions.assertEquals(2, result.size());

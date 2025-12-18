@@ -1,6 +1,8 @@
 package com.mychat.chat_backend.dto.user;
 
 import java.time.Instant;
+import java.util.Objects;
+
 import jakarta.validation.constraints.*;
 
 /**
@@ -81,5 +83,25 @@ public class UserDto {
 
     public void setAdmin(Boolean admin) {
         isAdmin = admin;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        UserDto userDto = (UserDto) o;
+        return summary.equals(userDto.summary) &&
+                email.equals(userDto.email) &&
+                created.equals(userDto.created) &&
+                lastLogin.equals(userDto.lastLogin) &&
+                isOnline.equals(userDto.isOnline) &&
+                isAdmin.equals(userDto.isAdmin);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(summary, email, created, lastLogin, isOnline, isAdmin);
     }
 }
