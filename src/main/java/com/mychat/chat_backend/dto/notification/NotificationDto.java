@@ -2,6 +2,8 @@ package com.mychat.chat_backend.dto.notification;
 
 import jakarta.validation.constraints.*;
 import java.time.Instant;
+import java.util.Objects;
+
 import com.mychat.chat_backend.model.enums.NotificationType;
 
 /**
@@ -84,5 +86,33 @@ public class NotificationDto {
 
     public void setType(NotificationType type) {
         this.type = type;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
+        result = prime * result + ((editedTimestamp == null) ? 0 : editedTimestamp.hashCode());
+        result = prime * result + ((isRead == null) ? 0 : isRead.hashCode());
+        result = prime * result + ((recipientId == null) ? 0 : recipientId.hashCode());
+        result = prime * result + ((type == null) ? 0 : type.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        NotificationDto other = (NotificationDto) obj;
+        return Objects.equals(id, other.id) &&
+                Objects.equals(timestamp, other.timestamp) &&
+                Objects.equals(editedTimestamp, other.editedTimestamp) &&
+                Objects.equals(isRead, other.isRead) &&
+                Objects.equals(recipientId, other.recipientId) &&
+                type == other.type;
     }
 }
