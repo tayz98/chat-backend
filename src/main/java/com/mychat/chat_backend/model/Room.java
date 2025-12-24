@@ -108,6 +108,31 @@ public class Room {
                 .anyMatch(p -> p.getUser().getId().equals(user.getId()));
     }
 
+    public void addParticipant(RoomParticipant participant) {
+        if (this.participants == null) {
+            this.participants = new HashSet<>();
+        }
+        this.participants.add(participant);
+        participant.setRoom(this);
+    }
+
+    public void removeParticipant(RoomParticipant participant) {
+        if (this.participants == null) {
+            return;
+        }
+        this.participants.remove(participant);
+        participant.setRoom(null);
+    }
+
+    public void removeAllParticipants() {
+        if (this.participants == null) {
+            return;
+        }
+        for (RoomParticipant participant : new HashSet<>(this.participants)) {
+            removeParticipant(participant);
+        }
+    }
+
     public Set<String> getAllowedUserNicknames() {
         return allowedUserNicknames;
     }

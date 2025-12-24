@@ -48,7 +48,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageDto> getMessagesByRoomId(@NotNull Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
-        List<Message> messages = room.getMessages();
+        List<Message> messages = messageRepository.findAllByRoomId(room.getId());
         return messages.stream().map(MessageMapper::toMessageDto).toList();
     }
 

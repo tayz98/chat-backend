@@ -123,7 +123,14 @@ public class RoomParticipant {
             if (room == null || user == null || role == null) {
                 throw new IllegalStateException("Room, User, and Role must be provided");
             }
-            return new RoomParticipant(this);
+            RoomParticipant participant = new RoomParticipant(this);
+            if (room.getParticipants() != null) {
+                room.getParticipants().add(participant);
+            }
+            if (user.getRoomParticipations() != null) {
+                user.getRoomParticipations().add(participant);
+            }
+            return participant;
         }
     }
 

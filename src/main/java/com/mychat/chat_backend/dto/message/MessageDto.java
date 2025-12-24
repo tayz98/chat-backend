@@ -2,6 +2,7 @@ package com.mychat.chat_backend.dto.message;
 
 import jakarta.validation.constraints.*;
 import java.time.Instant;
+import java.util.Objects;
 
 import com.mychat.chat_backend.dto.user.UserSummaryDto;
 
@@ -29,7 +30,7 @@ public class MessageDto {
     public MessageDto() {
     }
 
-    public MessageDto(long id, String content, UserSummaryDto sender, long roomId, Instant timestamp,
+    public MessageDto(Long id, String content, UserSummaryDto sender, Long roomId, Instant timestamp,
             Instant editedTimestamp, Boolean isDeleted) {
         this.id = id;
         this.content = content;
@@ -96,5 +97,35 @@ public class MessageDto {
 
     public void setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((content == null) ? 0 : content.hashCode());
+        result = prime * result + ((editedTimestamp == null) ? 0 : editedTimestamp.hashCode());
+        result = prime * result + ((isDeleted == null) ? 0 : isDeleted.hashCode());
+        result = prime * result + ((roomId == null) ? 0 : roomId.hashCode());
+        result = prime * result + ((sender == null) ? 0 : sender.hashCode());
+        result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        MessageDto other = (MessageDto) obj;
+        return Objects.equals(id, other.id) &&
+                Objects.equals(content, other.content) &&
+                Objects.equals(editedTimestamp, other.editedTimestamp) &&
+                Objects.equals(isDeleted, other.isDeleted) &&
+                Objects.equals(roomId, other.roomId) &&
+                Objects.equals(sender, other.sender) &&
+                Objects.equals(timestamp, other.timestamp);
     }
 }
