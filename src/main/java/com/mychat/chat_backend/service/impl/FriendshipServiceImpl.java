@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mychat.chat_backend.dto.friendship.*;
+import com.mychat.chat_backend.dto.user.UserDto;
 import com.mychat.chat_backend.exception.*;
 import com.mychat.chat_backend.mapper.FriendshipMapper;
+import com.mychat.chat_backend.mapper.UserMapper;
 import com.mychat.chat_backend.model.User;
 import com.mychat.chat_backend.model.enums.FriendshipStatus;
 import com.mychat.chat_backend.model.friendship.*;
@@ -46,10 +48,12 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public List<User> getFriends(Long userId) {
+    public List<UserDto> getFriends(Long userId) {
         List<Long> friendIds = friendshipRepository.findAllFriendIdsByUser(userId);
-        return friendIds.stream().map(id -> userRepository.findById(id)
-                .orElseThrow(UserNotFoundException::new)).toList();
+        return friendIds.stream()
+                .map(id -> userRepository.findById(id).orElseThrow(UserNotFoundException::new))
+                .map(UserMapper::toUserDto)
+                .toList();
     }
 
     @Override
@@ -87,6 +91,9 @@ public class FriendshipServiceImpl implements FriendshipService {
     public FriendshipRequestDto sendFriendshipRequest(Long requesterId, Long addresseeId) {
         User fromUser = userRepository.findById(requesterId).orElseThrow(UserNotFoundException::new);
         User toUser = userRepository.findById(addresseeId).orElseThrow(UserNotFoundException::new);
+        if (friendshipRepository.areFriends(fromUser.getId(), toUser.getId())) {
+            throw new IllegalArgumentException("Friendship already exists between the users.");
+        }
         FriendshipRequest friendshipRequest = FriendshipRequest.createFriendshipRequest(fromUser, toUser);
         friendshipRequestRepository.save(friendshipRequest);
         return FriendshipMapper.toFriendshipRequestDto(friendshipRequest);
@@ -94,6 +101,9 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     @Override
     public List<FriendshipRequestDto> getPendingRequestsForUser(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new UserNotFoundException();
+        }
         List<FriendshipRequest> pendingRequests = friendshipRequestRepository
                 .findAllByUserId(userId).stream()
                 .filter(request -> request.getStatusOfRequest() == FriendshipStatus.PENDING)
@@ -112,25 +122,20 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public FriendshipRequestDto acceptFriendshipRequest(Long requestId, Long addresseeId) {
-        FriendshipRequest friendshipRequest = friendshipRequestRepository.findById(requestId)
+    public FriendshipRequestDto acceptFriendshipRequest(Long requestId) {
+        FriendshipRequest request = friendshipRequestRepository.findById(requestId)
                 .orElseThrow(FriendshipRequestNotFoundException::new);
-        if (!friendshipRequest.getAddressee().getId().equals(addresseeId)) {
-            throw new IllegalArgumentException("Addressee does not match the request.");
-        }
-        Friendship newFriendship = friendshipRequest.acceptRequest();
-        friendshipRequestRepository.save(friendshipRequest);
+
+        Friendship newFriendship = request.acceptRequest();
+        friendshipRequestRepository.save(request);
         friendshipRepository.save(newFriendship);
-        return FriendshipMapper.toFriendshipRequestDto(friendshipRequest);
+        return FriendshipMapper.toFriendshipRequestDto(request);
     }
 
     @Override
-    public FriendshipRequestDto declineFriendshipRequest(Long requestId, Long addresseeId) {
+    public FriendshipRequestDto declineFriendshipRequest(Long requestId) {
         FriendshipRequest friendshipRequest = friendshipRequestRepository.findById(requestId)
                 .orElseThrow(FriendshipRequestNotFoundException::new);
-        if (!friendshipRequest.getAddressee().getId().equals(addresseeId)) {
-            throw new IllegalArgumentException("Addressee does not match the request.");
-        }
         friendshipRequest.declineRequest();
         friendshipRequestRepository.save(friendshipRequest);
         return FriendshipMapper.toFriendshipRequestDto(friendshipRequest);

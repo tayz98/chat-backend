@@ -1,6 +1,8 @@
 package com.mychat.chat_backend.dto.friendship;
 
 import java.time.Instant;
+import java.util.Objects;
+
 import jakarta.validation.constraints.*;
 
 /**
@@ -68,6 +70,24 @@ public class FriendshipDto {
 
     public void setEstablishedOn(Instant establishedOn) {
         this.establishedOn = establishedOn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof FriendshipDto))
+            return false;
+        FriendshipDto that = (FriendshipDto) o;
+        return id != null && id.equals(that.id) && userId.equals(that.userId)
+                && friendId.equals(that.friendId)
+                && friendName.equals(that.friendName)
+                && establishedOn.equals(that.establishedOn);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, friendId, friendName, establishedOn);
     }
 
 }

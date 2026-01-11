@@ -2,8 +2,9 @@ package com.mychat.chat_backend.service;
 
 import java.util.List;
 import com.mychat.chat_backend.dto.friendship.*;
-import com.mychat.chat_backend.model.User;
+import com.mychat.chat_backend.dto.user.UserDto;
 import com.mychat.chat_backend.exception.FriendshipNotFoundException;
+import com.mychat.chat_backend.model.friendship.FriendshipRequest;
 
 /**
  * Service interface for managing friendships between users.
@@ -26,7 +27,7 @@ public interface FriendshipService {
      * @return List of friends
      * @throws UserNotFoundException if user not found
      */
-    List<User> getFriends(Long userId);
+    List<UserDto> getFriends(Long userId);
 
     /**
      * Get all friendships
@@ -91,28 +92,21 @@ public interface FriendshipService {
     /**
      * Accept a friendship request
      *
-     * @param requestId   ID of the friendship request to accept
-     * @param addresseeId ID of the user accepting the request
+     * @param requestId ID of the friendship request to accept
      * @return Accepted FriendshipRequest DTO
-     * @throws UserNotFoundException              if addressee not found
      * @throws FriendshipRequestNotFoundException if friendship request not found
-     * @throws IllegalArgumentException           if the addressee does not match
      *                                            the request
      */
-    FriendshipRequestDto acceptFriendshipRequest(Long requestId, Long addresseeId);
+    FriendshipRequestDto acceptFriendshipRequest(Long requestId);
 
     /**
      * Decline a friendship request
      *
-     * @param requestId   ID of the friendship request to decline
-     * @param addresseeId ID of the user declining the request
+     * @param requestId ID of the friendship request to decline
      * @return Declined FriendshipRequest DTO
-     * @throws UserNotFoundException              if addressee not found
      * @throws FriendshipRequestNotFoundException if friendship request not found
-     * @throws IllegalArgumentException           if the addressee does not match
-     *                                            the request
      */
-    FriendshipRequestDto declineFriendshipRequest(Long requestId, Long addresseeId);
+    FriendshipRequestDto declineFriendshipRequest(Long requestId);
 
     /**
      * Cancel a sent friendship request

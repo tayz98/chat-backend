@@ -2,6 +2,7 @@ package com.mychat.chat_backend.dto.room;
 
 import jakarta.validation.constraints.*;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -118,7 +119,7 @@ public class RoomDto {
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(id, description, created, isPrivate,
+        return Objects.hash(id, description, created, isPrivate,
                 participantIds, participantNames, allowedUsernames);
     }
 }

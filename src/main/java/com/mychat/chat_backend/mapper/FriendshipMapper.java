@@ -29,9 +29,9 @@ public class FriendshipMapper {
      * @return the corresponding FriendshipDto
      */
     public static FriendshipDto toFriendshipDto(Friendship friendship) {
-        long id = friendship.getId();
-        long userId = friendship.getUser().getId();
-        long friendId = friendship.getOtherUser().getId();
+        Long id = friendship.getId();
+        Long userId = friendship.getUser().getId();
+        Long friendId = friendship.getOtherUser().getId();
         String friendName = friendship.getOtherUser().getUsername();
         Instant establishedOn = friendship.getEstablishedOn();
         return new FriendshipDto(id, userId, friendId, friendName, establishedOn);
@@ -62,9 +62,9 @@ public class FriendshipMapper {
      * @return the corresponding FriendshipRequestDto
      */
     public static FriendshipRequestDto toFriendshipRequestDto(FriendshipRequest friendshipRequest) {
-        long id = friendshipRequest.getId();
-        long requesterId = friendshipRequest.getRequester().getId();
-        long addresseeId = friendshipRequest.getAddressee().getId();
+        Long id = friendshipRequest.getId();
+        Long requesterId = friendshipRequest.getRequester().getId();
+        Long addresseeId = friendshipRequest.getAddressee().getId();
         String requesterName = friendshipRequest.getRequester().getUsername();
         String addresseeName = friendshipRequest.getAddressee().getUsername();
         Instant requestedAt = friendshipRequest.getRequestedAt();
@@ -86,7 +86,7 @@ public class FriendshipMapper {
      */
     public static FriendshipRequest toFriendshipRequest(FriendshipRequestDto friendshipRequestDto, User requester,
             User addressee) {
-        long id = friendshipRequestDto.getId();
+        Long id = friendshipRequestDto.getId();
         if (!Objects.equals(friendshipRequestDto.getRequesterId(), requester.getId()) ||
                 !Objects.equals(friendshipRequestDto.getAddresseeId(), addressee.getId())) {
             throw new IllegalArgumentException(

@@ -35,7 +35,6 @@ class UserServiceTest {
 
     private User testUser;
     private UserDto testUserDto;
-    // private UserSummaryDto testUserSummaryDto;
 
     @BeforeEach
     void setUp() {
@@ -141,8 +140,12 @@ class UserServiceTest {
         when(roomRepository.findById(roomId)).thenReturn(Optional.of(mockRoom));
         List<UserDto> result = userService.getUsersOfRoomWithRoomRepository(roomId);
         Assertions.assertEquals(2, result.size());
-        Assertions.assertEquals(testUserDto.getSummary().getUsername(), result.get(0).getSummary().getUsername());
-        Assertions.assertEquals(secondUserDto.getSummary().getUsername(), result.get(1).getSummary().getUsername());
+        List<String> usernames = result.stream()
+                .map(dto -> dto.getSummary().getUsername())
+                .toList();
+
+        Assertions.assertTrue(usernames.contains(testUserDto.getSummary().getUsername()));
+        Assertions.assertTrue(usernames.contains(secondUserDto.getSummary().getUsername()));
         verify(roomRepository, times(1)).findById(roomId);
     }
 
