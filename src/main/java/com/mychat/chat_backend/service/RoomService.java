@@ -1,12 +1,14 @@
 package com.mychat.chat_backend.service;
 
 import com.mychat.chat_backend.dto.room.*;
+import com.mychat.chat_backend.dto.roomparticipant.RoomParticipantDto;
+import com.mychat.chat_backend.dto.roomparticipant.RoomParticipantCreationDto;
+import com.mychat.chat_backend.model.enums.ParticipantRole;
 import java.util.List;
-import com.mychat.chat_backend.exception.*;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * Service interface for managing chat rooms.
+ * Service interface for managing chat rooms and their participants.
  */
 public interface RoomService {
 
@@ -58,4 +60,50 @@ public interface RoomService {
      * @param roomId Room id
      */
     void deleteRoom(@NotNull Long roomId);
+
+    // === Participant Management ===
+
+    /**
+     * Add a participant to a room
+     *
+     * @param roomId      Room id
+     * @param creationDto Participant creation data
+     * @return Created RoomParticipant DTO
+     */
+    RoomParticipantDto addParticipant(@NotNull Long roomId, @NotNull RoomParticipantCreationDto creationDto);
+
+    /**
+     * Remove a participant from a room
+     *
+     * @param roomId Room id
+     * @param userId User id to remove
+     */
+    void removeParticipant(@NotNull Long roomId, @NotNull Long userId);
+
+    /**
+     * Update a participant's role in a room
+     *
+     * @param roomId  Room id
+     * @param userId  User id
+     * @param newRole New participant role
+     * @return Updated RoomParticipant DTO
+     */
+    RoomParticipantDto updateParticipantRole(@NotNull Long roomId, @NotNull Long userId,
+            @NotNull ParticipantRole newRole);
+
+    /**
+     * Get all participants in a room
+     *
+     * @param roomId Room id
+     * @return List of RoomParticipant DTOs
+     */
+    List<RoomParticipantDto> getParticipants(@NotNull Long roomId);
+
+    /**
+     * Get all rooms a user is participating in
+     *
+     * @param userId User id
+     * @return List of RoomParticipant DTOs
+     */
+    List<RoomParticipantDto> getUserParticipations(@NotNull Long userId);
 }

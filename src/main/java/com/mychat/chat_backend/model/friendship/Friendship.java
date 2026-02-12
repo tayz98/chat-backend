@@ -16,8 +16,7 @@ import jakarta.persistence.*;
 @Table(name = "user_friends", uniqueConstraints = {
         @UniqueConstraint(columnNames = { "user_id", "other_user_id" })
 }, indexes = {
-        @Index(name = "idx_user_friend", columnList = "user_id, other_user_id"),
-        @Index(name = "idx_status", columnList = "status")
+        @Index(name = "idx_user_friend", columnList = "user_id, other_user_id")
 })
 public class Friendship {
 
