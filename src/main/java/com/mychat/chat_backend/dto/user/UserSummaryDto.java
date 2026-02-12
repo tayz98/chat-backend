@@ -68,4 +68,28 @@ public class UserSummaryDto {
         return Objects.hash(id, username, avatarUrl);
     }
 
+    public static class Builder {
+        private Long id;
+        private String username;
+        private String avatarUrl;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder username(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder avatarUrl(String avatarUrl) {
+            this.avatarUrl = avatarUrl;
+            return this;
+        }
+
+        public UserSummaryDto build() {
+            return new UserSummaryDto(id, username, avatarUrl);
+        }
+    }
 }

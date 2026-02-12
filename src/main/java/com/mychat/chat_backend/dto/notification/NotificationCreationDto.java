@@ -38,4 +38,26 @@ public class NotificationCreationDto {
     public void setRecipientId(Long recipientId) {
         this.recipientId = recipientId;
     }
+
+    public static class Builder {
+        private NotificationType type;
+        private Long recipientId;
+
+        public Builder type(NotificationType type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder recipientId(Long recipientId) {
+            this.recipientId = recipientId;
+            return this;
+        }
+
+        public NotificationCreationDto build() {
+            NotificationCreationDto dto = new NotificationCreationDto();
+            dto.setType(type);
+            dto.setRecipientId(recipientId);
+            return dto;
+        }
+    }
 }

@@ -39,4 +39,33 @@ public class RoomParticipantCreationDto {
     public void setRole(ParticipantRole role) {
         this.role = role;
     }
+
+    public static class Builder {
+        private Long userId;
+        private Long roomId;
+        private ParticipantRole role;
+
+        public Builder userId(Long userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder roomId(Long roomId) {
+            this.roomId = roomId;
+            return this;
+        }
+
+        public Builder role(ParticipantRole role) {
+            this.role = role;
+            return this;
+        }
+
+        public RoomParticipantCreationDto build() {
+            RoomParticipantCreationDto dto = new RoomParticipantCreationDto();
+            dto.setUserId(userId);
+            dto.setRoomId(roomId);
+            dto.setRole(role);
+            return dto;
+        }
+    }
 }

@@ -20,4 +20,19 @@ public class UpdateParticipantRequestDto {
     public void setRole(ParticipantRole role) {
         this.role = role;
     }
+
+    public static class Builder {
+        private ParticipantRole role;
+
+        public Builder role(ParticipantRole role) {
+            this.role = role;
+            return this;
+        }
+
+        public UpdateParticipantRequestDto build() {
+            UpdateParticipantRequestDto dto = new UpdateParticipantRequestDto();
+            dto.setRole(role);
+            return dto;
+        }
+    }
 }

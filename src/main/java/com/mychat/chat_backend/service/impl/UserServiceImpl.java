@@ -11,9 +11,6 @@ import com.mychat.chat_backend.model.User;
 import com.mychat.chat_backend.repository.RoomRepository;
 import com.mychat.chat_backend.repository.UserRepository;
 import com.mychat.chat_backend.service.UserService;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -40,19 +37,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserById(@NotNull Long userId) {
+    public UserDto getUserById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         return UserMapper.toUserDto(user);
     }
 
     @Override
-    public Optional<UserDto> getUserByUsername(@NotBlank String username) {
+    public Optional<UserDto> getUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .map(UserMapper::toUserDto);
     }
 
     @Override
-    public Optional<UserDto> getUserByEmail(@Email String email) {
+    public Optional<UserDto> getUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .map(UserMapper::toUserDto);
     }
@@ -63,31 +60,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getUsersOfRoomWithRoomRepository(@NotNull Long roomId) {
+    public List<UserDto> getUsersOfRoomWithRoomRepository(Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
         return room.getParticipantUsers().stream().map(UserMapper::toUserDto).toList();
     }
 
     @Override
-    public List<UserDto> getUsersByRoomWithUserRepository(@NotNull Long roomId) {
+    public List<UserDto> getUsersByRoomWithUserRepository(Long roomId) {
         List<User> users = userRepository.findAllByRoomParticipationsRoomId(roomId);
         return users.stream().map(UserMapper::toUserDto).toList();
     }
 
     @Override
-    public List<UserDto> getUsersByOnlineStatus(@NotNull Boolean isOnline) {
+    public List<UserDto> getUsersByOnlineStatus(Boolean isOnline) {
         List<User> users = userRepository.findAllByIsOnline(isOnline);
         return users.stream().map(UserMapper::toUserDto).toList();
     }
 
     @Override
-    public UserDto createUser(@NotNull UserCreationDto userDto) {
+    public UserDto createUser(UserCreationDto userDto) {
         User newUser = UserMapper.toUser(userDto);
         return UserMapper.toUserDto(userRepository.save(newUser));
     }
 
     @Override
-    public UserDto updateUser(@NotNull UserUpdateDto userDto, @NotNull Long userId) {
+    public UserDto updateUser(UserUpdateDto userDto, Long userId) {
         User user = userRepository.findById(userId).orElseThrow((UserNotFoundException::new));
         User updatedUser = UserMapper.updatedUser(userDto, user);
         updatedUser.setUpdatedOn();
@@ -95,16 +92,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(@NotNull Long userId) {
+    public void deleteUser(Long userId) {
         User user = userRepository.findById(userId).orElseThrow((UserNotFoundException::new));
         userRepository.delete(user);
     }
 
     @Override
-    public void setOnlineStatus(@NotNull Long userId, @NotNull Boolean isOnline) {
+    public void setOnlineStatus(Long userId, Boolean isOnline) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         user.setIsOnline(isOnline);
-        if (isOnline) {
+        if (Boolean.TRUE.equals(isOnline)) {
             user.setLastLogin(Instant.now());
         } else {
             user.setLastLogout(Instant.now());

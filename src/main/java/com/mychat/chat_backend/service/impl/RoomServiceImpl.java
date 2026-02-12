@@ -8,7 +8,6 @@ import com.mychat.chat_backend.mapper.RoomMapper;
 import com.mychat.chat_backend.model.Room;
 import com.mychat.chat_backend.repository.RoomRepository;
 import com.mychat.chat_backend.service.RoomService;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +29,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomDto getRoomById(@NotNull Long roomId) {
+    public RoomDto getRoomById(Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow((RoomNotFoundException::new));
         return RoomMapper.toRoomDto(room);
     }
@@ -42,13 +41,13 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomDto createRoom(@NotNull RoomCreationDto createDto) {
+    public RoomDto createRoom(RoomCreationDto createDto) {
         Room newRoom = RoomMapper.toRoom(createDto);
         return RoomMapper.toRoomDto(roomRepository.save(newRoom));
     }
 
     @Override
-    public RoomDto updateRoom(@NotNull RoomUpdateDto updateDto, @NotNull Long roomId) {
+    public RoomDto updateRoom(RoomUpdateDto updateDto, Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow((RoomNotFoundException::new));
         Room updatedRoom = RoomMapper.updatedRoom(updateDto, room);
         updatedRoom.setUpdatedOn();
@@ -56,7 +55,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void deleteRoom(@NotNull Long roomId) {
+    public void deleteRoom(Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow((RoomNotFoundException::new));
         roomRepository.delete(room);
     }

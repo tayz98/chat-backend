@@ -16,6 +16,13 @@ public interface MessageService {
     MessageDto getMessageById(Long messageId);
 
     /**
+     * Get all messages
+     *
+     * @return List of Message DTOs
+     */
+    List<MessageDto> getAllMessages();
+
+    /**
      * Get all messages in a room
      *
      * @param roomId Room id

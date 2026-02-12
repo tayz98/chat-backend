@@ -69,4 +69,46 @@ public class RoomParticipantDto {
         this.createdOn = createdOn;
     }
 
+    public static class Builder {
+        private Long id;
+        private UserSummaryDto user;
+        private RoomSummaryDto room;
+        private ParticipantRole role;
+        private Instant createdOn;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder user(UserSummaryDto user) {
+            this.user = user;
+            return this;
+        }
+
+        public Builder room(RoomSummaryDto room) {
+            this.room = room;
+            return this;
+        }
+
+        public Builder role(ParticipantRole role) {
+            this.role = role;
+            return this;
+        }
+
+        public Builder createdOn(Instant createdOn) {
+            this.createdOn = createdOn;
+            return this;
+        }
+
+        public RoomParticipantDto build() {
+            RoomParticipantDto dto = new RoomParticipantDto();
+            dto.setId(id);
+            dto.setUser(user);
+            dto.setRoom(room);
+            dto.setRole(role);
+            dto.setCreatedOn(createdOn != null ? createdOn : Instant.now());
+            return dto;
+        }
+    }
 }

@@ -40,4 +40,26 @@ public class AddParticipantRequestDto {
     public void setRole(ParticipantRole role) {
         this.role = role;
     }
+
+    public static class Builder {
+        private Long userId;
+        private ParticipantRole role;
+
+        public Builder userId(Long userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder role(ParticipantRole role) {
+            this.role = role;
+            return this;
+        }
+
+        public AddParticipantRequestDto build() {
+            AddParticipantRequestDto dto = new AddParticipantRequestDto();
+            dto.setUserId(userId);
+            dto.setRole(role);
+            return dto;
+        }
+    }
 }

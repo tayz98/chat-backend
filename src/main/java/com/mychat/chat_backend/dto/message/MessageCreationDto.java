@@ -51,4 +51,32 @@ public class MessageCreationDto {
         this.content = content;
     }
 
+    public static class Builder {
+        private Long senderId;
+        private Long roomId;
+        private String content;
+
+        public Builder senderId(Long senderId) {
+            this.senderId = senderId;
+            return this;
+        }
+
+        public Builder roomId(Long roomId) {
+            this.roomId = roomId;
+            return this;
+        }
+
+        public Builder content(String content) {
+            this.content = content;
+            return this;
+        }
+
+        public MessageCreationDto build() {
+            MessageCreationDto dto = new MessageCreationDto();
+            dto.setSenderId(senderId);
+            dto.setRoomId(roomId);
+            dto.setContent(content);
+            return dto;
+        }
+    }
 }

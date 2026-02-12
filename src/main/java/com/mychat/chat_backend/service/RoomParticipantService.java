@@ -4,6 +4,8 @@ import com.mychat.chat_backend.dto.roomparticipant.RoomParticipantCreationDto;
 import com.mychat.chat_backend.dto.roomparticipant.RoomParticipantDto;
 import com.mychat.chat_backend.model.enums.ParticipantRole;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 
 /**
@@ -17,7 +19,7 @@ public interface RoomParticipantService {
      * @param roomParticipantId RoomParticipant id
      * @return RoomParticipant DTO
      */
-    RoomParticipantDto getRoomParticipantById(Long roomParticipantId);
+    RoomParticipantDto getRoomParticipantById(@NotNull Long roomParticipantId);
 
     /**
      * Add a user as a participant to a room
@@ -27,14 +29,14 @@ public interface RoomParticipantService {
      * @param role   Participant role
      * @return Created RoomParticipant DTO
      */
-    RoomParticipantDto createRoomParticipant(RoomParticipantCreationDto creationDto);
+    RoomParticipantDto createRoomParticipant(@NotNull RoomParticipantCreationDto creationDto);
 
     /**
      * Remove a room participant by its id
      *
      * @param roomParticipantId RoomParticipant id
      */
-    void deleteRoomParticipant(Long roomParticipantId);
+    void deleteRoomParticipant(@NotNull Long roomParticipantId);
 
     /**
      * Update the role of a room participant
@@ -43,7 +45,7 @@ public interface RoomParticipantService {
      * @param newRole           New participant role
      * @return Updated RoomParticipant DTO
      */
-    RoomParticipantDto updateRoomParticipantRole(Long roomParticipantId, ParticipantRole newRole);
+    RoomParticipantDto updateRoomParticipantRole(@NotNull Long roomParticipantId, @NotNull ParticipantRole newRole);
 
     /**
      * Get all room participants
@@ -58,7 +60,7 @@ public interface RoomParticipantService {
      * @param roomId Room id
      * @return List of RoomParticipant DTOs
      */
-    List<RoomParticipantDto> getRoomParticipantsByRoomId(Long roomId);
+    List<RoomParticipantDto> getRoomParticipantsByRoomId(@NotNull Long roomId);
 
     /**
      * Get room participants by user id
@@ -66,5 +68,5 @@ public interface RoomParticipantService {
      * @param userId User id
      * @return List of RoomParticipant DTOs
      */
-    List<RoomParticipantDto> getRoomParticipantsByUserId(Long userId);
+    List<RoomParticipantDto> getRoomParticipantsByUserId(@NotNull Long userId);
 }

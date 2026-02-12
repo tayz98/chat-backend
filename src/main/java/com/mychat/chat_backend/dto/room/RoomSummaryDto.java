@@ -62,4 +62,28 @@ public class RoomSummaryDto {
         return java.util.Objects.hash(id, description, isPrivate);
     }
 
+    public static class Builder {
+        private Long id;
+        private String description;
+        private Boolean isPrivate;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder isPrivate(Boolean isPrivate) {
+            this.isPrivate = isPrivate;
+            return this;
+        }
+
+        public RoomSummaryDto build() {
+            return new RoomSummaryDto(id, description, isPrivate);
+        }
+    }
 }

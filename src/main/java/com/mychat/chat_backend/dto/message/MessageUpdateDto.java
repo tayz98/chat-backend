@@ -1,15 +1,11 @@
 package com.mychat.chat_backend.dto.message;
 
-import jakarta.validation.constraints.*;
-
 /**
  * Data Transfer Object for updating a Message
  * UPDATE request payload
  */
 public class MessageUpdateDto {
-    @NotBlank
     private String content;
-    @NotNull
     private Boolean isDeleted;
 
     public MessageUpdateDto() {
@@ -39,5 +35,27 @@ public class MessageUpdateDto {
 
     public void setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public static class Builder {
+        private String content;
+        private Boolean isDeleted;
+
+        public Builder content(String content) {
+            this.content = content;
+            return this;
+        }
+
+        public Builder isDeleted(Boolean isDeleted) {
+            this.isDeleted = isDeleted;
+            return this;
+        }
+
+        public MessageUpdateDto build() {
+            MessageUpdateDto dto = new MessageUpdateDto();
+            dto.setContent(content);
+            dto.setIsDeleted(isDeleted);
+            return dto;
+        }
     }
 }

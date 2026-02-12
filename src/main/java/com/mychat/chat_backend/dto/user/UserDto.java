@@ -3,7 +3,8 @@ package com.mychat.chat_backend.dto.user;
 import java.time.Instant;
 import java.util.Objects;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Data Transfer Object for user information.
@@ -69,20 +70,20 @@ public class UserDto {
         this.lastLogin = lastLogin;
     }
 
-    public Boolean getOnline() {
+    public Boolean getIsOnline() {
         return isOnline;
     }
 
-    public void setOnline(Boolean online) {
-        isOnline = online;
+    public void setIsOnline(Boolean isOnline) {
+        this.isOnline = isOnline;
     }
 
-    public Boolean getAdmin() {
+    public Boolean getIsAdmin() {
         return isAdmin;
     }
 
-    public void setAdmin(Boolean admin) {
-        isAdmin = admin;
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     @Override
@@ -103,5 +104,68 @@ public class UserDto {
     @Override
     public int hashCode() {
         return Objects.hash(summary, email, created, lastLogin, isOnline, isAdmin);
+    }
+
+    public static class Builder {
+        private Long id;
+        private String username;
+        private String avatarUrl;
+        private String email;
+        private Instant created;
+        private Instant lastLogin;
+        private Boolean isOnline;
+        private Boolean isAdmin;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder username(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder avatarUrl(String avatarUrl) {
+            this.avatarUrl = avatarUrl;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder created(Instant created) {
+            this.created = created;
+            return this;
+        }
+
+        public Builder lastLogin(Instant lastLogin) {
+            this.lastLogin = lastLogin;
+            return this;
+        }
+
+        public Builder isOnline(Boolean isOnline) {
+            this.isOnline = isOnline;
+            return this;
+        }
+
+        public Builder isAdmin(Boolean isAdmin) {
+            this.isAdmin = isAdmin;
+            return this;
+        }
+
+        public UserDto build() {
+            UserDto dto = new UserDto();
+            UserSummaryDto summary = new UserSummaryDto(id, username, avatarUrl != null ? avatarUrl : "placeholder");
+            dto.setSummary(summary);
+            dto.setEmail(email);
+            dto.setCreated(created != null ? created : Instant.now());
+            dto.setLastLogin(lastLogin != null ? lastLogin : Instant.now());
+            dto.setIsOnline(Objects.requireNonNullElse(isOnline, false));
+            dto.setIsAdmin(Objects.requireNonNullElse(isAdmin, false));
+            return dto;
+        }
     }
 }

@@ -101,7 +101,7 @@ class UserServiceTest {
 
     @Test
     void getUsersByOnlineStatus_ReturnsListOfUserDtos() {
-        testUser.setOnline(true);
+        testUser.setIsOnline(true);
         List<User> users = Arrays.asList(testUser);
         when(userRepository.findAllByIsOnline(true)).thenReturn(users);
         List<UserDto> result = userService.getUsersByOnlineStatus(true);

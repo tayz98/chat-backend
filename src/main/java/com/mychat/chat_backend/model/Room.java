@@ -38,10 +38,12 @@ public class Room {
     private String password;
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<RoomParticipant> participants;
+    private Set<RoomParticipant> participants = new HashSet<>();
 
-    @Column(name = "allowed_users")
-    private Set<String> allowedUserNicknames;
+    @ElementCollection
+    @CollectionTable(name = "room_allowed_users", joinColumns = @JoinColumn(name = "room_id"))
+    @Column(name = "username")
+    private Set<String> allowedUserNicknames = new HashSet<>();
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;

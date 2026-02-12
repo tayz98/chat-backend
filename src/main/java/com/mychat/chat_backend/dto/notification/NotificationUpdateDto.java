@@ -27,4 +27,19 @@ public class NotificationUpdateDto {
     public void setRead(Boolean read) {
         isRead = read;
     }
+
+    public static class Builder {
+        private Boolean isRead;
+
+        public Builder isRead(Boolean isRead) {
+            this.isRead = isRead;
+            return this;
+        }
+
+        public NotificationUpdateDto build() {
+            NotificationUpdateDto dto = new NotificationUpdateDto();
+            dto.setRead(isRead);
+            return dto;
+        }
+    }
 }

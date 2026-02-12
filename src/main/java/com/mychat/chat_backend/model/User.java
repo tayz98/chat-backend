@@ -1,7 +1,6 @@
 package com.mychat.chat_backend.model;
 
 import jakarta.persistence.*;
-import jdk.jfr.Timestamp;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -31,11 +30,9 @@ public class User {
     @Column(name = "password", nullable = false, length = 50)
     private String password;
 
-    @Timestamp
     @Column(name = "last_login", nullable = true)
     private Instant lastLogin;
 
-    @Timestamp
     @Column(name = "last_logout", nullable = true)
     private Instant lastLogout;
 
@@ -57,26 +54,24 @@ public class User {
     @Column(name = "admin_status", nullable = false)
     private Boolean isAdmin;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RoomParticipant> roomParticipations;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("createdOn DESC")
-    private List<Notification> notifications;
+    private List<Notification> notifications = new ArrayList<>();
 
     protected User() {
     }
 
-    public User(Builder builder) {
+    private User(Builder builder) {
         this.username = builder.username;
         this.password = builder.password;
         this.email = builder.email;
         this.isAdmin = Objects.requireNonNullElse(builder.isAdmin, false);
-        this.isOnline = false;
-        this.avatarUrl = "placeholder";
+        this.isOnline = Objects.requireNonNullElse(builder.isOnline, false);
+        this.avatarUrl = Objects.requireNonNullElse(builder.avatarUrl, "placeholder");
         this.roomParticipations = new HashSet<>();
-        this.createdOn = Instant.now();
-        notifications = new ArrayList<>();
     }
 
     // Getters and Setters
@@ -202,19 +197,13 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
-    public void setOnline(Boolean online) {
-        isOnline = online;
-    }
-
-    public void setAdmin(Boolean admin) {
-        isAdmin = admin;
-    }
-
     public static class Builder {
         private String username;
         private String password;
         private String email;
         private Boolean isAdmin;
+        private Boolean isOnline;
+        private String avatarUrl;
 
         public Builder username(String username) {
             this.username = username;
@@ -236,11 +225,20 @@ public class User {
             return this;
         }
 
+        public Builder isOnline(Boolean isOnline) {
+            this.isOnline = isOnline;
+            return this;
+        }
+
+        public Builder avatarUrl(String avatarUrl) {
+            this.avatarUrl = avatarUrl;
+            return this;
+        }
+
         public User build() {
             if (username == null || password == null || email == null) {
                 throw new IllegalArgumentException("Username, password and email must not be null");
             }
-            // further validation can be added here
             return new User(this);
         }
     }

@@ -4,7 +4,6 @@ import java.util.List;
 import com.mychat.chat_backend.dto.friendship.*;
 import com.mychat.chat_backend.dto.user.UserDto;
 import com.mychat.chat_backend.exception.FriendshipNotFoundException;
-import com.mychat.chat_backend.model.friendship.FriendshipRequest;
 
 /**
  * Service interface for managing friendships between users.

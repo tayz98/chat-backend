@@ -15,19 +15,18 @@ public class UserCreationDto {
     @NotBlank
     @Size(min = 5, max = 30)
     private String password;
-    @NotNull
     private Boolean isAdmin;
-    @NotNull
     @PastOrPresent
     private Instant created;
 
     public UserCreationDto() {
     }
 
-    public UserCreationDto(String username, String email, String password) {
+    public UserCreationDto(String username, String email, String password, Boolean isAdmin) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.isAdmin = isAdmin;
         created = Instant.now();
     }
 
@@ -71,5 +70,50 @@ public class UserCreationDto {
 
     public void setAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
+    }
+
+    public static class Builder {
+        private String username;
+        private String email;
+        private String password;
+        private Boolean isAdmin;
+        private Instant created;
+
+        public Builder username(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder isAdmin(Boolean isAdmin) {
+            this.isAdmin = isAdmin;
+            return this;
+        }
+
+        public Builder created(Instant created) {
+            this.created = created;
+            return this;
+        }
+
+        public UserCreationDto build() {
+            UserCreationDto dto = new UserCreationDto();
+            dto.setUsername(username);
+            dto.setEmail(email);
+            dto.setPassword(password);
+            dto.setAdmin(isAdmin);
+            if (created != null) {
+                dto.setCreated(created);
+            }
+            return dto;
+        }
     }
 }

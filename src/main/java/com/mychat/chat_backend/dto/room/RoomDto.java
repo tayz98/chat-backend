@@ -122,4 +122,61 @@ public class RoomDto {
         return Objects.hash(id, description, created, isPrivate,
                 participantIds, participantNames, allowedUsernames);
     }
+
+    public static class Builder {
+        private Long id;
+        private String description;
+        private Instant created;
+        private Boolean isPrivate;
+        private Set<Long> participantIds;
+        private Set<String> participantNames;
+        private Set<String> allowedUsernames;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder created(Instant created) {
+            this.created = created;
+            return this;
+        }
+
+        public Builder isPrivate(Boolean isPrivate) {
+            this.isPrivate = isPrivate;
+            return this;
+        }
+
+        public Builder participantIds(Set<Long> participantIds) {
+            this.participantIds = participantIds;
+            return this;
+        }
+
+        public Builder participantNames(Set<String> participantNames) {
+            this.participantNames = participantNames;
+            return this;
+        }
+
+        public Builder allowedUsernames(Set<String> allowedUsernames) {
+            this.allowedUsernames = allowedUsernames;
+            return this;
+        }
+
+        public RoomDto build() {
+            RoomDto dto = new RoomDto();
+            dto.setId(id);
+            dto.setDescription(description);
+            dto.setCreated(created != null ? created : Instant.now());
+            dto.setPrivate(isPrivate);
+            dto.setParticipantIds(participantIds);
+            dto.setParticipantNames(participantNames);
+            dto.setAllowedUsernames(allowedUsernames);
+            return dto;
+        }
+    }
 }

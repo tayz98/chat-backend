@@ -35,4 +35,26 @@ public class FriendshipCreationResponseDto {
     public void setIsAccepted(Boolean status) {
         this.isAccepted = status;
     }
+
+    public static class Builder {
+        private Long requestId;
+        private Boolean isAccepted;
+
+        public Builder requestId(Long requestId) {
+            this.requestId = requestId;
+            return this;
+        }
+
+        public Builder isAccepted(Boolean isAccepted) {
+            this.isAccepted = isAccepted;
+            return this;
+        }
+
+        public FriendshipCreationResponseDto build() {
+            FriendshipCreationResponseDto dto = new FriendshipCreationResponseDto();
+            dto.setRequestId(requestId);
+            dto.setIsAccepted(isAccepted);
+            return dto;
+        }
+    }
 }

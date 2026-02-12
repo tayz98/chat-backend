@@ -115,4 +115,54 @@ public class NotificationDto {
                 Objects.equals(recipientId, other.recipientId) &&
                 type == other.type;
     }
+
+    public static class Builder {
+        private Long id;
+        private Instant timestamp;
+        private Instant editedTimestamp;
+        private Boolean isRead;
+        private Long recipientId;
+        private NotificationType type;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder timestamp(Instant timestamp) {
+            this.timestamp = timestamp;
+            return this;
+        }
+
+        public Builder editedTimestamp(Instant editedTimestamp) {
+            this.editedTimestamp = editedTimestamp;
+            return this;
+        }
+
+        public Builder isRead(Boolean isRead) {
+            this.isRead = isRead;
+            return this;
+        }
+
+        public Builder recipientId(Long recipientId) {
+            this.recipientId = recipientId;
+            return this;
+        }
+
+        public Builder type(NotificationType type) {
+            this.type = type;
+            return this;
+        }
+
+        public NotificationDto build() {
+            NotificationDto dto = new NotificationDto();
+            dto.setId(id);
+            dto.setTimestamp(timestamp != null ? timestamp : Instant.now());
+            dto.setEditedTimestamp(editedTimestamp);
+            dto.setRead(isRead != null ? isRead : false);
+            dto.setRecipientId(recipientId);
+            dto.setType(type);
+            return dto;
+        }
+    }
 }

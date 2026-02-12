@@ -3,6 +3,7 @@ package com.mychat.chat_backend.service;
 import com.mychat.chat_backend.dto.room.*;
 import java.util.List;
 import com.mychat.chat_backend.exception.*;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Service interface for managing chat rooms.
@@ -16,7 +17,7 @@ public interface RoomService {
      * @return Room DTO
      * @throws RoomNotFoundException if the room is not found
      */
-    RoomDto getRoomById(Long roomId);
+    RoomDto getRoomById(@NotNull Long roomId);
 
     /**
      * Get all rooms
@@ -31,7 +32,7 @@ public interface RoomService {
      * @param roomDto Room creation DTO
      * @return Created Room DTO
      */
-    RoomDto createRoom(RoomCreationDto roomDto);
+    RoomDto createRoom(@NotNull RoomCreationDto roomDto);
 
     /**
      * Update an existing room
@@ -41,7 +42,7 @@ public interface RoomService {
      * @return Updated Room DTO
      * @throws RoomNotFoundException if the room is not found
      */
-    RoomDto updateRoom(RoomUpdateDto roomDto, Long roomId);
+    RoomDto updateRoom(@NotNull RoomUpdateDto roomDto, @NotNull Long roomId);
 
     /**
      * Get rooms by participant id
@@ -49,12 +50,12 @@ public interface RoomService {
      * @param participantId Participant user id
      * @return List of Room DTOs
      */
-    List<RoomDto> getRoomsByParticipantId(Long participantId);
+    List<RoomDto> getRoomsByParticipantId(@NotNull Long participantId);
 
     /**
      * Delete a room
      *
      * @param roomId Room id
      */
-    void deleteRoom(Long roomId);
+    void deleteRoom(@NotNull Long roomId);
 }

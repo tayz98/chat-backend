@@ -108,4 +108,67 @@ public class FriendshipRequestDto {
         this.statusOfRequest = statusOfRequest;
     }
 
+    public static class Builder {
+        private Long id;
+        private Long requesterId;
+        private String requesterName;
+        private Long addresseeId;
+        private String addresseeName;
+        private Instant requestedAt;
+        private Instant respondedAt;
+        private FriendshipStatus statusOfRequest;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder requesterId(Long requesterId) {
+            this.requesterId = requesterId;
+            return this;
+        }
+
+        public Builder requesterName(String requesterName) {
+            this.requesterName = requesterName;
+            return this;
+        }
+
+        public Builder addresseeId(Long addresseeId) {
+            this.addresseeId = addresseeId;
+            return this;
+        }
+
+        public Builder addresseeName(String addresseeName) {
+            this.addresseeName = addresseeName;
+            return this;
+        }
+
+        public Builder requestedAt(Instant requestedAt) {
+            this.requestedAt = requestedAt;
+            return this;
+        }
+
+        public Builder respondedAt(Instant respondedAt) {
+            this.respondedAt = respondedAt;
+            return this;
+        }
+
+        public Builder statusOfRequest(FriendshipStatus statusOfRequest) {
+            this.statusOfRequest = statusOfRequest;
+            return this;
+        }
+
+        public FriendshipRequestDto build() {
+            FriendshipRequestDto dto = new FriendshipRequestDto();
+            dto.setId(id);
+            dto.setRequesterId(requesterId);
+            dto.setRequesterName(requesterName);
+            dto.setAddresseeId(addresseeId);
+            dto.setAddresseeName(addresseeName);
+            dto.setRequestedAt(requestedAt != null ? requestedAt : Instant.now());
+            dto.setRespondedAt(respondedAt);
+            dto.setStatusOfRequest(statusOfRequest);
+            return dto;
+        }
+    }
 }

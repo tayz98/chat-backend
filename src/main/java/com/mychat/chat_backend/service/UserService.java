@@ -2,6 +2,11 @@ package com.mychat.chat_backend.service;
 
 import com.mychat.chat_backend.dto.user.*;
 import com.mychat.chat_backend.exception.*;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +22,7 @@ public interface UserService {
      * @return User DTO
      * @throws UserNotFoundException if the user is not found
      */
-    UserDto getUserById(Long userId);
+    UserDto getUserById(@NotNull Long userId);
 
     /**
      * Get a user by its username
@@ -25,7 +30,7 @@ public interface UserService {
      * @param username Username
      * @return User DTO
      */
-    Optional<UserDto> getUserByUsername(String username);
+    Optional<UserDto> getUserByUsername(@NotBlank String username);
 
     /**
      * Get a user by its email
@@ -33,7 +38,7 @@ public interface UserService {
      * @param email Email
      * @return User DTO
      */
-    Optional<UserDto> getUserByEmail(String email);
+    Optional<UserDto> getUserByEmail(@Email String email);
 
     /**
      * Get all users
@@ -48,7 +53,7 @@ public interface UserService {
      * @param roomId Room id
      * @return List of User DTOs
      */
-    List<UserDto> getUsersOfRoomWithRoomRepository(Long roomId);
+    List<UserDto> getUsersOfRoomWithRoomRepository(@NotNull Long roomId);
 
     /**
      * Get all users of a specific room with UserRepository
@@ -56,7 +61,7 @@ public interface UserService {
      * @param roomId Room id
      * @return List of User DTOs
      */
-    List<UserDto> getUsersByRoomWithUserRepository(Long roomId);
+    List<UserDto> getUsersByRoomWithUserRepository(@NotNull Long roomId);
 
     /**
      * Get all users by their online status
@@ -64,7 +69,7 @@ public interface UserService {
      * @param isOnline Online status
      * @return List of User DTOs
      */
-    List<UserDto> getUsersByOnlineStatus(Boolean isOnline);
+    List<UserDto> getUsersByOnlineStatus(@NotNull Boolean isOnline);
 
     /**
      * Create a new user
@@ -72,7 +77,7 @@ public interface UserService {
      * @param userDto User creation DTO
      * @return Created User DTO
      */
-    UserDto createUser(UserCreationDto userDto);
+    UserDto createUser(@NotNull UserCreationDto userDto);
 
     /**
      * Update an existing user
@@ -81,14 +86,14 @@ public interface UserService {
      * @param userId  User id
      * @return Updated User DTO
      */
-    UserDto updateUser(UserUpdateDto userDto, Long userId);
+    UserDto updateUser(@NotNull UserUpdateDto userDto, @NotNull Long userId);
 
     /**
      * Delete a user
      *
      * @param userId User id
      */
-    void deleteUser(Long userId);
+    void deleteUser(@NotNull Long userId);
 
     /**
      * Set the online status of a user
@@ -97,6 +102,5 @@ public interface UserService {
      * @param userId   User id
      * @param isOnline Online status
      */
-    void setOnlineStatus(Long userId, Boolean isOnline);
-
+    void setOnlineStatus(@NotNull Long userId, @NotNull Boolean isOnline);
 }

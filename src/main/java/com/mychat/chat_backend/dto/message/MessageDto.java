@@ -128,4 +128,61 @@ public class MessageDto {
                 Objects.equals(sender, other.sender) &&
                 Objects.equals(timestamp, other.timestamp);
     }
+
+    public static class Builder {
+        private Long id;
+        private String content;
+        private UserSummaryDto sender;
+        private Long roomId;
+        private Instant timestamp;
+        private Instant editedTimestamp;
+        private Boolean isDeleted;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder content(String content) {
+            this.content = content;
+            return this;
+        }
+
+        public Builder sender(UserSummaryDto sender) {
+            this.sender = sender;
+            return this;
+        }
+
+        public Builder roomId(Long roomId) {
+            this.roomId = roomId;
+            return this;
+        }
+
+        public Builder timestamp(Instant timestamp) {
+            this.timestamp = timestamp;
+            return this;
+        }
+
+        public Builder editedTimestamp(Instant editedTimestamp) {
+            this.editedTimestamp = editedTimestamp;
+            return this;
+        }
+
+        public Builder isDeleted(Boolean isDeleted) {
+            this.isDeleted = isDeleted;
+            return this;
+        }
+
+        public MessageDto build() {
+            MessageDto dto = new MessageDto();
+            dto.setId(id);
+            dto.setContent(content);
+            dto.setSender(sender);
+            dto.setRoomId(roomId);
+            dto.setTimestamp(timestamp != null ? timestamp : Instant.now());
+            dto.setEditedTimestamp(editedTimestamp);
+            dto.setIsDeleted(Objects.requireNonNullElse(isDeleted, false));
+            return dto;
+        }
+    }
 }

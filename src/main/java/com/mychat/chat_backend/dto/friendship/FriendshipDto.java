@@ -90,4 +90,40 @@ public class FriendshipDto {
         return Objects.hash(id, userId, friendId, friendName, establishedOn);
     }
 
+    public static class Builder {
+        private Long id;
+        private Long userId;
+        private Long friendId;
+        private String friendName;
+        private Instant establishedOn;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder userId(Long userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder friendId(Long friendId) {
+            this.friendId = friendId;
+            return this;
+        }
+
+        public Builder friendName(String friendName) {
+            this.friendName = friendName;
+            return this;
+        }
+
+        public Builder establishedOn(Instant establishedOn) {
+            this.establishedOn = establishedOn;
+            return this;
+        }
+
+        public FriendshipDto build() {
+            return new FriendshipDto(id, userId, friendId, friendName, establishedOn != null ? establishedOn : Instant.now());
+        }
+    }
 }

@@ -73,10 +73,10 @@ public class UserMapper {
             userToBeUpdated.setLastLogout(userUpdateDto.getLastLogout());
         }
         if (userUpdateDto.getAdmin() != null) {
-            userToBeUpdated.setAdmin(userUpdateDto.getAdmin());
+            userToBeUpdated.setIsAdmin(userUpdateDto.getAdmin());
         }
         if (userUpdateDto.getOnline() != null) {
-            userToBeUpdated.setOnline(userUpdateDto.getOnline());
+            userToBeUpdated.setIsOnline(userUpdateDto.getOnline());
         }
         if (userUpdateDto.getEmail() != null) {
             userToBeUpdated.setEmail(userUpdateDto.getEmail());

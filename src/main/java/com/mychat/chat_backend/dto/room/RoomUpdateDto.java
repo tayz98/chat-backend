@@ -8,17 +8,12 @@ import java.util.Set;
  * Data Transfer Object for updating a chat room.
  */
 public class RoomUpdateDto {
-    @NotBlank
     private String description;
-    @NotNull
     private Boolean isPrivate;
-    @NotBlank
     @Size(min = 5, max = 30)
     private String newPassword;
-    @NotNull
     @Size(min = 1, max = 20)
     private Set<Long> participants;
-    @NotNull
     @Size(min = 1, max = 20)
     private Set<String> allowedUsernames;
 
@@ -74,5 +69,48 @@ public class RoomUpdateDto {
 
     public void setAllowedUsernames(Set<String> allowedUsernames) {
         this.allowedUsernames = allowedUsernames;
+    }
+
+    public static class Builder {
+        private String description;
+        private Boolean isPrivate;
+        private String newPassword;
+        private Set<Long> participants;
+        private Set<String> allowedUsernames;
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder isPrivate(Boolean isPrivate) {
+            this.isPrivate = isPrivate;
+            return this;
+        }
+
+        public Builder newPassword(String newPassword) {
+            this.newPassword = newPassword;
+            return this;
+        }
+
+        public Builder participants(Set<Long> participants) {
+            this.participants = participants;
+            return this;
+        }
+
+        public Builder allowedUsernames(Set<String> allowedUsernames) {
+            this.allowedUsernames = allowedUsernames;
+            return this;
+        }
+
+        public RoomUpdateDto build() {
+            RoomUpdateDto dto = new RoomUpdateDto();
+            dto.setDescription(description);
+            dto.setPrivate(isPrivate);
+            dto.setNewPassword(newPassword);
+            dto.setParticipants(participants);
+            dto.setAllowedUsernames(allowedUsernames);
+            return dto;
+        }
     }
 }

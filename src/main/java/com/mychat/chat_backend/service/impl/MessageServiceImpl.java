@@ -12,7 +12,6 @@ import com.mychat.chat_backend.repository.MessageRepository;
 import com.mychat.chat_backend.repository.RoomRepository;
 import com.mychat.chat_backend.repository.UserRepository;
 import com.mychat.chat_backend.service.MessageService;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -40,27 +39,27 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public MessageDto getMessageById(@NotNull Long messageId) {
+    public MessageDto getMessageById(Long messageId) {
         return MessageMapper
                 .toMessageDto(messageRepository.findById(messageId).orElseThrow(MessageNotFoundException::new));
     }
 
     @Override
-    public List<MessageDto> getMessagesByRoomId(@NotNull Long roomId) {
+    public List<MessageDto> getMessagesByRoomId(Long roomId) {
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
         List<Message> messages = messageRepository.findAllByRoomId(room.getId());
         return messages.stream().map(MessageMapper::toMessageDto).toList();
     }
 
     @Override
-    public List<MessageDto> getMessagesByUserId(@NotNull Long userId) {
+    public List<MessageDto> getMessagesByUserId(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         List<Message> messages = messageRepository.findAllByUserId(user.getId());
         return messages.stream().map(MessageMapper::toMessageDto).toList();
     }
 
     @Override
-    public List<MessageDto> getMessagesByRoomIdAndUserId(@NotNull Long roomId, @NotNull Long userId) {
+    public List<MessageDto> getMessagesByRoomIdAndUserId(Long roomId, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Room room = roomRepository.findById(roomId).orElseThrow(RoomNotFoundException::new);
         List<Message> messages = messageRepository.findAllByRoomIdAndUserId(room.getId(), user.getId());
@@ -68,7 +67,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public MessageDto createMessage(@NotNull MessageCreationDto messageDto) {
+    public MessageDto createMessage(MessageCreationDto messageDto) {
         Room room = roomRepository.findById(messageDto.getRoomId()).orElseThrow(RoomNotFoundException::new);
         User user = userRepository.findById(messageDto.getSenderId()).orElseThrow(UserNotFoundException::new);
         if (!room.getParticipantUsers().contains(user)) {
@@ -79,7 +78,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public MessageDto updateMessage(@NotNull MessageUpdateDto messageDto, @NotNull Long messageId) {
+    public MessageDto updateMessage(MessageUpdateDto messageDto, Long messageId) {
         Message message = messageRepository.findById(messageId).orElseThrow(MessageNotFoundException::new);
         Message updatedMessage = MessageMapper.updatedMessage(messageDto, message);
         updatedMessage.setUpdatedOn();
@@ -87,8 +86,14 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void deleteMessage(@NotNull Long messageId) {
+    public void deleteMessage(Long messageId) {
         Message message = messageRepository.findById(messageId).orElseThrow(MessageNotFoundException::new);
         messageRepository.delete(message);
+    }
+
+    @Override
+    public List<MessageDto> getAllMessages() {
+        List<Message> messages = messageRepository.findAll();
+        return messages.stream().map(MessageMapper::toMessageDto).toList();
     }
 }
